@@ -152,7 +152,7 @@ class Environment:
         self.display = Display()
         self.tank.x = -1000
         self.update_coords()
-        self.goal = Waypoint(1000, 0)
+        self.goal = Waypoint(0, 0)
 
     def reset(self):
         env2 = Environment()
@@ -199,7 +199,7 @@ class Environment:
 
         self.max_steps -= 1
         done = False
-        reward = -10
+        reward = -15
 
         if action == 0:
             self.tank.rotate(0.2)
@@ -217,13 +217,14 @@ class Environment:
         if self.check_collision() or self.max_steps == 0:
             self.display.shared_collision.value = 1
             done = True
-            reward = -500
+            reward = -1000
         if self.check_goal():
             self.display.shared_collision.value = 2
             done = True
-            reward = 100
+            reward = 5000
 
-        state = [self.x, self.y, self.t] + distances + self.to_goal()
+        n_distances = [x / 1000 for x in distances]
+        state = [self.x, self.y, self.t] + n_distances + [self.to_goal()[0]/1500, self.to_goal()[1]]
         assert len(state) == self.state_size
         return reward, state, done
 
