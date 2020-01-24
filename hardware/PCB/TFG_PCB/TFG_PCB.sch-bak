@@ -8,9 +8,9 @@ Title "Power Busers and Battery Management"
 Date "2020-01-24"
 Rev "0.1"
 Comp "Jorge Huete"
-Comment1 "Designed for three 3S LiPo Battery"
-Comment2 "Uses off the shelf BMS boards for cell balancing"
-Comment3 "Last LiPo is for backup, default state off"
+Comment1 ""
+Comment2 ""
+Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
