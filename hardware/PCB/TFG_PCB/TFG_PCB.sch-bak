@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 2
+Sheet 1 3
 Title "ROVER Main PCB"
 Date "2020-01-24"
 Rev "0.1"
@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 3350 1850 1100 650 
+S 3350 1850 1100 800 
 U 5E6BD4F2
 F0 "Power Bus Generation" 50
 F1 "PowerPCB.sch" 50
@@ -24,5 +24,12 @@ F4 "9V_HP" O R 4450 2250 50
 F5 "5V_HP" O R 4450 2400 50 
 F6 "BCKP_EN" O L 3350 2100 50 
 F7 "9V_HP_EN" O L 3350 2250 50 
+F8 "ALG_BUS" O R 4450 2550 50 
+$EndSheet
+$Sheet
+S 6050 1850 1100 800 
+U 5E96FE61
+F0 "Control Logic" 50
+F1 "ControlLogic.sch" 50
 $EndSheet
 $EndSCHEMATC
