@@ -14,10 +14,10 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Connector:Raspberry_Pi_2_3 J31
+L Connector:Raspberry_Pi_2_3 J18
 U 1 1 5E97206E
 P 3700 3450
-F 0 "J31" H 3700 4931 50  0000 C CNN
+F 0 "J18" H 3700 4931 50  0000 C CNN
 F 1 "Raspberry_Pi_2_3" H 3700 4840 50  0000 C CNN
 F 2 "" H 3700 3450 50  0001 C CNN
 F 3 "https://www.raspberrypi.org/documentation/hardware/raspberrypi/schematics/rpi_SCH_3bplus_1p0_reduced.pdf" H 3700 3450 50  0001 C CNN
@@ -36,10 +36,10 @@ Wire Wire Line
 	3600 1900 3500 1900
 Connection ~ 3500 1900
 $Comp
-L 74xx:CD74HC4067M U7
+L 74xx:CD74HC4067M U4
 U 1 1 5E9A928D
 P 7250 3350
-F 0 "U7" H 7250 4531 50  0000 C CNN
+F 0 "U4" H 7250 4531 50  0000 C CNN
 F 1 "CD74HC4067M" H 7250 4440 50  0000 C CNN
 F 2 "Package_SO:SOIC-24W_7.5x15.4mm_P1.27mm" H 8150 2350 50  0001 C CIN
 F 3 "http://www.ti.com/lit/ds/symlink/cd74hc4067.pdf" H 6900 4200 50  0001 C CNN
@@ -83,10 +83,10 @@ Connection ~ 3400 4850
 Wire Wire Line
 	3400 4850 3500 4850
 $Comp
-L power:GND #PWR0141
+L power:GND #PWR041
 U 1 1 5E9AD34B
 P 3650 4850
-F 0 "#PWR0141" H 3650 4600 50  0001 C CNN
+F 0 "#PWR041" H 3650 4600 50  0001 C CNN
 F 1 "GND" H 3655 4677 50  0000 C CNN
 F 2 "" H 3650 4850 50  0001 C CNN
 F 3 "" H 3650 4850 50  0001 C CNN
