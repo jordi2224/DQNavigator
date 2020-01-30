@@ -1,6 +1,17 @@
 import math
-
 from shapely.geometry import LineString, Point
+
+
+class Wall:
+    p1 = (0, 0)
+    p2 = (0, 0)
+    color = (0, 0, 0)
+    time_of_death = -1
+
+    def __init__(self, p1, p2, color=(0, 0, 0)):
+        self.p1 = p1
+        self.p2 = p2
+        self.color = color
 
 
 def segments_intersect(segment1, segment2):
@@ -82,3 +93,23 @@ def ray_projection(ray, walls, wall_count):
         distances.append(distance(ray[0], inter))
 
     return intersections[distances.index(min(distances))], min(distances)
+
+
+def calculate_bounding_box(x, y, theta, W, L):
+    x1 = x + math.cos(theta) * L / 2.0 - math.sin(theta) * W / 2.0
+    y1 = y + math.sin(theta) * L / 2.0 + math.cos(theta) * W / 2.0
+
+    x2 = x + math.cos(theta) * L / 2.0 + math.sin(theta) * W / 2.0
+    y2 = y + math.sin(theta) * L / 2.0 - math.cos(theta) * W / 2.0
+
+    x4 = x - math.cos(theta) * L / 2.0 - math.sin(theta) * W / 2.0
+    y4 = y - math.sin(theta) * L / 2.0 + math.cos(theta) * W / 2.0
+
+    x3 = x - math.cos(theta) * L / 2.0 + math.sin(theta) * W / 2.0
+    y3 = y - math.sin(theta) * L / 2.0 - math.cos(theta) * W / 2.0
+
+    w1 = Wall((x1, y1), (x2, y2))
+    w2 = Wall((x2, y2), (x3, y3))
+    w3 = Wall((x3, y3), (x4, y4))
+    w4 = Wall((x4, y4), (x1, y1))
+    return [w1, w2, w3, w4]
