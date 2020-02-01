@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce3db8e9-5911-4bbf-a8e9-f65699d58f13" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/endmodel.model" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model_lr_0.01.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/multithreading_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TFG.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TFG.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI_new_model_trining.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI_new_model_trining.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/environment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newenv_test" beforeDir="false" afterPath="$PROJECT_DIR$/newenv_test" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pygame_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_dqn.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_dqn_custom.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_gym.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
