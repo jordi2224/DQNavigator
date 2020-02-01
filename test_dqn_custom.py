@@ -8,7 +8,7 @@ from collections import deque
 import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, Activation, MaxPooling2D, Flatten
-from test_1_tank_controls.environment import Environment
+from environment import Environment
 
 EPISODES = 2_000
 REPLAY_MEMORY_SIZE = 2_000

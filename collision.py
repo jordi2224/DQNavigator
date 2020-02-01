@@ -18,11 +18,11 @@ def segments_intersect(segment1, segment2):
     return LineString(segment1).crosses(LineString(segment2))
 
 
-def get_segments(rectangle_points):
-    segments = [(rectangle_points[0], rectangle_points[1]),
-                (rectangle_points[1], rectangle_points[2]),
-                (rectangle_points[2], rectangle_points[3]),
-                (rectangle_points[3], rectangle_points[0])]
+def get_segments(bounding_box):
+    segments = []
+    for wall in bounding_box:
+        segment = (wall.p1, wall.p2)
+        segments.append(segment)
 
     return segments
 
@@ -79,12 +79,13 @@ def distance(p1, p2):
     return math.sqrt(math.pow(p1[0] - p2[0], 2) + math.pow(p1[1] - p2[1], 2))
 
 
-def ray_projection(ray, walls, wall_count):
+def ray_projection(ray, walls):
     intersections = []
     distances = []
 
-    for i in range(wall_count):
-        wall = [(walls[(i * 4) + 0], walls[(i * 4) + 1]), (walls[(i * 4) + 2], walls[(i * 4) + 3])]
+    ray = (ray.p1, ray.p2)
+    for wall in walls:
+        wall = (wall.p1, wall.p2)
         inter = line_intersection(ray, wall)
         if inter is not None:
             intersections.append(inter)

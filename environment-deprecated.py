@@ -121,7 +121,7 @@ class Tank:
         return self.bounding_box
 
     def rotate(self, angle):
-        self.theta += angle
+        self.theta = (self.theta + angle) % math.pi*2.
 
     def advance(self, distance):
         self.x += math.cos(self.theta) * distance
@@ -192,8 +192,7 @@ class Environment:
 
         return [distance((self.goal.x, self.goal.y),
                          (self.tank.x, self.tank.y)),
-                (self.tank.theta % (math.pi * 2)) - math.atan2(diff_y, diff_x)
-                ]
+                (self.tank.theta - math.atan2(diff_y, diff_x))]
 
     def step(self, action):
 

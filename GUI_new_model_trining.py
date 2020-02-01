@@ -1,0 +1,173 @@
+import time
+import pygame
+import random
+import numpy as np
+import config as cfg
+import matplotlib.pyplot as pyplot
+from keras.models import Sequential
+from keras.layers import Dense
+from keras import optimizers
+from environment import Environment
+from tqdm import tqdm
+from collections import deque
+
+
+
+env = Environment()
+
+def create_model():
+
+    #MODEL ARCHITECTURE
+    model = Sequential()
+    model.add(Dense(25, input_dim=env.STATE_SIZE))
+    model.add(Dense(32))
+    model.add(Dense(env.ACTION_SIZE))
+
+    optimizer = optimizers.Adam(learning_rate=cfg.lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    model.compile(loss='binary_crossentropy', optimizer=optimizer)
+
+    return model
+
+class DQNAgent:
+
+    def __init__(self):
+        ''' Current model
+            This model is used to get actions
+            This model is trained every episode and fluctuates greately
+            Eventually this is converged with target_model
+        '''
+        self.model = create_model()
+
+        ''' Target model
+            This model is used to smooth out variation in the training
+            target_model is only trained every n episodes
+            this reduces fluctuations
+            This model is used to get future Qs
+        '''
+        self.target_model = create_model()
+        self.target_model.set_weights(self.model.get_weights())
+        # Counter to decide when to converge
+        self.target_update_counter = 0
+
+
+        # Replay memory
+        self.replay_memory = deque(maxlen=cfg.REPLAY_MEMORY_SIZE)
+
+
+    def update_replay_memory(self, transition):
+        self.replay_memory.append(transition)
+
+    def train(self, terminal_state):
+        # Avoid training with too few transitions in memory
+        if len(self.replay_memory) < cfg.MIN_REPLAY_MEMORY_SIZE:
+            return
+
+        minibatch = random.sample(self.replay_memory, cfg.MINIBATCH_SIZE)
+
+        # Transitions are of shape (state, action, reward, new_state, done)
+        current_states = np.array([transition[0] for transition in minibatch])
+        current_qs_list = self.model.predict(current_states)
+
+
+        # Future Qs are predicted using the TARGET_model not CURRENT_model to avoid fluctuations
+        new_current_states = np.array([transition[3] for transition in minibatch])
+        future_qs_list = self.target_model.predict(new_current_states)
+
+
+        states = []
+        actions = []
+
+        for index, (current_state, action, reward, new_current_state, done) in enumerate(minibatch):
+            # If not a final move
+            if not done:
+                # Target model's prediction
+                max_future_q = np.max(future_qs_list[index])
+                # Reinforce or punish this move
+                new_q = reward + cfg.DISCOUNT * max_future_q
+            else:
+                new_q = reward
+
+            # Update Q value for given state
+            current_qs = current_qs_list[index]
+            current_qs[action] = new_q
+
+            # And append to our training data
+            states.append(current_state)
+            actions.append(current_qs)
+
+            # Use this training data to train the current model
+            self.model.fit(np.array(states), np.array(actions),
+                           batch_size=cfg.MINIBATCH_SIZE,
+                           verbose=0,
+                           shuffle=False)
+
+        if terminal_state:
+            self.target_update_counter += 1
+
+        if self.target_update_counter > cfg.CONVERGE_EVERY:
+            self.target_model.set_weights(self.model.get_weights())
+            self.target_update_counter = 0
+
+if __name__ == "__main__":
+
+    agent = DQNAgent()
+    episode_reward_history = []
+    average_reward_history = []
+    epsilon = cfg.DEF_EPSILON
+
+    for episode in tqdm(range(cfg.EPISODES), unit='sims'):
+
+        # Episode initialization
+        episode_reward = 0
+        reward, state, done = env.reset()
+        done = False
+        step = 0
+
+        while not done:
+            step += 1
+
+            # Make a decision based on epsilon
+            if np.random.random() > epsilon:
+                # Action/Prediction generation
+                tmp_state = np.array(state).reshape(-1, env.STATE_SIZE)
+                prediction = agent.model.predict(tmp_state)
+                action = np.argmax(prediction)
+            else:
+                # Get random action
+                action = np.random.randint(0, env.ACTION_SIZE)
+
+            # New environment state
+            reward, new_state, done = env.step(action)
+            episode_reward += reward
+
+            # Show current state
+            if not (episode % cfg.DISPLAY_EVERY) and cfg.ENABLE_RENDER:
+                env.render()
+            elif cfg.ENABLE_RENDER:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True
+
+            # Update memory and training
+            agent.update_replay_memory((state, action, reward, new_state, done))
+            if not episode % cfg.TRAIN_EVERY:
+                agent.train(done)
+
+        episode_reward_history.append(episode_reward)
+
+        # Decay epsilon
+        if epsilon > cfg.MIN_EPSILON:
+            epsilon *= cfg.EPSILON_DECAY
+            epsilon = max(cfg.MIN_EPSILON, epsilon)
+
+        if not episode % cfg.AGGREGATE_EVERY or episode == 1:
+            avg = sum(episode_reward_history)/len(episode_reward_history)
+            print("epsilon: ", epsilon, " avg: ", avg)
+            average_reward_history.append(avg)
+            episode_reward_history = []
+
+    pyplot.plot(average_reward_history)
+    pyplot.title('Episode reward average')
+    pyplot.show()
+
+

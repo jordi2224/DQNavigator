@@ -1,0 +1,35 @@
+import random
+import pygame
+from environment import Environment
+
+
+if __name__ == "__main__":
+
+    env = Environment()
+    env.render()
+
+    done = False
+    while not done:
+        pygame.time.wait(100)
+        action = 5
+        while action == 5:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    done = True
+            pressed_keys = pygame.key.get_pressed()
+            if pressed_keys[pygame.K_w]:
+                action = 2
+            elif pressed_keys[pygame.K_s]:
+                action = 3
+            elif pressed_keys[pygame.K_a]:
+                action = 0
+            elif pressed_keys[pygame.K_d]:
+                action = 1
+            else:
+                action = 5
+
+            #action = random.randrange(5)
+        reward, state, done = env.step(action)
+
+        print(done)
+        env.render()
