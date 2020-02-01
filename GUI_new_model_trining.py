@@ -3,40 +3,44 @@ import pygame
 import random
 import numpy as np
 import config as cfg
+from keras import backend as K
 import matplotlib.pyplot as pyplot
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 from keras import optimizers
 from environment import Environment
 from tqdm import tqdm
+import tensorflow as tf
 from collections import deque
-
-
 
 env = Environment()
 
-def create_model():
 
-    #MODEL ARCHITECTURE
+
+def create_model(lr=cfg.lr):
+    # MODEL ARCHITECTURE
     model = Sequential()
-    model.add(Dense(25, input_dim=env.STATE_SIZE))
-    model.add(Dense(32))
+    model.add(Dense(12, input_dim=env.STATE_SIZE))
+    model.add(Dropout(0.1))
+    model.add(Dense(8, activation='sigmoid'))
     model.add(Dense(env.ACTION_SIZE))
 
-    optimizer = optimizers.Adam(learning_rate=cfg.lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    optimizer = optimizers.Adam(learning_rate=lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    print("learning rate is: ", lr)
     model.compile(loss='binary_crossentropy', optimizer=optimizer)
 
     return model
 
+
 class DQNAgent:
 
-    def __init__(self):
+    def __init__(self, lr=cfg.lr):
         ''' Current model
             This model is used to get actions
             This model is trained every episode and fluctuates greately
             Eventually this is converged with target_model
         '''
-        self.model = create_model()
+        self.model = create_model(lr=lr)
 
         ''' Target model
             This model is used to smooth out variation in the training
@@ -44,15 +48,13 @@ class DQNAgent:
             this reduces fluctuations
             This model is used to get future Qs
         '''
-        self.target_model = create_model()
+        self.target_model = create_model(lr=lr)
         self.target_model.set_weights(self.model.get_weights())
         # Counter to decide when to converge
         self.target_update_counter = 0
 
-
         # Replay memory
         self.replay_memory = deque(maxlen=cfg.REPLAY_MEMORY_SIZE)
-
 
     def update_replay_memory(self, transition):
         self.replay_memory.append(transition)
@@ -68,11 +70,9 @@ class DQNAgent:
         current_states = np.array([transition[0] for transition in minibatch])
         current_qs_list = self.model.predict(current_states)
 
-
         # Future Qs are predicted using the TARGET_model not CURRENT_model to avoid fluctuations
         new_current_states = np.array([transition[3] for transition in minibatch])
         future_qs_list = self.target_model.predict(new_current_states)
-
 
         states = []
         actions = []
@@ -107,6 +107,7 @@ class DQNAgent:
         if self.target_update_counter > cfg.CONVERGE_EVERY:
             self.target_model.set_weights(self.model.get_weights())
             self.target_update_counter = 0
+
 
 if __name__ == "__main__":
 
@@ -153,6 +154,8 @@ if __name__ == "__main__":
             if not episode % cfg.TRAIN_EVERY:
                 agent.train(done)
 
+            state = new_state
+
         episode_reward_history.append(episode_reward)
 
         # Decay epsilon
@@ -161,13 +164,12 @@ if __name__ == "__main__":
             epsilon = max(cfg.MIN_EPSILON, epsilon)
 
         if not episode % cfg.AGGREGATE_EVERY or episode == 1:
-            avg = sum(episode_reward_history)/len(episode_reward_history)
+            avg = sum(episode_reward_history) / len(episode_reward_history)
             print("epsilon: ", epsilon, " avg: ", avg)
             average_reward_history.append(avg)
             episode_reward_history = []
 
+    agent.model.save('endmodel.model')
     pyplot.plot(average_reward_history)
     pyplot.title('Episode reward average')
     pyplot.show()
-
-

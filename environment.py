@@ -15,7 +15,7 @@ INITIAL_WALLS.append(Wall((cfg.SLS, cfg.SLS), (cfg.SLS, 0)))
 INITIAL_WALLS.append(Wall((cfg.SLS, 0), (0, 0)))
 
 '''VISION RAYS THETAS'''
-RAY_THETAS = [0, -math.pi, math.pi / 4, math.pi / 8, -math.pi / 4, -math.pi / 8]
+RAY_THETAS = [-math.pi, math.pi / 6, -math.pi / 6]
 
 
 class Tank:
@@ -97,8 +97,8 @@ def draw_projections(window, projections):
 
 
 class Environment:
-    STATE_SIZE = 10
-    ACTION_SIZE = 5
+    STATE_SIZE = 7
+    ACTION_SIZE = 4
     steps = cfg.MAX_STEPS
     last_delta_abs = 0
 
@@ -118,13 +118,12 @@ class Environment:
 
     def place_goal_ran(self):
         alpha = random.random()
-        if alpha < 0.3333:
+        if alpha < 0.01:
             self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS // 2)
-        elif alpha < 0.6666:
-            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS // 3)
+        elif alpha < 0.5:
+            self.goal = Waypoint(cfg.SLS * 4 // 5, cfg.SLS // 3)
         else:
-            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 2 // 3)
-
+            self.goal = Waypoint(cfg.SLS * 4 // 5, cfg.SLS * 2 // 3)
 
     def reset(self):
         self.tank = Tank()
@@ -133,12 +132,8 @@ class Environment:
 
         self.last_delta_abs = math.fabs(self.to_goal()[1])
 
-        #TODO: move the goal and hazard
-        #TODO: remove render if one exists
-
         # No reward, new state, not done
         return 0, self.get_state(), False
-
 
     def to_goal(self):
 
@@ -169,7 +164,7 @@ class Environment:
             self.distances.append(projection[1])
 
     def get_state(self):
-        return (np.array(self.distances)/cfg.SLS).tolist() + self.to_goal() + self.to_hazard()
+        return (np.array(self.distances) / cfg.SLS).tolist() + self.to_goal() + self.to_hazard()
 
     def step(self, action):
         self.steps -= 1
@@ -177,20 +172,26 @@ class Environment:
         reward = cfg.STEP_REWARD
 
         new_delta_abs = math.fabs(self.to_goal()[1])
-        if action == 0:    # Positive rotation
+        if action == 0:  # Positive rotation
             self.tank.rotate(cfg.lat_speed)
             if new_delta_abs < self.last_delta_abs:
                 reward += cfg.TURN_TOWARDS_GOAL_REW
+            elif self.last_delta_abs > 0.2:
+                reward += cfg.TURN_AWAY_GOAL_REW
         elif action == 1:  # Negative rotation
             self.tank.rotate(- cfg.lat_speed)
             if new_delta_abs < self.last_delta_abs:
                 reward += cfg.TURN_TOWARDS_GOAL_REW
+            elif self.last_delta_abs > 0.2:
+                reward += cfg.TURN_AWAY_GOAL_REW
         elif action == 2:  # Move forward
             self.tank.advance(cfg.speed)
+            if new_delta_abs < 0.2:
+                reward += cfg.FORWARD_MOVE_REWARD
         elif action == 3:  # Move backwards
             self.tank.advance(-cfg.speed)
             reward += cfg.BACKWARDS_MOVE_REWARD
-        elif action ==4:   # No movement
+        elif action == 4:  # No movement
             reward += cfg.NO_MOVE_REWARD
 
         self.last_delta_abs = new_delta_abs
