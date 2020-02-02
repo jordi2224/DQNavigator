@@ -1,5 +1,5 @@
 import threading
-
+import sys
 import numpy as np
 from tqdm import tqdm
 from environment import Environment
@@ -8,9 +8,9 @@ import config as cfg
 import math
 
 if __name__ == '__main__':
-    ini_lr = float(input("INI LR: "))
-    end_lr = float(input("END_LR: "))
-    N = int(input("N: "))
+    ini_lr = float(sys.argv[1])
+    end_lr = float(sys.argv[2])
+    N = int(sys.argv[3])
     step = math.fabs(ini_lr-end_lr)/N
     for i in range(N+1):
         lr = ini_lr+i*step
