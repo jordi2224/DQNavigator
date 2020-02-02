@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce3db8e9-5911-4bbf-a8e9-f65699d58f13" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/training1.trans" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multithreading_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/multithreading_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

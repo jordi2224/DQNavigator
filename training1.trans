@@ -1,0 +1,4 @@
+# lr D
+# 0.05
+# (state, action, reward, new_state, done)
+[], 1, -23, [], False
