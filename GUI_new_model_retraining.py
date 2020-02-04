@@ -1,11 +1,11 @@
-import time
+import math
+
 import pygame
 import random
 import numpy as np
 import config as cfg
-from keras import backend as K
 import matplotlib.pyplot as pyplot
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout
 from keras import optimizers
 from environment import Environment
@@ -13,8 +13,7 @@ from tqdm import tqdm
 import tensorflow as tf
 from collections import deque
 
-env = Environment()
-
+env = Environment(diff='hard')
 
 
 def create_model(lr=cfg.lr):
@@ -23,7 +22,7 @@ def create_model(lr=cfg.lr):
     model.add(Dense(12, input_dim=env.STATE_SIZE))
     model.add(Dropout(0.1))
     model.add(Dense(8, activation='sigmoid'))
-    model.add(Dense(env.ACTION_SIZE))
+    model.add(Dense(env.ACTION_SIZE, activation='relu'))
 
     optimizer = optimizers.Adam(learning_rate=lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
     print("learning rate is: ", lr)
@@ -40,7 +39,7 @@ class DQNAgent:
             This model is trained every episode and fluctuates greately
             Eventually this is converged with target_model
         '''
-        self.model = create_model(lr=lr)
+        #self.model = create_model(lr=lr)
 
         ''' Target model
             This model is used to smooth out variation in the training
@@ -48,8 +47,8 @@ class DQNAgent:
             this reduces fluctuations
             This model is used to get future Qs
         '''
-        self.target_model = create_model(lr=lr)
-        self.target_model.set_weights(self.model.get_weights())
+        #self.target_model = create_model(lr=lr)
+        #self.target_model.set_weights(self.model.get_weights())
         # Counter to decide when to converge
         self.target_update_counter = 0
 
@@ -77,19 +76,20 @@ class DQNAgent:
         states = []
         actions = []
 
-        for index, (current_state, action, reward, new_current_state, done) in enumerate(minibatch):
+        for index, (current_state, action_h, reward_h, new_current_state, done_h) in enumerate(minibatch):
             # If not a final move
-            if not done:
+            if not done_h:
                 # Target model's prediction
                 max_future_q = np.max(future_qs_list[index])
                 # Reinforce or punish this move
-                new_q = reward + cfg.DISCOUNT * max_future_q
+                # Propagate future q to this q
+                new_q = reward_h + cfg.DISCOUNT * max_future_q
             else:
-                new_q = reward
+                new_q = reward_h
 
             # Update Q value for given state
             current_qs = current_qs_list[index]
-            current_qs[action] = new_q
+            current_qs[action_h] = new_q
 
             # And append to our training data
             states.append(current_state)
@@ -104,17 +104,49 @@ class DQNAgent:
         if terminal_state:
             self.target_update_counter += 1
 
-        if self.target_update_counter > cfg.CONVERGE_EVERY:
+        if self.target_update_counter >= cfg.CONVERGE_EVERY:
             self.target_model.set_weights(self.model.get_weights())
             self.target_update_counter = 0
+
+def benchmark_agent(agent, diff):
+    total_reward = 0
+    env = Environment(diff=diff)
+    for episode in range (cfg.BENCHMARK_LENGTH):
+        episode_reward = 0
+        done = False
+        reward, state, done = env.reset()
+
+        while not done:
+            tmp_state = np.array(state).reshape(-1, env.STATE_SIZE)
+            prediction = agent.model.predict(tmp_state)
+            action = np.argmax(prediction)
+
+            reward, new_state, done = env.step(action)
+            episode_reward += reward
+
+        total_reward += episode_reward
+
+    return total_reward/cfg.BENCHMARK_LENGTH
+
 
 
 if __name__ == "__main__":
 
     agent = DQNAgent()
+    agent.model = load_model('endmodel_retrained.model')
+    agent.target_model = load_model('endmodel_retrained.model')
+    #lr = cfg.lr*10
+    lr = 0.0002
+    optimizer = optimizers.Adam(learning_rate=lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    print("learning rate is: ", lr)
+    agent.model.compile(loss='binary_crossentropy', optimizer=optimizer)
+    agent.target_model = load_model('endmodel.model')
+    print("EASY: Agent scorde an avg: ", benchmark_agent(agent, diff='easy'))
+    print("HARD: Agent scorde an avg: ", benchmark_agent(agent, diff='hard'))
     episode_reward_history = []
     average_reward_history = []
-    epsilon = cfg.DEF_EPSILON
+    epsilon = 0.1
+    cfg.EPSILON_DECAY = cfg.EPSILON_DECAY
 
     for episode in tqdm(range(cfg.EPISODES), unit='sims'):
 
@@ -135,7 +167,15 @@ if __name__ == "__main__":
                 action = np.argmax(prediction)
             else:
                 # Get random action
-                action = np.random.randint(0, env.ACTION_SIZE)
+                action = np.random.randint(0, env.ACTION_SIZE-1)
+                '''if np.random.random() < gac:
+                    if math.fabs(state[-3]) > 0.15:
+                        if state[-3] > 0:
+                            action = 1
+                        else:
+                            action = 0
+                    else:
+                        action = 2'''
 
             # New environment state
             reward, new_state, done = env.step(action)
@@ -169,7 +209,7 @@ if __name__ == "__main__":
             average_reward_history.append(avg)
             episode_reward_history = []
 
-    agent.model.save('endmodel.model')
+    agent.model.save('endmodel_retrained.model')
     pyplot.plot(average_reward_history)
     pyplot.title('Episode reward average')
     pyplot.show()

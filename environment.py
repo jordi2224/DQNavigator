@@ -15,7 +15,7 @@ INITIAL_WALLS.append(Wall((cfg.SLS, cfg.SLS), (cfg.SLS, 0)))
 INITIAL_WALLS.append(Wall((cfg.SLS, 0), (0, 0)))
 
 '''VISION RAYS THETAS'''
-RAY_THETAS = [-math.pi, math.pi / 6, -math.pi / 6]
+RAY_THETAS = [math.pi / 6, -math.pi / 6]
 
 
 class Tank:
@@ -97,19 +97,24 @@ def draw_projections(window, projections):
 
 
 class Environment:
-    STATE_SIZE = 7
+    STATE_SIZE = 4
     ACTION_SIZE = 4
     steps = cfg.MAX_STEPS
     last_delta_abs = 0
 
     window = None
 
-    def __init__(self):
+    def __init__(self, diff="easy"):
         self.projections = []
         self.distances = []
         self.WALLS = INITIAL_WALLS
         self.tank = Tank()
-        self.place_goal_ran()
+        self.diff = diff
+        if diff == "easy":
+            self.place_goal_easy()
+        else:
+            self.place_goal_ran()
+
         self.hazard = Waypoint(cfg.SLS // 2, cfg.SLS * 3 // 4, type='hazard')
 
         self.calculate_projections()
@@ -121,14 +126,20 @@ class Environment:
         if alpha < 0.01:
             self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS // 2)
         elif alpha < 0.5:
-            self.goal = Waypoint(cfg.SLS * 4 // 5, cfg.SLS // 3)
+            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 2 // 6)
         else:
-            self.goal = Waypoint(cfg.SLS * 4 // 5, cfg.SLS * 2 // 3)
+            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 4 // 6)
+
+    def place_goal_easy(self):
+        self.goal = Waypoint(cfg.SLS * 5 // 6, cfg.SLS // 2)
 
     def reset(self):
         self.tank = Tank()
         self.steps = cfg.MAX_STEPS
-        self.place_goal_ran()
+        if self.diff == 'easy':
+            self.place_goal_easy()
+        else:
+            self.place_goal_ran()
 
         self.last_delta_abs = math.fabs(self.to_goal()[1])
 
@@ -164,7 +175,15 @@ class Environment:
             self.distances.append(projection[1])
 
     def get_state(self):
-        return (np.array(self.distances) / cfg.SLS).tolist() + self.to_goal() + self.to_hazard()
+        return (np.array(self.distances) / cfg.SLS).tolist() + self.to_goal() # + self.to_hazard()
+
+    def calculate_reward(self):
+        distance_reward = 1 - math.pow(self.to_goal()[0], 0.4)
+        angle_reward = 1 - math.pow(math.fabs(self.to_goal()[1]), 0.4)
+        return distance_reward + angle_reward*1.2
+
+    def calculate_movement_reward(self, action):
+        pass
 
     def step(self, action):
         self.steps -= 1
@@ -174,27 +193,18 @@ class Environment:
         new_delta_abs = math.fabs(self.to_goal()[1])
         if action == 0:  # Positive rotation
             self.tank.rotate(cfg.lat_speed)
-            if new_delta_abs < self.last_delta_abs:
-                reward += cfg.TURN_TOWARDS_GOAL_REW
-            elif self.last_delta_abs > 0.2:
-                reward += cfg.TURN_AWAY_GOAL_REW
         elif action == 1:  # Negative rotation
             self.tank.rotate(- cfg.lat_speed)
-            if new_delta_abs < self.last_delta_abs:
-                reward += cfg.TURN_TOWARDS_GOAL_REW
-            elif self.last_delta_abs > 0.2:
-                reward += cfg.TURN_AWAY_GOAL_REW
         elif action == 2:  # Move forward
             self.tank.advance(cfg.speed)
-            if new_delta_abs < 0.2:
-                reward += cfg.FORWARD_MOVE_REWARD
         elif action == 3:  # Move backwards
             self.tank.advance(-cfg.speed)
-            reward += cfg.BACKWARDS_MOVE_REWARD
         elif action == 4:  # No movement
-            reward += cfg.NO_MOVE_REWARD
+            pass
 
         self.last_delta_abs = new_delta_abs
+
+        reward += self.calculate_reward()
 
         if (collision.bounding_collision(self.tank.bounding_box, self.WALLS) or
                 collision.bounding_collision(self.tank.bounding_box, self.hazard.bounding_box)):
@@ -203,7 +213,7 @@ class Environment:
             for w in self.tank.bounding_box:
                 w.color = (255, 0, 0)
 
-        if collision.bounding_collision(self.tank.bounding_box, self.goal.bounding_box):
+        if (self.to_goal()[0]*cfg.SLS) < cfg.bounding_box_width*0.6:
             done = True
             reward += cfg.GOAL_REWARD
             for w in self.tank.bounding_box:
@@ -222,7 +232,7 @@ class Environment:
         if not self.window:
             pygame.init()
 
-            self.window = pygame.display.set_mode((cfg.win_H, cfg.win_W))
+            self.window = pygame.display.set_mode((cfg.win_W, cfg.win_H))
 
         self.window.fill((255, 255, 255))
 

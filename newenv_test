@@ -4,11 +4,11 @@ import numpy as np
 import pygame
 from tqdm import tqdm
 from environment import Environment
-from GUI_new_model_trining import DQNAgent
+from GUI_new_model_training import DQNAgent
 
 if __name__ == "__main__":
 
-    env = Environment()
+    env = Environment(diff='hard')
     env.render()
     agent = DQNAgent()
     while True:
@@ -38,7 +38,8 @@ if __name__ == "__main__":
 
                     # action = random.randrange(5)
                 reward, new_state, done = env.step(action)
-
+                print(reward)
+                print(new_state)
                 agent.update_replay_memory((state, action, reward, new_state, done))
                 agent.train(done)
 
