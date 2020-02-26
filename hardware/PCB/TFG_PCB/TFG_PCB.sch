@@ -41,4 +41,10 @@ F2 "5V_HP" O L 6050 2400 50
 F3 "9V_HP" O L 6050 2250 50 
 F4 "ALG_BUS" O L 6050 2550 50 
 $EndSheet
+$Sheet
+S 5150 3550 1250 850 
+U 5E691C3E
+F0 "Motor Control" 50
+F1 "MotorControl.sch" 50
+$EndSheet
 $EndSCHEMATC

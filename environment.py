@@ -123,12 +123,21 @@ class Environment:
 
     def place_goal_ran(self):
         alpha = random.random()
-        if alpha < 0.01:
-            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS // 2)
-        elif alpha < 0.5:
-            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 2 // 6)
+        if random.random() < 0.5:
+            if alpha < 0.01:
+                self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS // 2)
+            elif alpha < 0.5:
+                self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 2 // 6)
+            else:
+                self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 4 // 6)
         else:
-            self.goal = Waypoint(cfg.SLS * 3 // 4, cfg.SLS * 4 // 6)
+            if alpha < 0.01:
+                self.goal = Waypoint(cfg.SLS * 1 // 4, cfg.SLS // 2)
+            elif alpha < 0.5:
+                self.goal = Waypoint(cfg.SLS * 1 // 4, cfg.SLS * 2 // 6)
+            else:
+                self.goal = Waypoint(cfg.SLS * 1 // 4, cfg.SLS * 4 // 6)
+
 
     def place_goal_easy(self):
         self.goal = Waypoint(cfg.SLS * 5 // 6, cfg.SLS // 2)
@@ -180,7 +189,7 @@ class Environment:
     def calculate_reward(self):
         distance_reward = 1 - math.pow(self.to_goal()[0], 0.4)
         angle_reward = 1 - math.pow(math.fabs(self.to_goal()[1]), 0.4)
-        return distance_reward + angle_reward*1.2
+        return distance_reward + angle_reward*2
 
     def calculate_movement_reward(self, action):
         pass

@@ -642,32 +642,30 @@ Wire Wire Line
 Connection ~ 8400 2100
 Wire Wire Line
 	8100 4350 8100 4300
-Wire Wire Line
-	8100 4300 8350 4300
 $Comp
 L power:+5VL #PWR?
 U 1 1 5E762A7A
-P 8800 1000
+P 8800 700
 AR Path="/5E762A7A" Ref="#PWR?"  Part="1" 
 AR Path="/5E6BD4F2/5E762A7A" Ref="#PWR023"  Part="1" 
-F 0 "#PWR023" H 8800 850 50  0001 C CNN
-F 1 "+5VL" H 8815 1173 50  0000 C CNN
-F 2 "" H 8800 1000 50  0001 C CNN
-F 3 "" H 8800 1000 50  0001 C CNN
-	1    8800 1000
+F 0 "#PWR023" H 8800 550 50  0001 C CNN
+F 1 "+5VL" H 8815 873 50  0000 C CNN
+F 2 "" H 8800 700 50  0001 C CNN
+F 3 "" H 8800 700 50  0001 C CNN
+	1    8800 700 
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+5VL #PWR?
 U 1 1 5E762A80
-P 8350 3800
+P 8350 3550
 AR Path="/5E762A80" Ref="#PWR?"  Part="1" 
 AR Path="/5E6BD4F2/5E762A80" Ref="#PWR021"  Part="1" 
-F 0 "#PWR021" H 8350 3650 50  0001 C CNN
-F 1 "+5VL" H 8365 3973 50  0000 C CNN
-F 2 "" H 8350 3800 50  0001 C CNN
-F 3 "" H 8350 3800 50  0001 C CNN
-	1    8350 3800
+F 0 "#PWR021" H 8350 3400 50  0001 C CNN
+F 1 "+5VL" H 8365 3723 50  0000 C CNN
+F 2 "" H 8350 3550 50  0001 C CNN
+F 3 "" H 8350 3550 50  0001 C CNN
+	1    8350 3550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -676,15 +674,10 @@ Wire Wire Line
 	8800 1600 8400 1600
 Wire Wire Line
 	8400 1600 8400 2100
-Connection ~ 8350 4300
-Wire Wire Line
-	8350 4300 8550 4300
-Wire Wire Line
-	8350 3800 8350 4300
-Text GLabel 8400 1200 0    50   Input ~ 0
+Text GLabel 8050 1100 0    50   Input ~ 0
 9V_HP_EN
 Wire Wire Line
-	8500 1200 8400 1200
+	8150 1100 8050 1100
 $Comp
 L power:GND #PWR?
 U 1 1 5E762AB2
@@ -1285,7 +1278,7 @@ AR Path="/5E97A721" Ref="C?"  Part="1"
 AR Path="/5E6BD4F2/5E97A721" Ref="C1"  Part="1" 
 F 0 "C1" H 5815 2896 50  0000 L CNN
 F 1 "10u" H 5815 2805 50  0000 L CNN
-F 2 "" H 5738 2700 50  0001 C CNN
+F 2 "Capacitor_SMD:C_2512_6332Metric_Pad1.52x3.35mm_HandSolder" H 5738 2700 50  0001 C CNN
 F 3 "~" H 5700 2850 50  0001 C CNN
 	1    5700 2850
 	1    0    0    -1  
@@ -1311,7 +1304,7 @@ AR Path="/5E97A723" Ref="C?"  Part="1"
 AR Path="/5E6BD4F2/5E97A723" Ref="C2"  Part="1" 
 F 0 "C2" H 6715 2896 50  0000 L CNN
 F 1 "10u" H 6715 2805 50  0000 L CNN
-F 2 "" H 6638 2700 50  0001 C CNN
+F 2 "Capacitor_SMD:C_2512_6332Metric_Pad1.52x3.35mm_HandSolder" H 6638 2700 50  0001 C CNN
 F 3 "~" H 6600 2850 50  0001 C CNN
 	1    6600 2850
 	1    0    0    -1  
@@ -1532,45 +1525,32 @@ F 3 "~" H 8100 2300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor_FET:2N7002 Q?
-U 1 1 5E97A733
-P 8700 1200
-AR Path="/5E97A733" Ref="Q?"  Part="1" 
-AR Path="/5E6BD4F2/5E97A733" Ref="Q4"  Part="1" 
-F 0 "Q4" H 8904 1246 50  0000 L CNN
-F 1 "2N7002" H 8904 1155 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23" H 8900 1125 50  0001 L CIN
-F 3 "https://www.fairchildsemi.com/datasheets/2N/2N7002.pdf" H 8700 1200 50  0001 L CNN
-	1    8700 1200
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:+5VL #PWR?
 U 1 1 5E97A734
-P 8800 1000
+P 8800 700
 AR Path="/5E97A734" Ref="#PWR?"  Part="1" 
 AR Path="/5E6BD4F2/5E97A734" Ref="#PWR024"  Part="1" 
-F 0 "#PWR024" H 8800 850 50  0001 C CNN
-F 1 "+5VL" H 8815 1173 50  0000 C CNN
-F 2 "" H 8800 1000 50  0001 C CNN
-F 3 "" H 8800 1000 50  0001 C CNN
-	1    8800 1000
+F 0 "#PWR024" H 8800 550 50  0001 C CNN
+F 1 "+5VL" H 8815 873 50  0000 C CNN
+F 2 "" H 8800 700 50  0001 C CNN
+F 3 "" H 8800 700 50  0001 C CNN
+	1    8800 700 
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+5VL #PWR?
 U 1 1 5E97A735
-P 8350 3800
+P 8350 3550
 AR Path="/5E97A735" Ref="#PWR?"  Part="1" 
 AR Path="/5E6BD4F2/5E97A735" Ref="#PWR022"  Part="1" 
-F 0 "#PWR022" H 8350 3650 50  0001 C CNN
-F 1 "+5VL" H 8365 3973 50  0000 C CNN
-F 2 "" H 8350 3800 50  0001 C CNN
-F 3 "" H 8350 3800 50  0001 C CNN
-	1    8350 3800
+F 0 "#PWR022" H 8350 3400 50  0001 C CNN
+F 1 "+5VL" H 8365 3723 50  0000 C CNN
+F 2 "" H 8350 3550 50  0001 C CNN
+F 3 "" H 8350 3550 50  0001 C CNN
+	1    8350 3550
 	1    0    0    -1  
 $EndComp
-Text GLabel 8400 1200 0    50   Input ~ 0
+Text GLabel 8050 1100 0    50   Input ~ 0
 9V_HP_EN
 $Comp
 L Device:C C?
@@ -1762,13 +1742,10 @@ Wire Wire Line
 Wire Wire Line
 	2600 7400 2600 7250
 Connection ~ 2600 7250
-Text HLabel 8400 1350 0    50   Output ~ 0
+Text HLabel 8050 1250 0    50   Output ~ 0
 9V_HP_EN
 Wire Wire Line
-	8400 1350 8500 1350
-Wire Wire Line
-	8500 1350 8500 1200
-Connection ~ 8500 1200
+	8050 1250 8150 1250
 Wire Wire Line
 	6600 1900 7450 1900
 Entry Wire Line
@@ -1847,6 +1824,103 @@ Entry Wire Line
 	7250 5450 7350 5550
 Wire Wire Line
 	7250 5450 7150 5450
+$Comp
+L Transistor_FET:2N7002 Q?
+U 1 1 5E97A733
+P 8700 1200
+AR Path="/5E97A733" Ref="Q?"  Part="1" 
+AR Path="/5E6BD4F2/5E97A733" Ref="Q4"  Part="1" 
+F 0 "Q4" H 8904 1246 50  0000 L CNN
+F 1 "2N7002" H 8904 1155 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 8900 1125 50  0001 L CIN
+F 3 "https://www.fairchildsemi.com/datasheets/2N/2N7002.pdf" H 8700 1200 50  0001 L CNN
+	1    8700 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5E586C94
+P 8300 1400
+AR Path="/5E586C94" Ref="R?"  Part="1" 
+AR Path="/5E6BD4F2/5E586C94" Ref="R14"  Part="1" 
+F 0 "R14" H 8370 1446 50  0000 L CNN
+F 1 "10k" H 8370 1355 50  0000 L CNN
+F 2 "" V 8230 1400 50  0001 C CNN
+F 3 "~" H 8300 1400 50  0001 C CNN
+	1    8300 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5E588A0C
+P 8300 1000
+AR Path="/5E588A0C" Ref="R?"  Part="1" 
+AR Path="/5E6BD4F2/5E588A0C" Ref="R1"  Part="1" 
+F 0 "R1" H 8370 1046 50  0000 L CNN
+F 1 "10k" H 8370 955 50  0000 L CNN
+F 2 "" V 8230 1000 50  0001 C CNN
+F 3 "~" H 8300 1000 50  0001 C CNN
+	1    8300 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8300 850  8800 850 
+Wire Wire Line
+	8800 850  8800 700 
+Connection ~ 8800 700 
+Wire Wire Line
+	8800 850  8800 1000
+Connection ~ 8800 850 
+Wire Wire Line
+	8300 1250 8300 1200
+Wire Wire Line
+	8500 1200 8300 1200
+Connection ~ 8300 1200
+Wire Wire Line
+	8300 1200 8300 1150
+Wire Wire Line
+	8150 1100 8150 1200
+Wire Wire Line
+	8300 1200 8150 1200
+Connection ~ 8150 1200
+Wire Wire Line
+	8150 1200 8150 1250
+$Comp
+L power:GND #PWR?
+U 1 1 5E5E2DD3
+P 8300 1550
+AR Path="/5E5E2DD3" Ref="#PWR?"  Part="1" 
+AR Path="/5E6BD4F2/5E5E2DD3" Ref="#PWR0101"  Part="1" 
+F 0 "#PWR0101" H 8300 1300 50  0001 C CNN
+F 1 "GND" H 8305 1377 50  0000 C CNN
+F 2 "" H 8300 1550 50  0001 C CNN
+F 3 "" H 8300 1550 50  0001 C CNN
+	1    8300 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 5E5FD2A2
+P 8350 3850
+AR Path="/5E5FD2A2" Ref="R?"  Part="1" 
+AR Path="/5E6BD4F2/5E5FD2A2" Ref="R15"  Part="1" 
+F 0 "R15" H 8420 3896 50  0000 L CNN
+F 1 "10k" H 8420 3805 50  0000 L CNN
+F 2 "" V 8280 3850 50  0001 C CNN
+F 3 "~" H 8350 3850 50  0001 C CNN
+	1    8350 3850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8350 3700 8350 3550
+Connection ~ 8350 3550
+Wire Wire Line
+	8350 4000 8350 4300
+Wire Wire Line
+	8100 4300 8350 4300
 Wire Bus Line
 	7350 5300 7350 6350
+Connection ~ 8350 4300
+Wire Wire Line
+	8350 4300 8550 4300
 $EndSCHEMATC

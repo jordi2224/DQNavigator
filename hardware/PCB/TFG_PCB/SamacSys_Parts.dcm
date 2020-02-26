@@ -15,4 +15,10 @@ D 5A TRENCH SCHOTTKY BARRIER RECTIFIER PowerDI5
 F https://componentsearchengine.com/Datasheets/1/SDT5100LP5-13.pdf
 $ENDCMP
 #
+$CMP MCP3021A0T-E_OT
+D MICROCHIP - MCP3021A0T-E/OT - ADC, AEC-Q100, SAR, 10BIT, SOT-23-5
+K
+F https://componentsearchengine.com/Datasheets/1/MCP3021A0T-E_OT.pdf
+$ENDCMP
+#
 #End Doc Library
