@@ -3,7 +3,7 @@ EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 3
+Sheet 2 4
 Title "Power buses generation and control"
 Date "2020-01-24"
 Rev "0.1"
@@ -86,7 +86,7 @@ AR Path="/5E6E7A4A" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E6E7A4A" Ref="J11"  Part="1" 
 F 0 "J11" H 5258 5731 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 5258 5640 50  0000 C CNN
-F 2 "" H 5150 5550 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 5150 5550 50  0001 C CNN
 F 3 "~" H 5150 5550 50  0001 C CNN
 	1    5150 5550
 	0    -1   1    0   
@@ -216,19 +216,6 @@ F 3 "" H 4200 4700 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3650 4550 4200 4550
-$Comp
-L Connector:Conn_01x04_Male J?
-U 1 1 5E76290B
-P 5250 3400
-AR Path="/5E76290B" Ref="J?"  Part="1" 
-AR Path="/5E6BD4F2/5E76290B" Ref="J14"  Part="1" 
-F 0 "J14" H 5358 3681 50  0000 C CNN
-F 1 "Conn_01x04_Male" H 5358 3590 50  0000 C CNN
-F 2 "" H 5250 3400 50  0001 C CNN
-F 3 "~" H 5250 3400 50  0001 C CNN
-	1    5250 3400
-	0    -1   1    0   
-$EndComp
 Wire Wire Line
 	5150 1800 5150 1900
 Wire Wire Line
@@ -804,7 +791,7 @@ AR Path="/5E6E7A08" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E6E7A08" Ref="J6"  Part="1" 
 F 0 "J6" H 1808 6731 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 1808 6640 50  0000 C CNN
-F 2 "" H 1700 6550 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 1700 6550 50  0001 C CNN
 F 3 "~" H 1700 6550 50  0001 C CNN
 	1    1700 6550
 	1    0    0    -1  
@@ -830,7 +817,7 @@ AR Path="/5E6E7A1A" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E6E7A1A" Ref="J7"  Part="1" 
 F 0 "J7" H 3258 5731 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 3258 5640 50  0000 C CNN
-F 2 "" H 3150 5550 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 3150 5550 50  0001 C CNN
 F 3 "~" H 3150 5550 50  0001 C CNN
 	1    3150 5550
 	0    -1   1    0   
@@ -856,7 +843,7 @@ AR Path="/5E97A703" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A703" Ref="R2"  Part="1" 
 F 0 "R2" H 2420 6846 50  0000 L CNN
 F 1 "10k" H 2420 6755 50  0000 L CNN
-F 2 "" V 2280 6800 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2280 6800 50  0001 C CNN
 F 3 "~" H 2350 6800 50  0001 C CNN
 	1    2350 6800
 	1    0    0    -1  
@@ -865,19 +852,6 @@ Text GLabel 2450 7250 0    50   Input ~ 0
 BCKP_EN
 Text GLabel 4300 5950 2    50   Input ~ 0
 BCKP_3S
-$Comp
-L Connector:Conn_01x02_Male J?
-U 1 1 5E97A704
-P 5150 5550
-AR Path="/5E97A704" Ref="J?"  Part="1" 
-AR Path="/5E6BD4F2/5E97A704" Ref="J12"  Part="1" 
-F 0 "J12" H 5258 5731 50  0000 C CNN
-F 1 "Conn_01x02_Male" H 5258 5640 50  0000 C CNN
-F 2 "" H 5150 5550 50  0001 C CNN
-F 3 "~" H 5150 5550 50  0001 C CNN
-	1    5150 5550
-	0    -1   1    0   
-$EndComp
 Text GLabel 5500 5850 2    50   Input ~ 0
 VCC
 $Comp
@@ -929,7 +903,7 @@ AR Path="/5E762890" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E762890" Ref="J1"  Part="1" 
 F 0 "J1" H 1808 2081 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 1808 1990 50  0000 C CNN
-F 2 "" H 1700 1900 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 1700 1900 50  0001 C CNN
 F 3 "~" H 1700 1900 50  0001 C CNN
 	1    1700 1900
 	1    0    0    -1  
@@ -942,7 +916,7 @@ AR Path="/5E762896" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E762896" Ref="J4"  Part="1" 
 F 0 "J4" H 1808 4381 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 1808 4290 50  0000 C CNN
-F 2 "" H 1700 4200 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 1700 4200 50  0001 C CNN
 F 3 "~" H 1700 4200 50  0001 C CNN
 	1    1700 4200
 	1    0    0    -1  
@@ -955,7 +929,7 @@ AR Path="/5E97A70A" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A70A" Ref="R5"  Part="1" 
 F 0 "R5" H 3470 3146 50  0000 L CNN
 F 1 "10k" H 3470 3055 50  0000 L CNN
-F 2 "" V 3330 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3330 3100 50  0001 C CNN
 F 3 "~" H 3400 3100 50  0001 C CNN
 	1    3400 3100
 	1    0    0    -1  
@@ -968,7 +942,7 @@ AR Path="/5E97A70B" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A70B" Ref="R3"  Part="1" 
 F 0 "R3" H 2920 3146 50  0000 L CNN
 F 1 "10k" H 2920 3055 50  0000 L CNN
-F 2 "" V 2780 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 2780 3100 50  0001 C CNN
 F 3 "~" H 2850 3100 50  0001 C CNN
 	1    2850 3100
 	1    0    0    -1  
@@ -981,7 +955,7 @@ AR Path="/5E7628AD" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E7628AD" Ref="R4"  Part="1" 
 F 0 "R4" H 3170 3146 50  0000 L CNN
 F 1 "10k" H 3170 3055 50  0000 L CNN
-F 2 "" V 3030 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3030 3100 50  0001 C CNN
 F 3 "~" H 3100 3100 50  0001 C CNN
 	1    3100 3100
 	1    0    0    -1  
@@ -1032,7 +1006,7 @@ AR Path="/5E97A70F" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A70F" Ref="R6"  Part="1" 
 F 0 "R6" H 3720 2096 50  0000 L CNN
 F 1 "100k" H 3720 2005 50  0000 L CNN
-F 2 "" V 3580 2050 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3580 2050 50  0001 C CNN
 F 3 "~" H 3650 2050 50  0001 C CNN
 	1    3650 2050
 	1    0    0    -1  
@@ -1045,7 +1019,7 @@ AR Path="/5E97A710" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A710" Ref="R7"  Part="1" 
 F 0 "R7" H 3720 4396 50  0000 L CNN
 F 1 "100k" H 3720 4305 50  0000 L CNN
-F 2 "" V 3580 4350 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 3580 4350 50  0001 C CNN
 F 3 "~" H 3650 4350 50  0001 C CNN
 	1    3650 4350
 	1    0    0    -1  
@@ -1110,7 +1084,7 @@ AR Path="/5E97A715" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E97A715" Ref="J9"  Part="1" 
 F 0 "J9" H 4758 1781 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 4758 1690 50  0000 C CNN
-F 2 "" H 4650 1600 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 4650 1600 50  0001 C CNN
 F 3 "~" H 4650 1600 50  0001 C CNN
 	1    4650 1600
 	0    -1   1    0   
@@ -1123,7 +1097,7 @@ AR Path="/5E762934" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E762934" Ref="J10"  Part="1" 
 F 0 "J10" H 4758 4081 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 4758 3990 50  0000 C CNN
-F 2 "" H 4650 3900 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 4650 3900 50  0001 C CNN
 F 3 "~" H 4650 3900 50  0001 C CNN
 	1    4650 3900
 	0    -1   1    0   
@@ -1226,7 +1200,7 @@ AR Path="/5E97A71D" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E97A71D" Ref="J16"  Part="1" 
 F 0 "J16" H 6308 1781 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 6308 1690 50  0000 C CNN
-F 2 "" H 6200 1600 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 6200 1600 50  0001 C CNN
 F 3 "~" H 6200 1600 50  0001 C CNN
 	1    6200 1600
 	0    -1   1    0   
@@ -1239,7 +1213,7 @@ AR Path="/5E97A71E" Ref="J?"  Part="1"
 AR Path="/5E6BD4F2/5E97A71E" Ref="J17"  Part="1" 
 F 0 "J17" H 6708 1781 50  0000 C CNN
 F 1 "Conn_01x02_Male" H 6708 1690 50  0000 C CNN
-F 2 "" H 6600 1600 50  0001 C CNN
+F 2 "Connector_Wire:SolderWirePad_1x02_P7.62mm_Drill2mm" H 6600 1600 50  0001 C CNN
 F 3 "~" H 6600 1600 50  0001 C CNN
 	1    6600 1600
 	0    -1   1    0   
@@ -1330,7 +1304,7 @@ AR Path="/5E97A725" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E97A725" Ref="R10"  Part="1" 
 F 0 "R10" H 9970 2196 50  0000 L CNN
 F 1 "300k" H 9970 2105 50  0000 L CNN
-F 2 "" V 9830 2150 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 9830 2150 50  0001 C CNN
 F 3 "~" H 9900 2150 50  0001 C CNN
 	1    9900 2150
 	1    0    0    -1  
@@ -1343,7 +1317,7 @@ AR Path="/5E7629BD" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E7629BD" Ref="R11"  Part="1" 
 F 0 "R11" H 9970 4396 50  0000 L CNN
 F 1 "68k" H 9970 4305 50  0000 L CNN
-F 2 "" V 9830 4350 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 9830 4350 50  0001 C CNN
 F 3 "~" H 9900 4350 50  0001 C CNN
 	1    9900 4350
 	1    0    0    -1  
@@ -1356,7 +1330,7 @@ AR Path="/5E7629C3" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E7629C3" Ref="R12"  Part="1" 
 F 0 "R12" V 9943 1900 50  0000 C CNN
 F 1 "47k" V 10034 1900 50  0000 C CNN
-F 2 "" V 10080 1900 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 10080 1900 50  0001 C CNN
 F 3 "~" H 10150 1900 50  0001 C CNN
 	1    10150 1900
 	0    1    1    0   
@@ -1369,7 +1343,7 @@ AR Path="/5E7629C9" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E7629C9" Ref="R13"  Part="1" 
 F 0 "R13" V 9943 4100 50  0000 C CNN
 F 1 "22k" V 10034 4100 50  0000 C CNN
-F 2 "" V 10080 4100 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 10080 4100 50  0001 C CNN
 F 3 "~" H 10150 4100 50  0001 C CNN
 	1    10150 4100
 	0    1    1    0   
@@ -1506,7 +1480,7 @@ AR Path="/5E762A61" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E762A61" Ref="R9"  Part="1" 
 F 0 "R9" H 8170 4546 50  0000 L CNN
 F 1 "10k" H 8170 4455 50  0000 L CNN
-F 2 "" V 8030 4500 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8030 4500 50  0001 C CNN
 F 3 "~" H 8100 4500 50  0001 C CNN
 	1    8100 4500
 	1    0    0    -1  
@@ -1519,7 +1493,7 @@ AR Path="/5E762A68" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E762A68" Ref="R8"  Part="1" 
 F 0 "R8" H 8170 2346 50  0000 L CNN
 F 1 "10k" H 8170 2255 50  0000 L CNN
-F 2 "" V 8030 2300 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8030 2300 50  0001 C CNN
 F 3 "~" H 8100 2300 50  0001 C CNN
 	1    8100 2300
 	1    0    0    -1  
@@ -1845,7 +1819,7 @@ AR Path="/5E586C94" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E586C94" Ref="R14"  Part="1" 
 F 0 "R14" H 8370 1446 50  0000 L CNN
 F 1 "10k" H 8370 1355 50  0000 L CNN
-F 2 "" V 8230 1400 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8230 1400 50  0001 C CNN
 F 3 "~" H 8300 1400 50  0001 C CNN
 	1    8300 1400
 	1    0    0    -1  
@@ -1858,7 +1832,7 @@ AR Path="/5E588A0C" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E588A0C" Ref="R1"  Part="1" 
 F 0 "R1" H 8370 1046 50  0000 L CNN
 F 1 "10k" H 8370 955 50  0000 L CNN
-F 2 "" V 8230 1000 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8230 1000 50  0001 C CNN
 F 3 "~" H 8300 1000 50  0001 C CNN
 	1    8300 1000
 	1    0    0    -1  
@@ -1906,7 +1880,7 @@ AR Path="/5E5FD2A2" Ref="R?"  Part="1"
 AR Path="/5E6BD4F2/5E5FD2A2" Ref="R15"  Part="1" 
 F 0 "R15" H 8420 3896 50  0000 L CNN
 F 1 "10k" H 8420 3805 50  0000 L CNN
-F 2 "" V 8280 3850 50  0001 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.15x1.40mm_HandSolder" V 8280 3850 50  0001 C CNN
 F 3 "~" H 8350 3850 50  0001 C CNN
 	1    8350 3850
 	1    0    0    -1  
