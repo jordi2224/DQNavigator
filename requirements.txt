@@ -1,3 +1,5 @@
+scikit-learn
+pyserial
 matplotlib
 keras==2.3.1
 numpy==1.18.1

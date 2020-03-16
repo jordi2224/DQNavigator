@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ce3db8e9-5911-4bbf-a8e9-f65699d58f13" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/110.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jackie.py" afterDir="false" />
+    <list default="true" id="32475768-a82a-42b4-ba3f-81eb64a33d3d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/driver/driver_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/wallsCV.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/world.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/world_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/TFG.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Jorge.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/YATA.py" beforeDir="false" afterPath="$PROJECT_DIR$/YATA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/environment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/TSFinalDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver/TSFinalDriver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/rplidar.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/serialtest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.kicad_pcb" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.kicad_pcb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.kicad_pcb-bak" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.kicad_pcb-bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/_autosave-TFG_PCB.kicad_pcb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,132 +35,33 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1X7d768oay4Go5JXRYBtYdVgqeO" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
+  <component name="ProjectId" id="1ZChM1ky4ZQMyfS16bJxDNk2aLe" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../TFG_env" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\TFG\preprocessing" />
-      <recent name="D:\TFG" />
-    </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Python.110">
-    <configuration name="110" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="TFG" />
+  <component name="RunManager">
+    <configuration name="world" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="dev" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/preprocessing" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/110.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="GUI_new_model_retraining" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="TFG" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI_new_model_retraining.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="YATA" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="TFG" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/YATA.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="jackie" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="TFG" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/jackie.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="newenv_test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="TFG" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/newenv_test" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/preprocessing/world.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -161,11 +72,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.110" />
-        <item itemvalue="Python.jackie" />
-        <item itemvalue="Python.YATA" />
-        <item itemvalue="Python.newenv_test" />
-        <item itemvalue="Python.GUI_new_model_retraining" />
+        <item itemvalue="Python.world" />
       </list>
     </recent_temporary>
   </component>
@@ -174,45 +81,42 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ce3db8e9-5911-4bbf-a8e9-f65699d58f13" name="Default Changelist" comment="" />
-      <created>1580400896172</created>
+      <changelist id="32475768-a82a-42b4-ba3f-81eb64a33d3d" name="Default Changelist" comment="" />
+      <created>1584348931898</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1580400896172</updated>
+      <updated>1584348931898</updated>
     </task>
-    <task id="LOCAL-00001" summary="Project refactoring to use pygame for display">
-      <created>1580414582056</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1580414582056</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Project refactoring to use pygame for display">
-      <created>1580414634294</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1580414634294</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Project refactoring to use pygame for display" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+  <component name="WindowStateProjectService">
+    <state x="1059" y="274" key="FileChooserDialogImpl" timestamp="1584349176502">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1059" y="274" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584349176502" />
+    <state width="1362" height="266" key="GridCell.Tab.0.bottom" timestamp="1584383356393">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1362" height="266" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584383356393" />
+    <state width="1362" height="266" key="GridCell.Tab.0.center" timestamp="1584383356393">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1362" height="266" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584383356393" />
+    <state width="1362" height="266" key="GridCell.Tab.0.left" timestamp="1584383356393">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1362" height="266" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584383356393" />
+    <state width="1362" height="266" key="GridCell.Tab.0.right" timestamp="1584383356393">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1362" height="266" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584383356393" />
+    <state x="781" y="162" key="SettingsEditor" timestamp="1584349188353">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="781" y="162" key="SettingsEditor/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584349188353" />
+    <state x="981" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1584351677847">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="981" y="344" key="com.intellij.ide.util.TipDialog/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584351677847" />
   </component>
 </project>
