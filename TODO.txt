@@ -1,0 +1,18 @@
+Neural Net Training:
+	HyperParameter tuning
+	Actual training
+
+Data Preprocessing
+	Turn driver into object
+	Find walls
+	Find hazards
+	
+Hardware
+	Finish Hbridge and current sensing
+	Hall effect sensor
+	Footprints
+	PCB design
+	PCB manufacturing
+	Assembling
+
+	

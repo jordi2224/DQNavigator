@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name TFG_PCB-rescue)(type Legacy)(uri ${KIPRJMOD}/TFG_PCB-rescue.lib)(options "")(descr ""))
+)
