@@ -109,12 +109,7 @@ class Environment:
         self.distances = []
         self.WALLS = INITIAL_WALLS
         self.tank = Tank()
-<<<<<<< HEAD
-        self.display = Display()
-        self.tank.x = -1000
-        self.update_coords()
-        self.goal = Waypoint(0, 0)
-=======
+
         self.diff = diff
         if diff == "easy":
             self.place_goal_easy()
@@ -147,7 +142,6 @@ class Environment:
 
     def place_goal_easy(self):
         self.goal = Waypoint(cfg.SLS * 5 // 6, cfg.SLS // 2)
->>>>>>> ace80ad1be2bb9d2d49249a2d85d378ff965406b
 
     def reset(self):
         self.tank = Tank()
@@ -204,36 +198,6 @@ class Environment:
     def step(self, action):
         self.steps -= 1
         done = False
-<<<<<<< HEAD
-        reward = -15
-
-        if action == 0:
-            self.tank.rotate(0.2)
-        elif action == 1:
-            self.tank.rotate(-0.2)
-        elif action == 2:
-            self.tank.advance(80)
-        elif action == 3:
-            self.tank.advance(80)
-
-        self.update_coords()
-        projections, distances = get_ray_projections(self.x, self.y, self.t, self.walls)
-
-        self.update_display()
-        if self.check_collision() or self.max_steps == 0:
-            self.display.shared_collision.value = 1
-            done = True
-            reward = -1000
-        if self.check_goal():
-            self.display.shared_collision.value = 2
-            done = True
-            reward = 5000
-
-        n_distances = [x / 1000 for x in distances]
-        state = [self.x, self.y, self.t] + n_distances + [self.to_goal()[0]/1500, self.to_goal()[1]]
-        assert len(state) == self.state_size
-        return reward, state, done
-=======
         reward = cfg.STEP_REWARD
 
         new_delta_abs = math.fabs(self.to_goal()[1])
@@ -287,7 +251,6 @@ class Environment:
         draw(self.window, self.WALLS)
         draw(self.window, self.tank.get_rays())
         draw(self.window, self.hazard.bounding_box)
->>>>>>> ace80ad1be2bb9d2d49249a2d85d378ff965406b
 
         draw_projections(self.window, self.projections)
         pygame.display.flip()
