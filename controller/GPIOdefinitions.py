@@ -43,6 +43,16 @@ def reverse_right():
     GPIO.output(RT_R, 1)
 
 
+def forward():
+    forward_right()
+    forward_left()
+
+
+def backwards():
+    reverse_right()
+    reverse_left()
+
+
 def fl1s():
     forward_left()
     time.sleep(1)
