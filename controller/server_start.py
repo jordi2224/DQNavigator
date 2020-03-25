@@ -47,8 +47,8 @@ def execute(msg):
 
 
 if __name__ == "__main__":
-    server_parent, loop_child = Queue()
-    p = Process(target=control_loop, args=(loop_child,))
+    q = Queue()
+    p = Process(target=control_loop, args=(q,))
     p.start()
 
     auto_setup()
@@ -70,6 +70,6 @@ if __name__ == "__main__":
         if is_complete(buff):
             msg, buff = receive_msg(buff)
             msg = parse(msg)
-            server_parent.put(msg)
+            q.put(msg)
 
     conn.close()
