@@ -1,0 +1,47 @@
+import RPi.GPIO as GPIO
+import time
+
+RT_F = 35
+RT_R = 12
+
+LT_R = 36
+LT_F = 11
+
+
+def halt():
+    GPIO.output(RT_F, 0)
+    GPIO.output(RT_R, 0)
+    GPIO.output(LT_F, 0)
+    GPIO.output(LT_R, 0)
+
+
+def forward_left():
+    GPIO.output(LT_R, 0)
+    GPIO.output(LT_F, 1)
+
+
+def reverse_left():
+    GPIO.output(LT_F, 0)
+    GPIO.output(LT_R, 1)
+
+
+def forward_right():
+    GPIO.output(RT_R, 0)
+    GPIO.output(RT_F, 1)
+
+
+def reverse_right():
+    GPIO.output(RT_F, 0)
+    GPIO.output(RT_R, 1)
+
+
+def fl1s():
+    forward_left()
+    time.sleep(1)
+    halt()
+
+
+def fr1s():
+    forward_right()
+    time.sleep(1)
+    halt()
