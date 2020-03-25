@@ -4,8 +4,8 @@ import time
 RT_F = 35
 RT_R = 12
 
-LT_R = 36
-LT_F = 11
+LT_F = 36
+LT_R = 11
 
 
 def auto_setup():
@@ -51,5 +51,12 @@ def fl1s():
 
 def fr1s():
     forward_right()
+    time.sleep(1)
+    halt()
+
+
+def f1s():
+    forward_right()
+    forward_left()
     time.sleep(1)
     halt()
