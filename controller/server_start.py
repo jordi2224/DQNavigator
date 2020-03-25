@@ -3,21 +3,23 @@ import json
 from controller.server_tools import *
 from controller.GPIOdefinitions import *
 import time
-from multiprocessing import Process, Pipe
+from multiprocessing import Process, Pipe, Queue
 
 tst_msg = "-----BEGIN TFG MSG-----\ntest\n-----END TFG MSG-----\n"
 buff = ""
 
 
 def control_loop(pipe):
+    msg = None
     current_order_t = 0
     max_time_delay = 0.3
     while 1:
         if not pipe.empty():
-            msg = pipe.recv()
+            msg = pipe.get()
         else:
-            execute(msg)
-            current_order_t = time.time()
+            if msg is not None:
+                execute(msg)
+                current_order_t = time.time()
 
         if time.time() - current_order_t > max_time_delay:
             halt()
@@ -45,7 +47,7 @@ def execute(msg):
 
 
 if __name__ == "__main__":
-    server_parent, loop_child = Pipe()
+    server_parent, loop_child = Queue()
     p = Process(target=control_loop, args=(loop_child,))
     p.start()
 
@@ -68,6 +70,6 @@ if __name__ == "__main__":
         if is_complete(buff):
             msg, buff = receive_msg(buff)
             msg = parse(msg)
-            server_parent.send(msg)
+            server_parent.put(msg)
 
     conn.close()
