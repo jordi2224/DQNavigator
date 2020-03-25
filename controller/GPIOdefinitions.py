@@ -8,6 +8,14 @@ LT_R = 36
 LT_F = 11
 
 
+def auto_setup():
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(RT_F, GPIO.OUT)
+    GPIO.setup(RT_R, GPIO.OUT)
+    GPIO.setup(LT_R, GPIO.OUT)
+    GPIO.setup(LT_F, GPIO.OUT)
+
+
 def halt():
     GPIO.output(RT_F, 0)
     GPIO.output(RT_R, 0)
