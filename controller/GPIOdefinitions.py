@@ -1,11 +1,18 @@
 import RPi.GPIO as GPIO
 import time
 
-RT_F = 35
+RT_F = 33
 RT_R = 12
 
 LT_F = 36
 LT_R = 11
+
+GPIO.setwarnings(False) 
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(RT_F, GPIO.OUT)
+GPIO.setup(RT_R, GPIO.OUT)
+GPIO.setup(LT_R, GPIO.OUT)
+GPIO.setup(LT_F, GPIO.OUT)
 
 
 def auto_setup():

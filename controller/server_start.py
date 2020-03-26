@@ -12,7 +12,7 @@ buff = ""
 def control_loop(pipe):
     msg = None
     current_order_t = 0
-    max_time_delay = 0.3
+    max_time_delay = 0.1
     while 1:
         if not pipe.empty():
             msg = pipe.get()
@@ -20,8 +20,10 @@ def control_loop(pipe):
             if msg is not None:
                 execute(msg)
                 current_order_t = time.time()
+                msg = None
 
         if time.time() - current_order_t > max_time_delay:
+            current_order_t = time.time()
             halt()
 
 
@@ -53,7 +55,9 @@ if __name__ == "__main__":
 
     auto_setup()
 
-    TCP_IP = socket.gethostbyname(socket.gethostname())
+    #TCP_IP = socket.gethostbyname(socket.gethostname())
+    TCP_IP = '192.168.1.177'
+    print(TCP_IP)
     TCP_PORT = 420
 
     BUFFER_SIZE = 64
