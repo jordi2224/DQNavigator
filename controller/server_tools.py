@@ -1,13 +1,11 @@
 import json
 import pickle
-
 from controller.GPIOdefinitions import *
 import os
 import subprocess
 from driver.TSFinalDriver import Driver
+from controller.comm_definitions import *
 
-START_STR = "-----BEGIN TFG MSG-----\n"
-END_STR = "-----END TFG MSG-----\n"
 
 start_USB_off = False
 
@@ -80,9 +78,10 @@ def execute(msg, driver, dsize, conn):
         request = msg["request"]
 
         if request == "GET_SCAN":
-            points, x, y = driver.get_point_cloud(dsize, 1000, 500)
+            points, x, y = driver.get_point_cloud(dsize, 20, 5000)
 
             serialized_p = pickle.dumps(points)
+            msg = START_STR + "{\"type\":\"SCAN_DATA\", \"data\": "+ serialized_p +"}" + END_STR
             conn.send(serialized_p)
 
     else:
