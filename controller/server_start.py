@@ -17,6 +17,10 @@ def control_loop(pipe, driver, dsize, conn):
     while 1:
         if not pipe.empty():
             msg = pipe.get()
+            if msg == "CONN_UPDATE":
+                conn = pipe.get()+
+                print("Connection object updated")
+            msg = None
         else:
             if msg is not None:
                 execute(msg, driver, dsize, conn)
@@ -69,6 +73,8 @@ if __name__ == "__main__":
             s.listen(1)
             conn, addr = s.accept()
             print('Connection address:', addr)
+            q.put("CONN_UPDATE")
+            q.put(conn)
 
         if is_complete(buff):
             msg, buff = receive_msg(buff)

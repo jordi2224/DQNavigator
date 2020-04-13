@@ -10,39 +10,6 @@ from controller.comm_definitions import *
 start_USB_off = False
 
 
-def is_complete(buff):
-    return START_STR in buff and END_STR in buff
-
-
-def is_clean(buff):
-    return buff[0:len(START_STR)] == START_STR
-
-
-def clean(buff):
-    index = buff.find(START_STR)
-    if index > 0:
-        return buff[index: len(buff)]
-    else:
-        return -1
-
-
-def receive_msg(msg):
-    if is_complete(msg):
-        if not is_clean(msg):
-            print("Buffer is not clean. Some data might have been lost")
-            print(msg)
-            msg = clean(msg)
-            assert msg != -1
-
-        end_index = msg.find(END_STR)
-        return msg[len(START_STR): end_index], msg[end_index + len(END_STR): len(msg)]
-    else:
-        return -1
-
-
-def parse(buff):
-    return json.loads(buff)
-
 
 def execute(msg, driver, dsize, conn):
     if msg["type"] == "MANUAL_MOVE_ORDER":
@@ -78,7 +45,7 @@ def execute(msg, driver, dsize, conn):
         request = msg["request"]
 
         if request == "GET_SCAN":
-            points, x, y = driver.get_point_cloud(dsize, 20, 5000)
+            points, x, y = driver.get_point_cloud(dsize, 1, 5000)
 
             serialized_p = pickle.dumps(points)
             msg = START_STR + "{\"type\":\"SCAN_DATA\", \"data\": "+ serialized_p +"}" + END_STR
