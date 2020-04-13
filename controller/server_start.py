@@ -10,7 +10,7 @@ tst_msg = "-----BEGIN TFG MSG-----\ntest\n-----END TFG MSG-----\n"
 buff = ""
 
 
-def control_loop(pipe):
+def control_loop(pipe, driver, dsize, conn):
     msg = None
     current_order_t = 0
     max_time_delay = 0.1
@@ -19,7 +19,7 @@ def control_loop(pipe):
             msg = pipe.get()
         else:
             if msg is not None:
-                execute(msg)
+                execute(msg, driver, dsize, conn)
                 current_order_t = time.time()
                 msg = None
 
@@ -33,9 +33,13 @@ if __name__ == "__main__":
         print('Shutting down USB buses to conserve power')
         os.system('echo \'1-1\' |sudo tee /sys/bus/usb/drivers/usb/unbind')
 
-    q = Queue()
-    p = Process(target=control_loop, args=(q,))
-    p.start()
+    print("Starting up driver")
+    driver, dsize = start_driver()
+
+    if driver:
+        print("Expected data size: ", dsize)
+    else:
+        print("Device not found")
 
     auto_setup()
 
@@ -52,10 +56,9 @@ if __name__ == "__main__":
 
     conn, addr = s.accept()
 
-    print("Starting up driver")
-    driver, dsize = start_driver()
-
-    print("Expected data size: ", dsize)
+    q = Queue()
+    p = Process(target=control_loop, args=(q, driver, dsize, conn,))
+    p.start()
 
     print('Connection address:', addr)
     while 1:

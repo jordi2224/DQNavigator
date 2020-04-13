@@ -1,4 +1,6 @@
 import json
+import pickle
+
 from controller.GPIOdefinitions import *
 import os
 import subprocess
@@ -44,7 +46,7 @@ def parse(buff):
     return json.loads(buff)
 
 
-def execute(msg):
+def execute(msg, driver, dsize, conn):
     if msg["type"] == "MANUAL_MOVE_ORDER":
         dir = msg["direction"]
 
@@ -74,6 +76,15 @@ def execute(msg):
         else:
             print("Unsupported device")
 
+    elif msg["type"] == "REQUEST":
+        request = msg["request"]
+
+        if request == "GET_SCAN":
+            points, x, y = driver.get_point_cloud(dsize, 1000, 500)
+
+            serialized_p = pickle.dumps(points)
+            conn.send(serialized_p)
+
     else:
         print("Unknown message")
 
@@ -90,7 +101,7 @@ def start_driver():
 
     if not port:
         print("LIDAR is not connected")
-        return -1
+        return None, None
 
     driver = Driver('/dev/' + port.decode('utf-8'))
     dsize = driver.start_scan_express()

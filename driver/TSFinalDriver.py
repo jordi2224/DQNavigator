@@ -2,7 +2,6 @@ import codecs
 import serial
 import sys
 import time
-import matplotlib.pyplot as plt
 from driver.driver_tools import *
 
 
