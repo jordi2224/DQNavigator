@@ -4,6 +4,7 @@ from controller.server_tools import *
 from controller.GPIOdefinitions import *
 import time
 from multiprocessing import Process, Pipe, Queue
+from driver.TSFinalDriver import Driver
 
 tst_msg = "-----BEGIN TFG MSG-----\ntest\n-----END TFG MSG-----\n"
 buff = ""
@@ -27,35 +28,18 @@ def control_loop(pipe):
             halt()
 
 
-def execute(msg):
-    if msg["type"] == "MANUAL_MOVE_ORDER":
-        dir = msg["direction"]
-
-        if dir == "FWD":
-            forward()
-        elif dir == "BWD":
-            backwards()
-        elif dir == "LEFT":
-            forward_right()
-            reverse_left()
-        elif dir == "RIGHT":
-            reverse_right()
-            forward_left()
-        elif dir == "HALT":
-            halt()
-
-    else:
-        print("Unknown message")
-
-
 if __name__ == "__main__":
+    if start_USB_off:
+        print('Shutting down USB buses to conserve power')
+        os.system('echo \'1-1\' |sudo tee /sys/bus/usb/drivers/usb/unbind')
+
     q = Queue()
     p = Process(target=control_loop, args=(q,))
     p.start()
 
     auto_setup()
 
-    #TCP_IP = socket.gethostbyname(socket.gethostname())
+    # TCP_IP = socket.gethostbyname(socket.gethostname())
     TCP_IP = '192.168.1.177'
     print(TCP_IP)
     TCP_PORT = 420
@@ -67,6 +51,12 @@ if __name__ == "__main__":
     s.listen(1)
 
     conn, addr = s.accept()
+
+    print("Starting up driver")
+    driver, dsize = start_driver()
+
+    print("Expected data size: ", dsize)
+
     print('Connection address:', addr)
     while 1:
         try:
