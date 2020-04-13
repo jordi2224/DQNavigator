@@ -92,7 +92,7 @@ def start_driver():
         print("LIDAR is not connected")
         return -1
 
-    driver = Driver('COM6')
+    driver = Driver('/dev/' + port.decode('utf-8'))
     dsize = driver.start_scan_express()
 
     return driver, dsize
