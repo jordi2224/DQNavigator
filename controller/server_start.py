@@ -69,7 +69,13 @@ if __name__ == "__main__":
     conn, addr = s.accept()
     print('Connection address:', addr)
     while 1:
-        buff += conn.recv(BUFFER_SIZE).decode('utf-8')
+        try:
+            buff += conn.recv(BUFFER_SIZE).decode('utf-8')
+        except:
+            print('Connection to: ', addr, ' was lost, listening at TCP: ', TCP_IP, ':', TCP_PORT)
+            s.listen(1)
+            conn, addr = s.accept()
+            print('Connection address:', addr)
 
         if is_complete(buff):
             msg, buff = receive_msg(buff)

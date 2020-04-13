@@ -24,6 +24,7 @@ def receive_msg(msg):
     if is_complete(msg):
         if not is_clean(msg):
             print("Buffer is not clean. Some data might have been lost")
+            print(msg)
             msg = clean(msg)
             assert msg != -1
 
