@@ -3,6 +3,10 @@ import json
 START_STR = "-----BEGIN TFG MSG-----\n"
 END_STR = "-----END TFG MSG-----\n"
 
+DATA_START_STR = "-----BEGIN TFG DATA-----\n"
+DATA_END_STR = "-----END TFG DATA-----\n"
+
+
 def is_complete(buff):
     return START_STR in buff and END_STR in buff
 

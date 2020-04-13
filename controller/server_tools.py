@@ -12,6 +12,8 @@ start_USB_off = False
 
 
 def execute(msg, driver, dsize, conn):
+    #conn.send("ACK".encode('utf-8'))
+    print(msg)
     if msg["type"] == "MANUAL_MOVE_ORDER":
         dir = msg["direction"]
 
@@ -45,11 +47,13 @@ def execute(msg, driver, dsize, conn):
         request = msg["request"]
 
         if request == "GET_SCAN":
-            points, x, y = driver.get_point_cloud(dsize, 1, 5000)
+            points, x, y = driver.get_point_cloud(dsize, 20, 5000)
 
-            serialized_p = pickle.dumps(points)
-            msg = START_STR + "{\"type\":\"SCAN_DATA\", \"data\": "+ serialized_p +"}" + END_STR
-            conn.send(serialized_p)
+            print("Sending scan data")
+            serialized_p = pickle.dumps(points, protocol = 0)
+            res = START_STR + "{\"type\":\"SCAN_DATA\", \"data_size\": "+ str(len(serialized_p))  +" }" + END_STR
+            conn.send(res.encode('utf-8'))
+            conn.send(DATA_START_STR.encode('utf-8') + serialized_p + DATA_END_STR.encode('utf-8'))
 
     else:
         print("Unknown message")

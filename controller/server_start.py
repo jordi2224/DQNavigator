@@ -11,6 +11,7 @@ buff = ""
 
 
 def control_loop(pipe, driver, dsize, conn):
+    print('Control loop started')
     msg = None
     current_order_t = 0
     max_time_delay = 0.1
@@ -18,11 +19,13 @@ def control_loop(pipe, driver, dsize, conn):
         if not pipe.empty():
             msg = pipe.get()
             if msg == "CONN_UPDATE":
-                conn = pipe.get()+
+                print('Processing connection update')
+                conn = pipe.get()
                 print("Connection object updated")
-            msg = None
+                msg = None
         else:
             if msg is not None:
+                print(msg)
                 execute(msg, driver, dsize, conn)
                 current_order_t = time.time()
                 msg = None
