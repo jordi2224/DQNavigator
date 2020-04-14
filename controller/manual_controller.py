@@ -1,7 +1,16 @@
+import pickle
 import socket
 import keyboard
 import time
 from controller.comm_definitions import *
+import matplotlib.pyplot as plt
+import numpy as np
+
+fig = plt.figure()
+ax = fig.gca()
+max_distance = 1000
+plt.axis([-max_distance, max_distance, -max_distance, max_distance])
+
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
@@ -30,9 +39,19 @@ if __name__ == "__main__":
         if is_complete(buff):
             msg, buff = receive_msg(buff)
             msg = parse(msg)
-            print(msg)
+            if msg['type'] == "SCAN_DATA":
+                data_length = msg['data_size']
 
+                data, buff = fetch_data(buff, data_length)
+                points = np.array(pickle.loads(data.encode('utf-8')))
+                x = np.transpose(points)[0]
+                y = np.transpose(points)[1]
+                print(x)
+                ax.scatter(x, y, s=1)
 
+                ax.set_aspect('equal')
+                plt.ioff()
+                plt.show()
 
         if keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):

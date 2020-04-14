@@ -23,11 +23,26 @@ def clean(buff):
         return -1
 
 
+def fetch_data(buff, data_length):
+    start_index = buff.find(DATA_START_STR)
+    if start_index > 0:
+        buff = buff[start_index: len(buff)]
+
+    end_index = buff.find(DATA_END_STR)
+
+    recv = end_index - (start_index + len(DATA_START_STR))
+    if recv != data_length:
+        print("DATA LENGTH MISMATCH!!!")
+        print("Found: ", recv)
+        print("Was expecting: ", data_length)
+
+    return buff[(start_index + len(DATA_START_STR)): end_index], buff[(end_index + len(DATA_END_STR)):len(buff)]
+
+
 def receive_msg(msg):
     if is_complete(msg):
         if not is_clean(msg):
             print("Buffer is not clean. Some data might have been lost")
-            print(msg)
             msg = clean(msg)
             assert msg != -1
 

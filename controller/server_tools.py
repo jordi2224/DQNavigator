@@ -8,15 +8,16 @@ from controller.comm_definitions import *
 
 
 start_USB_off = False
+motor_enable = True
 
+sample_size = 600
+max_distance = 5000
 
 
 def execute(msg, driver, dsize, conn):
-    #conn.send("ACK".encode('utf-8'))
-    print(msg)
-    if msg["type"] == "MANUAL_MOVE_ORDER":
+    global motor_enable, sample_size, max_distance
+    if msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
         dir = msg["direction"]
-
         if dir == "FWD":
             forward()
         elif dir == "BWD":
@@ -31,23 +32,48 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONFIGURATION":
-        device = msg["device"]
+        device = msg["target"]
 
-        if device == "USB":
+        if device == "MOTOR":
+            if msg["state"] == 1:
+                print("Motor movement enabled by client")
+                motor_enable = True
+            elif msg["state"] == 0:
+                print("Motor movement disabled by client")
+                motor_enable = False
+            else:
+                print('Unexpected value')
+        elif device == "USB":
             if msg["state"] == 1:
                 os.system('echo \'1-1\' |sudo tee /sys/bus/usb/drivers/usb/bind')
             elif msg["state"] == 0:
                 os.system('echo \'1-1\' |sudo tee /sys/bus/usb/drivers/usb/unbind')
             else:
                 print('Unexpected value')
+
+        elif device == "PARAMETER":
+            if msg["parameter"] == "SAMPLE_SIZE":
+                value = msg["value"]
+                sample_size = value
+
+            elif msg["parameter"] == "MAX_DISTANCE":
+                value = msg["value"]
+                max_distance = max_distance
+            else:
+                print('Unexpected value')
+
         else:
             print("Unsupported device")
+
+
+
+
 
     elif msg["type"] == "REQUEST":
         request = msg["request"]
 
         if request == "GET_SCAN":
-            points, x, y = driver.get_point_cloud(dsize, 20, 5000)
+            points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
 
             print("Sending scan data")
             serialized_p = pickle.dumps(points, protocol = 0)
