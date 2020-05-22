@@ -3,16 +3,25 @@ import time
 
 RT_F = 33
 RT_R = 12
+RTH1 = 38
+RTH2 = 40
 
 LT_F = 36
 LT_R = 11
+LTH1 = 15
+LTH2 = 7
 
-GPIO.setwarnings(False) 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(RT_F, GPIO.OUT)
 GPIO.setup(RT_R, GPIO.OUT)
 GPIO.setup(LT_R, GPIO.OUT)
 GPIO.setup(LT_F, GPIO.OUT)
+GPIO.setup(RTH1, GPIO.IN)
+GPIO.setup(RTH2, GPIO.IN)
+GPIO.setup(LTH1, GPIO.IN)
+GPIO.setup(LTH2, GPIO.IN)
+
 
 
 def auto_setup():
