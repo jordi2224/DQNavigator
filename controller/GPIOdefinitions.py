@@ -35,6 +35,14 @@ def auto_setup():
     GPIO.setup(LT_F, GPIO.OUT)
 
 
+def halt_left():
+    GPIO.output(LT_F, 0)
+    GPIO.output(LT_R, 0)
+
+def halt_right():
+    GPIO.output(RT_F, 0)
+    GPIO.output(RT_R, 0)
+
 def halt():
     GPIO.output(RT_F, 0)
     GPIO.output(RT_R, 0)

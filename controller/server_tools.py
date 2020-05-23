@@ -33,7 +33,28 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
-        print(get_track_pos())
+        starting_pos_L, starting_pos_R = get_track_pos()
+        dir = msg["direction"]
+        value = msg["value"]
+
+        end_pos_L = starting_pos_L + value
+        end_pos_R = starting_pos_R + value
+
+        print("I am at : ", starting_pos_L, starting_pos_R)
+        print("Going to:", end_pos_L, end_pos_R)
+        while True:
+            current_pos_L, current_pos_R = get_track_pos()
+
+            if current_pos_L < end_pos_L:
+                forward_left()
+            else:
+                halt_left()
+
+            if current_pos_R < end_pos_R:
+                forward_right()
+            else:
+                halt_right()
+
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
 
