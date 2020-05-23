@@ -42,9 +42,9 @@ def execute(msg, driver, dsize, conn):
 
         print("I am at : ", starting_pos_L, starting_pos_R)
         print("Going to:", end_pos_L, end_pos_R)
-        while current_pos_R < end_pos_R and current_pos_L < end_pos_L:
+        current_pos_L, current_pos_R = get_track_pos()
+        while current_pos_R < end_pos_R or current_pos_L < end_pos_L:
             current_pos_L, current_pos_R = get_track_pos()
-            print(current_pos_L, current_pos_R)
 
             if current_pos_L < end_pos_L:
                 forward_left()
@@ -55,7 +55,8 @@ def execute(msg, driver, dsize, conn):
                 forward_right()
             else:
                 halt_right()
-
+        print(current_pos_L, current_pos_R)
+        halt()
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
