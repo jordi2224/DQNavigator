@@ -6,7 +6,6 @@ import subprocess
 from driver.TSFinalDriver import Driver
 from controller.comm_definitions import *
 
-
 start_USB_off = False
 motor_enable = True
 
@@ -65,21 +64,24 @@ def execute(msg, driver, dsize, conn):
         else:
             print("Unsupported device")
 
-
-
-
-
     elif msg["type"] == "REQUEST":
         request = msg["request"]
 
         if request == "GET_SCAN":
-            points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
+            if driver is not None:
+                points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
 
-            print("Sending scan data")
-            serialized_p = pickle.dumps(points, protocol = 0)
-            res = START_STR + "{\"type\":\"SCAN_DATA\", \"data_size\": "+ str(len(serialized_p))  +" }" + END_STR
-            conn.send(res.encode('utf-8'))
-            conn.send(DATA_START_STR.encode('utf-8') + serialized_p + DATA_END_STR.encode('utf-8'))
+                print("Sending scan data")
+                serialized_p = pickle.dumps(points, protocol=0)
+                res = START_STR + "{\"type\":\"SCAN_DATA\", \"data_size\": " + str(len(serialized_p)) + " }" + END_STR
+                conn.send(res.encode('utf-8'))
+                conn.send(DATA_START_STR.encode('utf-8') + serialized_p + DATA_END_STR.encode('utf-8'))
+
+            else:
+                res = START_STR + TYPE_STR + "\"ERROR\", \"severity\": 1, \"message\" : \"No driver is running at the " \
+                                             "moment, is the LIDAR connected?\"}" + END_STR
+                conn.send(res.encode('utf-8'))
+                print("Controller attempted to retrieve LIDAR data but to driver is running")
 
     else:
         print("Unknown message")

@@ -1,4 +1,6 @@
 import time
+
+import RPi.GPIO as GPIO
 from controller.GPIOdefinitions import *
 from multiprocessing import Process, Value
 
