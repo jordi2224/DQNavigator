@@ -1,8 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
-RT_F = 33
-RT_R = 12
+RT_F = 12
+RT_R = 33
 RTH1 = 38
 RTH2 = 40
 
