@@ -5,6 +5,8 @@ import os
 import subprocess
 from driver.TSFinalDriver import Driver
 from controller.comm_definitions import *
+from controller.async_counter_proto import *
+
 
 start_USB_off = False
 motor_enable = True
@@ -30,6 +32,8 @@ def execute(msg, driver, dsize, conn):
         elif dir == "HALT":
             halt()
 
+    elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
+        print(get_track_pos())
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
 

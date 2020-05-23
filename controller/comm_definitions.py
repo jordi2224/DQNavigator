@@ -8,6 +8,7 @@ DATA_END_STR = "-----END TFG DATA-----\n"
 
 TYPE_STR = "{\"type\":"
 
+
 def is_complete(buff):
     return START_STR in buff and END_STR in buff
 
