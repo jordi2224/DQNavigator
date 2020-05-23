@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 
+# TODO: Remove this
+# This is a test test test
+
 RT_F = 12
 RT_R = 33
 RTH1 = 38
