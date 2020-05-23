@@ -71,7 +71,7 @@ if __name__ == "__main__":
             s.send(msg.encode('utf-8'))
 
         if keyboard.is_pressed('f'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "dir" : "FWD", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction" : "FWD", "value": 250}
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
             s.send(msg.encode('utf-8'))
 
