@@ -8,6 +8,8 @@ counter_left = 0
 previous_state_right = GPIO.input(RTH2)
 counter_right = 0
 
+halt()
+
 while(True):
     new_state_left = GPIO.input(LTH2)
     new_state_right = GPIO.input(RTH2)
@@ -16,9 +18,9 @@ while(True):
     if new_state_left != previous_state_left:
         if previous_state_left == 0:
              if GPIO.input(LTH1):
-                 counter_left += 1
-             else:
                  counter_left -= 1
+             else:
+                 counter_left += 1
              do_output = True
         previous_state_left = new_state_left
 
@@ -33,7 +35,7 @@ while(True):
 
     if do_output:
         print(counter_left, counter_right)
-        
+
     time.sleep(0.001)
 
 
