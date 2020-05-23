@@ -52,8 +52,3 @@ track_position_process.start()
 
 def get_track_pos():
     return counter_L.value, counter_R.value
-
-
-while (True):
-    time.sleep(0.5)
-    print(get_track_pos())
