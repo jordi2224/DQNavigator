@@ -18,28 +18,28 @@ def counter_loop():
         if new_state_left != previous_state_left:
             if previous_state_left == 0:
                 if GPIO.input(LTH1):
-                    counter_L.value -= 1
-                else:
                     counter_L.value += 1
+                else:
+                    counter_L.value -= 1
             else:
                 if GPIO.input(LTH1):
-                    counter_L.value += 1
-                else:
                     counter_L.value -= 1
+                else:
+                    counter_L.value += 1
 
             previous_state_left = new_state_left
 
         if new_state_right != previous_state_right:
             if previous_state_right == 0:
                 if GPIO.input(RTH1):
-                    counter_R.value += 1
-                else:
                     counter_R.value -= 1
+                else:
+                    counter_R.value += 1
             else:
                 if GPIO.input(RTH1):
-                    counter_R.value -= 1
-                else:
                     counter_R.value += 1
+                else:
+                    counter_R.value -= 1
 
             previous_state_right = new_state_right
 
