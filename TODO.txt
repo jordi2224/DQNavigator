@@ -15,4 +15,11 @@ Hardware
 	PCB manufacturing
 	Assembling
 
+Async movement tracking -> multi threading
+Positioning system
+Map
+Remove dsize depensency
+
+Code Refactor and project cleanup
+
 	

@@ -1,19 +1,32 @@
-import json
 import pickle
-from controller.GPIOdefinitions import *
 import os
 import subprocess
+import controller.async_movement
 from driver.TSFinalDriver import Driver
 from controller.comm_definitions import *
+from controller.async_counter_proto import *
 
+# Default status configuration
 start_USB_off = False
 motor_enable = True
 
+# Scan configuration
 sample_size = 600
 max_distance = 5000
 
 
+# Main execution function
 def execute(msg, driver, dsize, conn):
+    # Decision making and execution function
+    # May be ran asynchronously in its own thread
+    # Multithreading execution is imposed by some orders since they would fatally block the control loop's execution
+    #
+    # Input parameters:
+    # msg: message, dict containing order type and parameters for execution
+    # driver: LIDAR driver object. May be None if the sensor was not plugged in when initialized
+    # dsize: LIDAR data size
+    # conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
+
     global motor_enable, sample_size, max_distance
     if msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
         dir = msg["direction"]
@@ -29,6 +42,9 @@ def execute(msg, driver, dsize, conn):
             forward_left()
         elif dir == "HALT":
             halt()
+
+    elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
+        print(controller.async_movement.execute_move(250, 250));
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]

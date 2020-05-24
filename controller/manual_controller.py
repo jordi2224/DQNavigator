@@ -70,4 +70,9 @@ if __name__ == "__main__":
             msg = START_STR + "{\"type\":\"MANUAL_MOVE_ORDER\", \"direction\": \"LEFT\"}" + END_STR
             s.send(msg.encode('utf-8'))
 
+        if keyboard.is_pressed('f'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction" : "FWD", "value": 250}
+            msg = START_STR + str(msg).replace('\'', '\"') + END_STR
+            s.send(msg.encode('utf-8'))
+
         time.sleep(0.1)
