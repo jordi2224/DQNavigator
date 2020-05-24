@@ -3,6 +3,7 @@ import pickle
 from controller.GPIOdefinitions import *
 import os
 import subprocess
+import controller.async_movement
 from driver.TSFinalDriver import Driver
 from controller.comm_definitions import *
 from controller.async_counter_proto import *
@@ -33,30 +34,7 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
-        starting_pos_L, starting_pos_R = get_track_pos()
-        dir = msg["direction"]
-        value = msg["value"]
-
-        end_pos_L = starting_pos_L + value
-        end_pos_R = starting_pos_R + value
-
-        print("I am at : ", starting_pos_L, starting_pos_R)
-        print("Going to:", end_pos_L, end_pos_R)
-        current_pos_L, current_pos_R = get_track_pos()
-        while current_pos_R < end_pos_R or current_pos_L < end_pos_L:
-            current_pos_L, current_pos_R = get_track_pos()
-
-            if current_pos_L < end_pos_L:
-                forward_left()
-            else:
-                halt_left()
-
-            if current_pos_R < end_pos_R:
-                forward_right()
-            else:
-                halt_right()
-        print(current_pos_L, current_pos_R)
-        halt()
+        print(controller.async_movement.execute_move(250, 250));
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
