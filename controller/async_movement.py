@@ -27,10 +27,11 @@ def movement_execution_thread(L_offset, R_offset):
 
 
 def execute_move(L_offset, R_offset):
-
+    global current_move_thread
     if current_move_thread is not None and current_move_thread.is_alive():
         return -1
 
     else:
         current_move_thread = threading.Thread(target=movement_execution_thread, args=(L_offset, R_offset,))
+        current_move_thread.start()
         return 0

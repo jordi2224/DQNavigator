@@ -32,7 +32,7 @@ def control_loop(pipe, driver, dsize, conn):
 
         if time.time() - current_order_t > max_time_delay:
             current_order_t = time.time()
-            halt()
+            #halt()
 
 
 if __name__ == "__main__":
