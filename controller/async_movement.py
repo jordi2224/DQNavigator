@@ -3,11 +3,12 @@ import threading
 from controller.async_counter_proto import get_track_pos
 
 current_move_thread = None
-
+debug = True
 
 def movement_execution_thread(L_offset, R_offset):
     starting_pos_L, starting_pos_R = get_track_pos()
-
+    if debug:
+        print(starting_pos_L, starting_pos_R)
     end_pos_L = starting_pos_L + L_offset
     end_pos_R = starting_pos_R + R_offset
 
@@ -24,6 +25,11 @@ def movement_execution_thread(L_offset, R_offset):
             forward_right()
         else:
             halt_right()
+
+    if debug:
+        print("Started at: ", starting_pos_L, starting_pos_R)
+        print("Now at:     ", get_track_pos())
+        
     halt()
 
 
