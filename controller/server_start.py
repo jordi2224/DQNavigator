@@ -15,9 +15,12 @@ def control_loop(pipe, driver, dsize, conn):
     msg = None
     current_order_t = 0
     max_time_delay = 0.1
+
+    channel_active = False
     while 1:
         if not pipe.empty():
             msg = pipe.get()
+            channel_active = True
             if msg == "CONN_UPDATE":
                 print('Processing connection update')
                 conn = pipe.get()
@@ -30,9 +33,10 @@ def control_loop(pipe, driver, dsize, conn):
                 current_order_t = time.time()
                 msg = None
 
-        if time.time() - current_order_t > max_time_delay:
+        if time.time() - current_order_t > max_time_delay and channel_active:
             current_order_t = time.time()
-            #halt()
+            halt()
+            channel_active = False
 
 
 if __name__ == "__main__":

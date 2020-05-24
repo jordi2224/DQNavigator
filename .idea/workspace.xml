@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32475768-a82a-42b4-ba3f-81eb64a33d3d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/controller/async_movement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/server_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/server_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/server_start.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/server_start.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
