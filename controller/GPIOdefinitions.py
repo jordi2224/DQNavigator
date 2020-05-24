@@ -1,9 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-# TODO: Remove this
-# This is a test test test
-
 RT_F = 12
 RT_R = 33
 RTH1 = 38
@@ -26,7 +23,6 @@ GPIO.setup(LTH1, GPIO.IN)
 GPIO.setup(LTH2, GPIO.IN)
 
 
-
 def auto_setup():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(RT_F, GPIO.OUT)
@@ -39,9 +35,11 @@ def halt_left():
     GPIO.output(LT_F, 0)
     GPIO.output(LT_R, 0)
 
+
 def halt_right():
     GPIO.output(RT_F, 0)
     GPIO.output(RT_R, 0)
+
 
 def halt():
     GPIO.output(RT_F, 0)

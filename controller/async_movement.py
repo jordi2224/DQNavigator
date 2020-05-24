@@ -4,6 +4,7 @@ from controller.async_counter_proto import get_track_pos
 
 current_move_thread = None
 
+
 def movement_execution_thread(L_offset, R_offset):
     starting_pos_L, starting_pos_R = get_track_pos()
 
