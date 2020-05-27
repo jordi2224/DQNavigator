@@ -1,9 +1,10 @@
 from controller.GPIOdefinitions import *
 import threading
-from controller.async_counter_proto import get_track_pos
+from controller.async_counter_interrupt import get_track_pos
 
 current_move_thread = None
 debug = True
+
 
 def movement_execution_thread(L_offset, R_offset):
     starting_pos_L, starting_pos_R = get_track_pos()
@@ -29,7 +30,7 @@ def movement_execution_thread(L_offset, R_offset):
     if debug:
         print("Started at: ", starting_pos_L, starting_pos_R)
         print("Now at:     ", get_track_pos())
-        
+
     halt()
 
 

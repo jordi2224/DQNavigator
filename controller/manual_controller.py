@@ -15,8 +15,10 @@ plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
 
-def process_scan_data(x,y):
-    CV.doHoughTransform(x,y)
+
+def process_scan_data(x, y):
+    CV.doHoughTransform(x, y)
+
 
 if __name__ == "__main__":
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
