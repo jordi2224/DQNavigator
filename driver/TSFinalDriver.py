@@ -156,7 +156,8 @@ class Driver:
 
     def get_point_cloud(self, data_size, n_points, max_distance):
         points = []
-
+        while self.connection.in_waiting > data_size:
+            self.connection.read(data_size)
         while self.connection.in_waiting < data_size:
             pass
         old_cabins, old_start_angle = self.get_express(data_size)

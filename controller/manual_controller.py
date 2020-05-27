@@ -30,7 +30,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if not counter % 10:
+        if counter == 50:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")
@@ -57,9 +57,6 @@ if __name__ == "__main__":
                     plt.ion()
                     plt.show()
                     plt.pause(0.01)
-
-                    buff = flush_stale(buff)
-                    print(len(buff))
 
         msg = {"type": "MANUAL_MOVE_ORDER", "direction": "None"}
 
