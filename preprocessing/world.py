@@ -2,6 +2,7 @@ import preprocessing.world_config as cfg
 import preprocessing.wallsCV as wallsCV
 from driver.TSFinalDriver import Driver
 import matplotlib.pyplot as plt
+import numpy as np
 from preprocessing.wallsCV import *
 import time
 
@@ -28,11 +29,39 @@ class Wall(Entity):
         super(Wall, self).__init__(x=self.start_x, y=self.start_y)
 
 
+class GridEntity:
+    def __init__(self, type='empty'):
+        self.type = type
+        self.type_int = 0
+
+
 class World:
-    walls = []
+    grid_size_count = cfg.grid_size // cfg.grid_resolution
+
+    grid = np.full([grid_size_count, grid_size_count], GridEntity())
+
+
+def print_world(word):
+    size = world.grid_size_count
+    image = np.zeros([size, size, 3])
+    for x in range(size):
+        for y in range(size):
+            block_type = world.grid[x, y].type
+            if block_type != 'empty':
+                image[x, y] = [255, 255, 255]
+    plt.imshow(image)
+    plt.show()
 
 
 if __name__ == "__main__":
+    print("Done!")
+    world = World()
+    for x in range(world.grid_size_count):
+        world.grid[x, x//2] = GridEntity(type='wall')
+    print_world(world)
+    input()
+
+    """
     driver = Driver('COM6')
     dsize = driver.start_scan_express()
 
@@ -50,7 +79,6 @@ if __name__ == "__main__":
     ax = fig.gca()
     plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 
-
     for wall in walls:
         y1 = wall.start_y * resolution_div + offset_y
         y2 = wall.end_y * resolution_div + offset_y
@@ -66,10 +94,9 @@ if __name__ == "__main__":
         plt.plot([wall.start_x, wall.end_x],
                  [wall.start_y, wall.end_y], 'k-', lw=2, alpha=0.66)
 
-
-    x,y = remove_wall_points(x, y, walls)
+    x, y = remove_wall_points(x, y, walls)
     ax.scatter(x, y, s=1)
 
     ax.set_aspect('equal')
     plt.ioff()
-    plt.show()
+    plt.show()"""

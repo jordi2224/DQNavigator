@@ -134,3 +134,21 @@ def doHoughTransform(x, y, resolution_div):
         walls.append(Wall((y1, x1), (y2, x2)))
 
     return walls, offset_x, offset_y
+
+
+def makeline(point1, point2):
+    dx = point2[0] - point1[0]
+    dy = point2[1] - point1[1]
+    steps = dx if (dx > dy) else dy
+    xinc = dx / float(steps)
+    yinc = dy / float(steps)
+
+    out = np.zeros([steps + 1, 2], dtype='int')
+    x = point1[0]
+    y = point1[1]
+    for i in range(steps + 1):
+        out[i] = (x, y)
+        x += xinc
+        y += yinc
+
+    return out

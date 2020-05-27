@@ -10,7 +10,7 @@ TYPE_STR = "{\"type\":"
 
 
 def is_complete(buff):
-    return START_STR in buff and END_STR in buff
+    return (START_STR in buff and END_STR in buff) or (DATA_START_STR in buff and DATA_END_STR in buff)
 
 
 def is_clean(buff):
@@ -25,6 +25,13 @@ def clean(buff):
         return -1
 
 
+def flush_stale(buff):
+    last_end_index = buff.rfind(END_STR)
+    last_start_index = buff.rfind(START_STR, 0, last_end_index)
+
+    return buff[last_start_index:len(buff)]
+
+
 def fetch_data(buff, data_length):
     start_index = buff.find(DATA_START_STR)
     if start_index > 0:
@@ -37,8 +44,9 @@ def fetch_data(buff, data_length):
         print("DATA LENGTH MISMATCH!!!")
         print("Found: ", recv)
         print("Was expecting: ", data_length)
-
-    return buff[(start_index + len(DATA_START_STR)): end_index], buff[(end_index + len(DATA_END_STR)):len(buff)]
+        return None, buff
+    else:
+        return buff[(start_index + len(DATA_START_STR)): end_index], buff[(end_index + len(DATA_END_STR)):len(buff)]
 
 
 def receive_msg(msg):

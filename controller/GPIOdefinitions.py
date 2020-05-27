@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 RT_F = 12
-RT_R = 33
+RT_R = 35
 RTH1 = 38
 RTH2 = 40
 
@@ -29,6 +29,10 @@ def auto_setup():
     GPIO.setup(RT_R, GPIO.OUT)
     GPIO.setup(LT_R, GPIO.OUT)
     GPIO.setup(LT_F, GPIO.OUT)
+    GPIO.setup(RTH1, GPIO.IN)
+    GPIO.setup(RTH2, GPIO.IN)
+    GPIO.setup(LTH1, GPIO.IN)
+    GPIO.setup(LTH2, GPIO.IN)
 
 
 def halt_left():
