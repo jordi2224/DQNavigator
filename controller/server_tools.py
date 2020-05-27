@@ -105,19 +105,26 @@ def execute(msg, driver, dsize, conn):
 
 
 def start_driver():
+    # Attempts to create a driver object for A1 LIDAR
+    # Get kernel message buffer (there might be a more elegant way but this is very *very* fast)
     s = subprocess.check_output(['dmesg'])
     s = s.split(b'\n')
     port = None
 
+    # Look for Unix-like message regarding device attachment
+    # We are looking for the last assignment hence the reverse search
     for line in reversed(s):
         if b'cp210x converter now attached to' in line:
             port = line[line.find(b'ttyUSB'):len(line)]
             break
 
+    # Returns None object if no port could be found
     if not port:
         print("LIDAR is not connected")
         return None, None
 
+    # Otherwise start the driver on that port
+    # We return the data size, this is likely to be removed in future versions TODO
     driver = Driver('/dev/' + port.decode('utf-8'))
     dsize = driver.start_scan_express()
 

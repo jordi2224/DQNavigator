@@ -5,6 +5,7 @@ import time
 from controller.comm_definitions import *
 import matplotlib.pyplot as plt
 import numpy as np
+import preprocessing.wallsCV as CV
 
 fig = plt.figure()
 ax = fig.gca()
@@ -14,13 +15,16 @@ plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
 
+def process_scan_data(x,y):
+    CV.doHoughTransform(x,y)
+
 if __name__ == "__main__":
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))
     buff = ''
     request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN"}).replace('\'', '\"') + END_STR
     s.send(request.encode('utf-8'))
-    s.settimeout(0.01)
+    s.settimeout(0.1)
 
     counter = 0
     while 1:
@@ -30,7 +34,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if counter == 50:
+        if counter == 1:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")
@@ -48,6 +52,7 @@ if __name__ == "__main__":
                     points = np.array(pickle.loads(data.encode('utf-8')))
                     x = np.transpose(points)[0]
                     y = np.transpose(points)[1]
+                    process_scan_data(x, y)
                     plt.clf()
                     ax = fig.gca()
                     plt.axis([-max_distance, max_distance, -max_distance, max_distance])

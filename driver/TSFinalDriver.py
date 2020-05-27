@@ -12,6 +12,9 @@ def _b2i(byte):
 
 class Driver:
 
+    current_mode = "OFF"
+    data_size = 0
+
     def __init__(self, port, check_info=True, check_health=True):
         self.connection = serial.Serial(port, 115200, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                                         dsrdtr=False, timeout=1)
@@ -119,6 +122,9 @@ class Driver:
         self.connection.dtr = False
         self.connection.write(prepare_payload(EXPRESS_SCAN, b'\x00 + 'b'\x00' * 4))
         dsize, none, none = self.read_descriptor(debug=1)
+
+        self.current_mode = "EXPRESS"
+        self.data_size = dsize
         return dsize
 
     def start_scan(self):
@@ -154,10 +160,15 @@ class Driver:
 
         return samples
 
-    def get_point_cloud(self, data_size, n_points, max_distance):
+    def get_point_cloud(self, data_size, n_points, max_distance, force_flush=True):
         points = []
-        while self.connection.in_waiting > data_size:
-            self.connection.read(data_size)
+
+        if force_flush:
+            while self.connection.in_waiting > self.data_size:
+                self.connection.read(self.data_size)
+        else:
+            while self.connection.in_waiting > data_size*1000:
+                self.connection.read(data_size)
         while self.connection.in_waiting < data_size:
             pass
         old_cabins, old_start_angle = self.get_express(data_size)

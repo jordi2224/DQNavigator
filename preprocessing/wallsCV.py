@@ -152,3 +152,18 @@ def makeline(point1, point2):
         y += yinc
 
     return out
+
+
+def translate_walls(walls, offset_x, offset_y, resolution_div):
+    for wall in walls:
+        y1 = wall.start_y * resolution_div + offset_y
+        y2 = wall.end_y * resolution_div + offset_y
+        x1 = wall.start_x * resolution_div + offset_x
+        x2 = wall.end_x * resolution_div + offset_x
+
+        wall.start_x = x1
+        wall.start_y = y1
+        wall.end_x = x2
+        wall.end_y = y2
+
+    return walls
