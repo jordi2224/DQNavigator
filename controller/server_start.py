@@ -13,17 +13,18 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
     # Input parameters:
     # queue: multiprocessing.Queue object. Only expected to read, not write
     # driver_object: LIDAR driver object. Can be None if LIDAR is not plugged in or somehow unavailable
-    # lidar_data_size: size of data that the driver expects from sensor
+    # lidar_data_size: size of data that the driver expects from sensor, to be removes in future versions TODO
     # connection_object: connection object with controller. Needed to send replies.
     # DO NOT READ FROM IT OTHERWISE INPUT BUFFER MIGHT GET CORRUPTED!!!
 
     print('Control loop started')
     message = None
     # Time at which the last order was executed
-    current_order_t = 0
+    current_manual_order_t = 0
     # Maximum delay between orders before the channel is considered inactive, at this time control loop will attempt a
     # safe halt (aka not interrupt long or scheduled executions)
     max_time_delay = 0.1
+    enable_auto_halting = False
 
     last_exec = None
     while True:
@@ -40,21 +41,20 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
                 # No order is executed here, just the update
                 message = None
 
-        # Only execute messages if no other messages are vailable in queue
-        else:   # Command execution
+        # Only execute messages if no other messages are available in queue
+        else:  # Command execution
             if message is not None:
                 print(message)
                 # Send to execution function
                 execute(message, driver_object, lidar_data_size, connection_object)
-                last_exec = message
-                current_order_t = time.time()
+                if message["type"] == "MANUAL_MOVE_ORDER":
+                    current_manual_order_t = time.time()
+                    enable_auto_halting = True
                 message = None
 
-        if time.time() - current_order_t > max_time_delay:
-            current_order_t = time.time()
-            if last_exec is not None and last_exec["type"] == "MANUAL_MOVE_ORDER":
-                halt()
-                last_exec = None
+        if time.time() - current_manual_order_t > max_time_delay and enable_auto_halting:
+            halt()
+            enable_auto_halting = False
 
 
 if __name__ == "__main__":
