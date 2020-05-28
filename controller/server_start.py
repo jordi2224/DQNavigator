@@ -23,7 +23,7 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
     current_manual_order_t = 0
     # Maximum delay between orders before the channel is considered inactive, at this time control loop will attempt a
     # safe halt (aka not interrupt long or scheduled executions)
-    max_time_delay = 0.1
+    max_time_delay = 0.2
     enable_auto_halting = False
 
     last_exec = None

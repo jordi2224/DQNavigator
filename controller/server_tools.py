@@ -28,7 +28,11 @@ def execute(msg, driver, dsize, conn):
     # conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
 
     global motor_enable, sample_size, max_distance
-    if msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
+    if msg["type"] == "HALT_OVERRIDE":
+
+        halt()
+        print("EMERGENCY HALT EXECUTED!")
+    elif msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
         dir = msg["direction"]
         if dir == "FWD":
             forward()

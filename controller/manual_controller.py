@@ -72,14 +72,23 @@ if __name__ == "__main__":
 
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
-            msg["direction"] = "RIGHT"
+            msg["direction"] = "LEFT"
 
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and keyboard.is_pressed('d'):
-            msg["direction"] = "LEFT"
+            msg["direction"] = "RIGHT"
 
-        if keyboard.is_pressed('f'):
+        if keyboard.is_pressed('i'):
             msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "FWD", "value": 250}
+        elif keyboard.is_pressed('k'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "BWD", "value": 250}
+        elif keyboard.is_pressed('l'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "RIGHT", "value": 250}
+        elif keyboard.is_pressed('j'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "LEFT", "value": 250}
+
+        if keyboard.is_pressed('h'):
+            msg = {"type": "HALT_OVERRIDE"}
 
         if msg["direction"] != "None":
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
