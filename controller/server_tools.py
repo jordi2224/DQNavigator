@@ -29,7 +29,7 @@ def execute(msg, driver, dsize, conn):
 
     global motor_enable, sample_size, max_distance
     if msg["type"] == "HALT_OVERRIDE":
-
+        controller.async_movement.override_halt()
         halt()
         print("EMERGENCY HALT EXECUTED!")
     elif msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
@@ -48,7 +48,14 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
-        print(controller.async_movement.execute_move(250, 250));
+        if msg["direction"] == "FWD":
+            controller.async_movement.execute_move(msg["value"], msg["value"])
+        elif msg["direction"] == "BWD":
+            controller.async_movement.execute_move(-msg["value"], -msg["value"])
+        elif msg["direction"] == "RIGHT":
+            controller.async_movement.execute_move(-msg["value"], msg["value"])
+        elif msg["direction"] == "LEFT":
+            controller.async_movement.execute_move(msg["value"], -msg["value"])
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
@@ -77,7 +84,7 @@ def execute(msg, driver, dsize, conn):
 
             elif msg["parameter"] == "MAX_DISTANCE":
                 value = msg["value"]
-                max_distance = max_distance
+                max_distance = value
             else:
                 print('Unexpected value')
 
