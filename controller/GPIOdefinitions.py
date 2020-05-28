@@ -38,11 +38,12 @@ def auto_setup():
 def halt_left():
     GPIO.output(LT_F, 0)
     GPIO.output(LT_R, 0)
-
+    print("Someone called a LEFT halt")
 
 def halt_right():
     GPIO.output(RT_F, 0)
     GPIO.output(RT_R, 0)
+    print("Someone called a RIGHT halt")
 
 
 def halt():
@@ -50,6 +51,7 @@ def halt():
     GPIO.output(RT_R, 0)
     GPIO.output(LT_F, 0)
     GPIO.output(LT_R, 0)
+    print("Someone called a TOTAL halt")
 
 
 def forward_left():
