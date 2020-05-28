@@ -39,11 +39,11 @@ def execute(msg, driver, dsize, conn):
         elif dir == "BWD":
             backwards()
         elif dir == "LEFT":
-            forward_right()
-            reverse_left()
-        elif dir == "RIGHT":
             reverse_right()
             forward_left()
+        elif dir == "RIGHT":
+            forward_right()
+            reverse_left()
         elif dir == "HALT":
             halt()
 
