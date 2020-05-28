@@ -90,7 +90,7 @@ if __name__ == "__main__":
         if keyboard.is_pressed('h'):
             msg = {"type": "HALT_OVERRIDE"}
 
-        if msg["direction"] != "None":
+        if msg["type"] == "HALT_OVERRIDE" or msg["direction"] != "None":
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
             s.send(msg.encode('utf-8'))
 

@@ -19,7 +19,9 @@ def movement_execution_thread(L_offset, R_offset):
     end_pos_R = starting_pos_R + R_offset
 
     current_pos_L, current_pos_R = pos.get_track_pos()
-    while current_pos_R < end_pos_R or current_pos_L < end_pos_L and not self_destruct():
+    L_done = False
+    R_done = False
+    while not L_done or not R_done and not self_destruct():
         current_pos_L, current_pos_R = pos.get_track_pos()
 
         if L_offset > 0:
@@ -27,22 +29,26 @@ def movement_execution_thread(L_offset, R_offset):
                 forward_left()
             else:
                 halt_left()
+                L_done = True
         else:
             if current_pos_L > end_pos_L:
                 reverse_left()
             else:
                 halt_left()
+                L_done = True
 
         if R_offset > 0:
             if current_pos_R < end_pos_R:
                 forward_right()
             else:
                 halt_right()
+                R_done = True
         else:
             if current_pos_R > end_pos_R:
                 reverse_right()
             else:
                 halt_right()
+                R_done = True
 
     if self_destruct():
         halt()
