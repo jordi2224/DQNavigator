@@ -122,7 +122,10 @@ if __name__ == "__main__":
             # Parse and send the message to control loop
             msg, buff = receive_msg(buff)
             msg = parse(msg)
-            q.put(msg)
+            if msg["type"] == "FORCE_DISCONNECT":
+                conn.close()
+            else:
+                q.put(msg)
 
     # Unreachable except by interrupting the server loop
     conn.close()

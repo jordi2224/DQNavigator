@@ -64,6 +64,7 @@ def receive_rotation_report(s, buff):
     msg = None
     while msg is None:
         _, buff = wait_for_msg(s, buff)
+        msg, buff = receive_msg(buff)
         msg = parse(msg)
         if msg["type"] == "MOVEMENT_ORDER_REPORT":
             old_theta = msg["initial_theta"]
@@ -103,8 +104,10 @@ if __name__ == "__main__":
 
     # Find walls
     new_walls, offset_x, offset_y = doHoughTransform(x, y, 8)
-    for wall in initial_walls:
+    for wall in new_walls:
         print(wall.rho, wall.theta)
+
+    disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
 # FIND THE WALLS IN THIS NEW SCAN
 
 # COMPARE TO EXPECTED POSITION OF WALLS
