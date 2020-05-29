@@ -29,6 +29,9 @@ def execute_rotation(value):
     print("Executing loop now")
     current_pos_L, current_pos_R = pos.get_track_pos()
 
+
+    total_lin = 0
+    total_rot = 0
     while not L_done or not R_done and not self_destruct():
         new_pos_L, new_pos_R = pos.get_track_pos()
         # Calculating displacement
@@ -36,6 +39,9 @@ def execute_rotation(value):
         linear_delta = (sub_deltas[0] + sub_deltas[1])/2
         rot_delta = (sub_deltas[0] - sub_deltas[1])/2
         print(linear_delta, rot_delta)
+
+        total_lin += linear_delta
+        total_rot += rot_delta
 
         current_pos_L = new_pos_L
         current_pos_R = new_pos_R
@@ -67,7 +73,7 @@ def execute_rotation(value):
     current_pos_L, current_pos_R = pos.get_track_pos()
     print("Tracks are now at: ", (current_pos_L, current_pos_R))
     deltas = (current_pos_L-starting_pos_L, current_pos_R-starting_pos_R)
-    print("Deltas are:  ", deltas)
+    print("Deltas are:  ", total_rot, total_lin)
     print("Error: ", sum(deltas))
 
     # Applying this to position
