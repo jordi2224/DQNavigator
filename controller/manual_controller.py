@@ -32,7 +32,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if counter == 5:
+        if counter == 50:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")
@@ -85,9 +85,9 @@ if __name__ == "__main__":
         if keyboard.is_pressed('i'):
             msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": 250}
         elif keyboard.is_pressed('k'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": -250}
         elif keyboard.is_pressed('l'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": -250}
         elif keyboard.is_pressed('j'):
             msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 250}
 
