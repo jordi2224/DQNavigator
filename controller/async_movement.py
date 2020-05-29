@@ -56,7 +56,9 @@ def execute_rotation(value):
     print("Movement loop is done")
     current_pos_L, current_pos_R = pos.get_track_pos()
     print("Tracks are now at: ", (current_pos_L, current_pos_R))
-    print("Deltas are:  ", (current_pos_L-starting_pos_L, starting_pos_R-current_pos_R))
+    deltas = (current_pos_L-starting_pos_L, current_pos_R-starting_pos_L)
+    print("Deltas are:  ", deltas)
+    print("Error: ", sum(deltas))
 
 
 def movement_execution_thread(value, movement_type):
