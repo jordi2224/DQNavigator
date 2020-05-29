@@ -1,6 +1,7 @@
 from controller.GPIOdefinitions import *
 import threading
 import controller.async_counter_interrupt as pos
+import math
 
 current_move_thread = None
 debug = True
@@ -16,29 +17,27 @@ def self_destruct():
 
 
 def execute_rotation(value):
+    global current_X, current_Y, current_theta
     print("Starting a rotation maneuver")
-    print("Attempting to rotate by: ", value)
+    print("Starting theta is: ", current_theta, math.degrees(current_theta))
     starting_pos_L, starting_pos_R = pos.get_track_pos()
-    print("Tracks are at: ", (starting_pos_L, starting_pos_R))
     end_pos_L = starting_pos_L + value
     end_pos_R = starting_pos_R - value
-    print("Target is at: ", (end_pos_L, end_pos_R))
 
     L_done = False
     R_done = False
     print("Executing loop now")
     current_pos_L, current_pos_R = pos.get_track_pos()
 
-
     total_lin = 0
     total_rot = 0
     while not L_done or not R_done and not self_destruct():
         new_pos_L, new_pos_R = pos.get_track_pos()
         # Calculating displacement
-        sub_deltas = (new_pos_L-current_pos_L, new_pos_R-current_pos_R)
-        linear_delta = (sub_deltas[0] + sub_deltas[1])/2
-        rot_delta = (sub_deltas[0] - sub_deltas[1])/2
-        print(linear_delta, rot_delta)
+        sub_deltas = (new_pos_L - current_pos_L, new_pos_R - current_pos_R)
+        linear_delta = (sub_deltas[0] + sub_deltas[1]) / 2
+        rot_delta = (sub_deltas[0] - sub_deltas[1]) / 2
+        current_theta += rot_delta/pos.rotational_calibration
 
         total_lin += linear_delta
         total_rot += rot_delta
@@ -70,13 +69,10 @@ def execute_rotation(value):
                 R_done = True
 
     print("Movement loop is done")
-    current_pos_L, current_pos_R = pos.get_track_pos()
-    print("Tracks are now at: ", (current_pos_L, current_pos_R))
-    deltas = (current_pos_L-starting_pos_L, current_pos_R-starting_pos_R)
-    print("Deltas are:  ", total_rot, total_lin)
-    print("Error: ", sum(deltas))
+    print("New theta is: ", current_theta, math.degrees(current_theta))
 
     # Applying this to position
+
 
 def movement_execution_thread(value, movement_type):
     if movement_type == "ROTATION":
