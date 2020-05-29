@@ -48,6 +48,7 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
+        print("Received a controlled move order")
         controller.async_movement.execute_move(msg["value"], msg["movement"])
 
     elif msg["type"] == "CONFIGURATION":

@@ -122,6 +122,7 @@ def execute_move(value, movement_type):
         return -1
 
     else:
+        print("Seems to be a legal move: ", value, movement_type)
         self_destruct_flag = False
         current_move_thread = threading.Thread(target=movement_execution_thread, args=(value, movement_type,))
         current_move_thread.start()
