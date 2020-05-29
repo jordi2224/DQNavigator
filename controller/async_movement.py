@@ -28,8 +28,9 @@ def execute_rotation(value):
     R_done = False
     print("Executing loop now")
     current_pos_L, current_pos_R = pos.get_track_pos()
-    
+
     while not L_done or not R_done and not self_destruct():
+        t = time.time()
         new_pos_L, new_pos_R = pos.get_track_pos()
         # Calculating displacement
         sub_deltas = (new_pos_L-current_pos_L, new_pos_R-current_pos_R)
@@ -60,6 +61,8 @@ def execute_rotation(value):
             else:
                 halt_right()
                 R_done = True
+        print(t-time.time())
+        t = time.time()
 
     print("Movement loop is done")
     current_pos_L, current_pos_R = pos.get_track_pos()
