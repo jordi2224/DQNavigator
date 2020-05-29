@@ -108,6 +108,7 @@ if __name__ == "__main__":
         print(wall.rho, wall.theta)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
+    s.send(disconnect_message.encode('utf-8'))
 # FIND THE WALLS IN THIS NEW SCAN
 
 # COMPARE TO EXPECTED POSITION OF WALLS

@@ -123,6 +123,7 @@ if __name__ == "__main__":
             msg, buff = receive_msg(buff)
             msg = parse(msg)
             if msg["type"] == "FORCE_DISCONNECT":
+                print("Connection closed by controller")
                 conn.close()
             else:
                 q.put(msg)
