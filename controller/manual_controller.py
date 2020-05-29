@@ -60,22 +60,26 @@ if __name__ == "__main__":
                     plt.show()
                     plt.pause(0.01)
 
-        msg = {"type": "MANUAL_MOVE_ORDER", "direction": "None"}
+        msg = {"type": "None"}
 
         if keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
+            msg["type"] = "MANUAL_MOVE_ORDER"
             msg["direction"] = "FWD"
 
         elif not keyboard.is_pressed('w') and keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
+            msg["type"] = "MANUAL_MOVE_ORDER"
             msg["direction"] = "BWD"
 
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
+            msg["type"] = "MANUAL_MOVE_ORDER"
             msg["direction"] = "LEFT"
 
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and keyboard.is_pressed('d'):
+            msg["type"] = "MANUAL_MOVE_ORDER"
             msg["direction"] = "RIGHT"
 
         if keyboard.is_pressed('i'):
@@ -90,7 +94,7 @@ if __name__ == "__main__":
         if keyboard.is_pressed('h'):
             msg = {"type": "HALT_OVERRIDE"}
 
-        if msg["type"] == "HALT_OVERRIDE" or msg["direction"] != "None":
+        if msg["type"] != "None":
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
             s.send(msg.encode('utf-8'))
 

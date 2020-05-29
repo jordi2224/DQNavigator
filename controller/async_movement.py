@@ -97,7 +97,7 @@ def movement_execution_thread(value, movement_type):
                 reverse_right()
             else:
                 halt_right()
-                R_done = True"""
+                R_done = True
 
     if self_destruct():
         halt()
@@ -107,7 +107,7 @@ def movement_execution_thread(value, movement_type):
         print("Started at: ", starting_pos_L, starting_pos_R)
         print("Now at:     ", pos.get_track_pos())
 
-    halt()
+    halt()"""
 
 
 def override_halt():
