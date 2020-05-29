@@ -3,6 +3,8 @@ import threading
 import controller.async_counter_interrupt as pos
 import math
 
+from controller.comm_definitions import START_STR, END_STR
+
 current_move_thread = None
 debug = True
 self_destruct_flag = False
@@ -16,7 +18,7 @@ def self_destruct():
     return self_destruct_flag
 
 
-def execute_rotation(value):
+def execute_rotation(value, connection):
     global current_X, current_Y, current_theta
     print("Starting a rotation maneuver")
     initial_theta = current_theta
@@ -40,6 +42,7 @@ def execute_rotation(value):
         linear_delta = (sub_deltas[0] + sub_deltas[1]) / 2
         rot_delta = (sub_deltas[0] - sub_deltas[1]) / 2
         current_theta += rot_delta/pos.rotational_calibration
+        # TODO: calculate linear movement in this case. Should be a simple sin cos with theta
 
         total_lin += linear_delta
         total_rot += rot_delta
@@ -73,12 +76,17 @@ def execute_rotation(value):
     print("Movement loop is done")
     print("New theta is: ", current_theta, math.degrees(current_theta))
     print("I think I moved: ", current_theta-initial_theta, math.degrees(current_theta-initial_theta))
+    print("Reporting")
+    report = {"type": "MOVEMENT_ORDER_REPORT", "initial_theta": initial_theta, "current_theta": current_theta, "x": current_X, "y": current_Y}
+    report_message = START_STR + str(report).replace('\'', '\"') + END_STR
+    connection.send(report_message.encode('utf-8'))
+
     # Applying this to position
 
 
-def movement_execution_thread(value, movement_type):
+def movement_execution_thread(value, movement_type, connection):
     if movement_type == "ROTATION":
-        execute_rotation(value)
+        execute_rotation(value, connection)
     """starting_pos_L, starting_pos_R = pos.get_track_pos()
     if debug:
         print(starting_pos_L, starting_pos_R)
@@ -133,7 +141,7 @@ def override_halt():
         self_destruct_flag = True
 
 
-def execute_move(value, movement_type):
+def execute_move(value, movement_type, connection):
     global current_move_thread, self_destruct_flag
     if current_move_thread is not None and current_move_thread.is_alive():
         return -1
@@ -141,6 +149,6 @@ def execute_move(value, movement_type):
     else:
         print("Seems to be a legal move: ", value, movement_type)
         self_destruct_flag = False
-        current_move_thread = threading.Thread(target=movement_execution_thread, args=(value, movement_type,))
+        current_move_thread = threading.Thread(target=movement_execution_thread, args=(value, movement_type, connection,))
         current_move_thread.start()
         return 0

@@ -20,11 +20,13 @@ class Actor(Entity):
 
 
 class Wall(Entity):
-    def __init__(self, start, end):
+    def __init__(self, start, end, rho=None, theta=None):
         self.start_x = start[0]
         self.start_y = start[1]
         self.end_x = end[0]
         self.end_y = end[1]
+        self.rho = rho
+        self.theta = theta
 
         super(Wall, self).__init__(x=self.start_x, y=self.start_y)
 
@@ -41,12 +43,12 @@ class World:
     grid = np.full([grid_size_count, grid_size_count], GridEntity())
     for x in range(grid_size_count):
         for y in range(grid_size_count):
-            grid[x,y] = GridEntity()
+            grid[x, y] = GridEntity()
 
 
 def print_world(world):
     size = world.grid_size_count
-    image = np.full([size, size,3],[255, 255, 255])
+    image = np.full([size, size, 3], [255, 255, 255])
     for x in range(size):
         for y in range(size):
             block_type = world.grid[x, y].type
@@ -76,7 +78,7 @@ if __name__ == "__main__":
 
     for wall in walls:
         coordinates = np.array(makeline((wall.start_x, wall.start_y), (wall.end_x, wall.end_y)))
-        coordinates = coordinates//cfg.grid_resolution + (cfg.grid_size//cfg.grid_resolution)//2
+        coordinates = coordinates // cfg.grid_resolution + (cfg.grid_size // cfg.grid_resolution) // 2
         for coor in coordinates:
             world.grid[coor[0], coor[1]].type = "wall"
 

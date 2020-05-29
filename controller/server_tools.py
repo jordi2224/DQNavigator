@@ -49,7 +49,7 @@ def execute(msg, driver, dsize, conn):
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
         print("Received a controlled move order")
-        controller.async_movement.execute_move(msg["value"], msg["movement"])
+        controller.async_movement.execute_move(msg["value"], msg["movement"], conn)
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]

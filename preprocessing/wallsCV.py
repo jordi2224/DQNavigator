@@ -131,7 +131,7 @@ def doHoughTransform(x, y, resolution_div):
 
         x1, y1, x2, y2 = fix_line(x1, y1, x2, y2, x_shape, y_shape)
 
-        walls.append(Wall((y1, x1), (y2, x2)))
+        walls.append(Wall((y1, x1), (y2, x2), rho=rho, theta=theta))
 
     return walls, offset_x, offset_y
 
