@@ -14,7 +14,7 @@ def event_left(sig):
             counter_L.value -= 1
         else:
             counter_L.value += 1
-    else:wda
+    else:
         if GPIO.input(LTH2):
             counter_L.value += 1
         else:
