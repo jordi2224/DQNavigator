@@ -6,19 +6,68 @@ current_move_thread = None
 debug = True
 self_destruct_flag = False
 
+current_X = 0
+current_Y = 0
+current_theta = 0
+
 
 def self_destruct():
     return self_destruct_flag
 
 
-def movement_execution_thread(L_offset, R_offset):
+def execute_rotation(value):
+    print("Starting a rotation maneuver")
+    print("Attempting to rotate by: ", value)
     starting_pos_L, starting_pos_R = pos.get_track_pos()
+    print("Tracks are at: ", (starting_pos_L, starting_pos_R))
+    end_pos_L = starting_pos_L + value
+    end_pos_R = starting_pos_R - value
+    print("Target is at: ", (end_pos_L, end_pos_R))
+
+    L_done = False
+    R_done = False
+    print("Executing loop now")
+    while not L_done or not R_done and not self_destruct():
+        current_pos_L, current_pos_R = pos.get_track_pos()
+
+        if value > 0:
+            if current_pos_L < end_pos_L:
+                forward_left()
+            else:
+                halt_left()
+                L_done = True
+            if current_pos_R > end_pos_R:
+                reverse_right()
+            else:
+                halt_right()
+                R_done = True
+        else:
+            if current_pos_L > end_pos_L:
+                reverse_left()
+            else:
+                halt_left()
+                L_done = True
+            if current_pos_R < end_pos_R:
+                forward_right()
+            else:
+                halt_right()
+                R_done = True
+
+    print("Movement loop is done")
+    current_pos_L, current_pos_R = pos.get_track_pos()
+    print("Tracks are now at: ", (current_pos_L, current_pos_R))
+    print("Deltas are:  ", (current_pos_L-starting_pos_L, starting_pos_R-current_pos_R))
+
+
+def movement_execution_thread(value, movement_type):
+    if type == "ROTATION":
+        execute_rotation(value)
+    """starting_pos_L, starting_pos_R = pos.get_track_pos()
     if debug:
         print(starting_pos_L, starting_pos_R)
     end_pos_L = starting_pos_L + L_offset
     end_pos_R = starting_pos_R + R_offset
 
-    current_pos_L, current_pos_R = pos.get_track_pos()
     L_done = False
     R_done = False
     while not L_done or not R_done and not self_destruct():
@@ -48,7 +97,7 @@ def movement_execution_thread(L_offset, R_offset):
                 reverse_right()
             else:
                 halt_right()
-                R_done = True
+                R_done = True"""
 
     if self_destruct():
         halt()
@@ -67,13 +116,13 @@ def override_halt():
         self_destruct_flag = True
 
 
-def execute_move(L_offset, R_offset):
+def execute_move(value, movement_type):
     global current_move_thread, self_destruct_flag
     if current_move_thread is not None and current_move_thread.is_alive():
         return -1
 
     else:
         self_destruct_flag = False
-        current_move_thread = threading.Thread(target=movement_execution_thread, args=(L_offset, R_offset,))
+        current_move_thread = threading.Thread(target=movement_execution_thread, args=(value, movement_type,))
         current_move_thread.start()
         return 0

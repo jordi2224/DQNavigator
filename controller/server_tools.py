@@ -48,14 +48,7 @@ def execute(msg, driver, dsize, conn):
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
-        if msg["direction"] == "FWD":
-            controller.async_movement.execute_move(msg["value"], msg["value"])
-        elif msg["direction"] == "BWD":
-            controller.async_movement.execute_move(-msg["value"], -msg["value"])
-        elif msg["direction"] == "RIGHT":
-            controller.async_movement.execute_move(-msg["value"], msg["value"])
-        elif msg["direction"] == "LEFT":
-            controller.async_movement.execute_move(msg["value"], -msg["value"])
+        controller.async_movement.execute_move(msg["value"], msg["movement"])
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]

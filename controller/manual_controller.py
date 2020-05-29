@@ -79,13 +79,13 @@ if __name__ == "__main__":
             msg["direction"] = "RIGHT"
 
         if keyboard.is_pressed('i'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "FWD", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": 250}
         elif keyboard.is_pressed('k'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "BWD", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": 250}
         elif keyboard.is_pressed('l'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "RIGHT", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 250}
         elif keyboard.is_pressed('j'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction": "LEFT", "value": 250}
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 250}
 
         if keyboard.is_pressed('h'):
             msg = {"type": "HALT_OVERRIDE"}

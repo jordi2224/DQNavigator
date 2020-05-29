@@ -11,7 +11,7 @@ def counter_loop():
     previous_state_left = GPIO.input(LTH2)
     previous_state_right = GPIO.input(RTH2)
 
-    while (True):
+    while True:
         new_state_left = GPIO.input(LTH2)
         new_state_right = GPIO.input(RTH2)
 
