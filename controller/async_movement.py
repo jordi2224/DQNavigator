@@ -60,7 +60,7 @@ def execute_rotation(value):
 
 
 def movement_execution_thread(value, movement_type):
-    if type == "ROTATION":
+    if movement_type == "ROTATION":
         execute_rotation(value)
     """starting_pos_L, starting_pos_R = pos.get_track_pos()
     if debug:
