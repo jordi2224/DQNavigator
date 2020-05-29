@@ -19,10 +19,12 @@ def self_destruct():
 def execute_rotation(value):
     global current_X, current_Y, current_theta
     print("Starting a rotation maneuver")
+    initial_theta = current_theta
     print("Starting theta is: ", current_theta, math.degrees(current_theta))
     starting_pos_L, starting_pos_R = pos.get_track_pos()
     end_pos_L = starting_pos_L + value
     end_pos_R = starting_pos_R - value
+
 
     L_done = False
     R_done = False
@@ -70,7 +72,7 @@ def execute_rotation(value):
 
     print("Movement loop is done")
     print("New theta is: ", current_theta, math.degrees(current_theta))
-
+    print("I think I moved: ", current_theta-initial_theta, math.degrees(current_theta-initial_theta))
     # Applying this to position
 
 
