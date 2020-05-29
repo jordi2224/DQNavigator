@@ -5,7 +5,7 @@ from multiprocessing import Process, Value
 counter_L = Value('q')
 counter_R = Value('q')
 
-rotational_calibration = 196.0
+rotational_calibration = 212.0
 linear_calibration = 1.0
 
 def event_left(sig):
@@ -14,7 +14,7 @@ def event_left(sig):
             counter_L.value -= 1
         else:
             counter_L.value += 1
-    else:
+    else:wda
         if GPIO.input(LTH2):
             counter_L.value += 1
         else:
