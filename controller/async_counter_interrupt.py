@@ -37,7 +37,6 @@ def get_track_pos():
     return counter_L.value, counter_R.value
 
 
-
 def setup():
     GPIO.add_event_detect(LTH1, GPIO.BOTH, callback=event_left)
     GPIO.add_event_detect(RTH1, GPIO.BOTH, callback=event_right)
@@ -46,6 +45,6 @@ def setup():
         time.sleep(10)
         print(get_track_pos())
 
+
 track_position_process = Process(target=setup, )
 track_position_process.start()
-
