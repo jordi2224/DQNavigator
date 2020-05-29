@@ -27,6 +27,8 @@ def execute_rotation(value):
     L_done = False
     R_done = False
     print("Executing loop now")
+    current_pos_L, current_pos_R = pos.get_track_pos()
+    
     while not L_done or not R_done and not self_destruct():
         new_pos_L, new_pos_R = pos.get_track_pos()
         # Calculating displacement
