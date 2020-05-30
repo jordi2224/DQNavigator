@@ -12,7 +12,7 @@ motor_enable = True
 
 # Scan configuration
 sample_size = 600
-max_distance = 5000
+default_max_distance = 5000
 
 
 # Main execution function
@@ -91,6 +91,10 @@ def execute(msg, driver, dsize, conn):
         if request == "GET_SCAN":
             if driver is not None:
                 driver.connection.flush()
+                if "MAX_RANGE" in msg:
+                    max_distance = msg["MAX_RANGE"]
+                else:
+                    max_distance = default_max_distance
                 if "SAMPLE_SIZE" in msg:
                     points, x, y = driver.get_point_cloud(dsize, msg["SAMPLE_SIZE"], max_distance)
                 else:

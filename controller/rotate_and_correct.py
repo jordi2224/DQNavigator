@@ -36,7 +36,7 @@ def wait_for_msg(s, buff):
 
 
 def request_scan(s):
-    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 30000}).replace('\'', '\"') + END_STR
+    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 3000, "MAX_RANGE": 12000}).replace('\'', '\"') + END_STR
     s.send(request.encode('utf-8'))
 
 
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         x, y = receive_scan(s, buff)
 
         # Find walls
-        res_div = 4
+        res_div = 20
         initial_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
         initial_walls = translate_walls(initial_walls, offset_x, offset_y, res_div)
         print_walls(initial_walls, 2000, x, y)

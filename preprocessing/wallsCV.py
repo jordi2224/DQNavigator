@@ -3,6 +3,7 @@ import cv2
 from sklearn.cluster import DBSCAN
 from preprocessing.world import Wall
 import math
+import matplotlib.pyplot as plt
 
 
 def fix_line(x1, y1, x2, y2, x_shape, y_shape):
