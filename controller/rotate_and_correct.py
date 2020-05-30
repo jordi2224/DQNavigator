@@ -1,15 +1,16 @@
+import math
 import pickle
 import socket
 
 import numpy as np
-
+import matplotlib.pyplot as plt
 from controller.comm_definitions import *
 
-# PSEUDO CODE
+# PSEUDO CODEs
 
 
 # MAIN
-from preprocessing.wallsCV import doHoughTransform
+from preprocessing.wallsCV import doHoughTransform, translate_walls
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
@@ -35,7 +36,7 @@ def wait_for_msg(s, buff):
 
 
 def request_scan(s):
-    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN"}).replace('\'', '\"') + END_STR
+    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 30000}).replace('\'', '\"') + END_STR
     s.send(request.encode('utf-8'))
 
 
@@ -75,37 +76,56 @@ def receive_rotation_report(s, buff):
     return None, None
 
 
+def print_walls(walls, max_distance, x, y):
+    fig = plt.figure()
+    ax = fig.gca()
+    plt.axis([-max_distance, max_distance, -max_distance, max_distance])
+    for wall in walls:
+        plt.plot([wall.start_x, wall.end_x],
+                 [wall.start_y, wall.end_y], 'k-', lw=2, alpha=0.66)
+
+    ax.scatter(x, y, s=1)
+    plt.show()
+
+
 if __name__ == "__main__":
 
     # Establishing a connection to drone's TCP server
     s = get_socket(TCP_IP, TCP_PORT)
     buff = ''
 
-    # Scan request / Scan process
-    request_scan(s)
-    x, y = receive_scan(s, buff)
+    while 1:
+        # Scan request / Scan process
+        request_scan(s)
+        x, y = receive_scan(s, buff)
 
-    # Find walls
-    initial_walls, offset_x, offset_y = doHoughTransform(x, y, 8)
+        # Find walls
+        res_div = 4
+        initial_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
+        initial_walls = translate_walls(initial_walls, offset_x, offset_y, res_div)
+        print_walls(initial_walls, 2000, x, y)
 
-    for wall in initial_walls:
-        print(wall.rho, wall.theta)
+        print('\n')
+        if True:
+            rotation_message = START_STR + str(
+                {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 340}).replace('\'', '\"') + END_STR
+            s.send(rotation_message.encode('utf-8'))
 
-    rotation_message = START_STR + str({"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 340}).replace('\'', '\"') + END_STR
-    s.send(rotation_message.encode('utf-8'))
+            old_theta, new_theta = receive_rotation_report(s, buff)
+            delta_theta = new_theta - old_theta
+            print("Delta theta: ", delta_theta)
 
-    old_theta, new_theta = receive_rotation_report(s, buff)
-    delta_theta = new_theta - old_theta
-    print("\n\nDelta theta: ", delta_theta)
-    print("\n\n")
+        print("\n")
+
+
     # New scan!
     request_scan(s)
     x, y = receive_scan(s, buff)
 
     # Find walls
-    new_walls, offset_x, offset_y = doHoughTransform(x, y, 8)
-    for wall in new_walls:
-        print(wall.rho, wall.theta)
+    new_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
+    new_walls = translate_walls(new_walls, offset_x, offset_y, res_div)
+    print_walls(new_walls, 2000, x, y)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))

@@ -91,7 +91,10 @@ def execute(msg, driver, dsize, conn):
         if request == "GET_SCAN":
             if driver is not None:
                 driver.connection.flush()
-                points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
+                if "SAMPLE_SIZE" in msg:
+                    points, x, y = driver.get_point_cloud(dsize, msg["SAMPLE_SIZE"], max_distance)
+                else:
+                    points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
 
                 print("Sending scan data")
                 serialized_p = pickle.dumps(points, protocol=0)

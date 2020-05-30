@@ -32,7 +32,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if counter == 50:
+        if counter == 10:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")

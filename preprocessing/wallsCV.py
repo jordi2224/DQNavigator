@@ -6,8 +6,15 @@ import math
 
 
 def fix_line(x1, y1, x2, y2, x_shape, y_shape):
-    tan = (y2 - y1) / (x2 - x1)
-    i_tan = (x2 - x1) / (y2 - y1)
+    if x2 != x1:
+        tan = (y2 - y1) / (x2 - x1)
+    else:
+        tan = 999999
+    if y2 != y1:
+        i_tan = (x2 - x1) / (y2 - y1)
+    else:
+        i_tan = 999999
+
     if x1 < 0:
         y1 = int(y1 - x1 * tan)
         x1 = 0
@@ -115,7 +122,7 @@ def doHoughTransform(x, y, resolution_div):
 
     im = np.uint8(im)
 
-    lines = cv2.HoughLines(np.uint8(im), 1, np.pi / 600, 30)
+    lines = cv2.HoughLines(np.uint8(im), 1, np.pi / 900, 30)
     lines = remove_redundant_lines(lines)
 
     for line in lines:
