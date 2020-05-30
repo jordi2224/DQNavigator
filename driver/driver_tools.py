@@ -72,7 +72,6 @@ def parse_cabins(cabins, start_angle, delta_angle, do_compensation=0):
 
 
 def get_points(max_distance, samples):
-    print(max_distance)
     points = []
     for i in range(len(samples)):
         sample = samples[i]

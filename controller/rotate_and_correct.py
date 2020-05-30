@@ -1,6 +1,7 @@
 import math
 import pickle
 import socket
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -85,6 +86,7 @@ def print_walls(walls, max_distance, x, y):
                  [wall.start_y, wall.end_y], 'k-', lw=2, alpha=0.66)
 
     ax.scatter(x, y, s=1)
+    ax.axis('equal')
     plt.show()
 
 
@@ -107,6 +109,7 @@ if __name__ == "__main__":
 
         print('\n')
         if True:
+
             rotation_message = START_STR + str(
                 {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 340}).replace('\'', '\"') + END_STR
             s.send(rotation_message.encode('utf-8'))
@@ -114,6 +117,7 @@ if __name__ == "__main__":
             old_theta, new_theta = receive_rotation_report(s, buff)
             delta_theta = new_theta - old_theta
             print("Delta theta: ", delta_theta)
+            time.sleep(1)
 
         print("\n")
 
@@ -125,7 +129,7 @@ if __name__ == "__main__":
     # Find walls
     new_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
     new_walls = translate_walls(new_walls, offset_x, offset_y, res_div)
-    print_walls(new_walls, 2000, x, y)
+    print_walls(new_walls, 5000, x, y)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
