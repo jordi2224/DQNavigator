@@ -15,6 +15,7 @@ current_theta = 0
 
 pos.setup()
 
+
 def self_destruct():
     return self_destruct_flag
 
@@ -75,7 +76,7 @@ def execute_rotation(value, connection):
                 R_done = True
 
     print("Movement loop is done")
-    print((current_pos_L-starting_pos_L, current_pos_R-starting_pos_R))
+    print((current_pos_L - starting_pos_L, current_pos_R - starting_pos_R))
     report = {"type": "MOVEMENT_ORDER_REPORT", "initial_theta": initial_theta, "current_theta": current_theta,
               "x": current_X, "y": current_Y}
     report_message = START_STR + str(report).replace('\'', '\"') + END_STR

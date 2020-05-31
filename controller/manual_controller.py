@@ -5,7 +5,6 @@ import time
 from controller.comm_definitions import *
 import matplotlib.pyplot as plt
 import numpy as np
-import preprocessing.wallsCV as CV
 
 fig = plt.figure()
 ax = fig.gca()
@@ -82,7 +81,7 @@ if __name__ == "__main__":
             msg["type"] = "MANUAL_MOVE_ORDER"
             msg["direction"] = "RIGHT"
 
-        x = 1350
+        x = 350
         if keyboard.is_pressed('i'):
             msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": x}
         elif keyboard.is_pressed('k'):

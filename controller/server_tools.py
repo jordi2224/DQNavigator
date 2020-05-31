@@ -107,8 +107,9 @@ def execute(msg, driver, dsize, conn):
                 conn.send(DATA_START_STR.encode('utf-8') + serialized_p + DATA_END_STR.encode('utf-8'))
 
             else:
-                res = START_STR + TYPE_STR + "\"ERROR\", \"severity\": 1, \"message\" : \"No driver is running at the " \
-                                             "moment, is the LIDAR connected?\"}" + END_STR
+                res = {"type": "ERROR", "severity": 1,
+                       "message": "No driver is running at the moment, is the LIDAR connected?"}
+                res = START_STR + str(res).replace('\'', '\"') + END_STR
                 conn.send(res.encode('utf-8'))
                 print("Controller attempted to retrieve LIDAR data but to driver is running")
 
