@@ -13,7 +13,7 @@ current_X = 0
 current_Y = 0
 current_theta = 0
 
-pos.setup()
+pos.setup('test')
 
 
 def self_destruct():
