@@ -27,6 +27,8 @@ def execute_rotation(value, connection):
     end_pos_L = starting_pos_L + value
     end_pos_R = starting_pos_R - value
 
+    pos.set_halt_target(end_pos_L, end_pos_R)
+
 
     L_done = False
     R_done = False
@@ -49,7 +51,7 @@ def execute_rotation(value, connection):
 
         current_pos_L = new_pos_L
         current_pos_R = new_pos_R
-
+        print(current_pos_L, current_pos_R)
         if value > 0:
             if current_pos_L < end_pos_L:
                 forward_left()
