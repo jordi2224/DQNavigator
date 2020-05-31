@@ -80,8 +80,8 @@ def set_halt_target(target_L, target_R):
     halt_target_flag.value = 1
     halt_target_secondary_flag_L.value = 0
     halt_target_secondary_flag_R.value = 0
-    halt_target_L.value = target_L
-    halt_target_R.value = target_R
+    halt_target_L.value = int(target_L)
+    halt_target_R.value = int(target_R)
 
 
 track_position_process = Process(target=setup, )
