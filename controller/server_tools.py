@@ -4,7 +4,7 @@ import subprocess
 import controller.async_movement
 from driver.TSFinalDriver import Driver
 from controller.comm_definitions import *
-from controller.async_counter_proto import *
+from controller.GPIOdefinitions import *
 
 # Default status configuration
 start_USB_off = False

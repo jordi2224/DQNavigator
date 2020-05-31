@@ -3,8 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="32475768-a82a-42b4-ba3f-81eb64a33d3d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.txt" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/async_counter_interrupt.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/async_counter_interrupt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/counter_proto.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/rotate_and_correct.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/rotate_and_correct.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver/driver_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver/driver_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/server_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/server_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/TSFinalDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver/TSFinalDriver.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +38,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Application Data" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TFG\dev\preprocessing" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.rotate_and_correct">
     <configuration name="async_movement" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -178,42 +187,42 @@
     </state>
     <state x="1059" y="274" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584349176502" />
     <state x="3090" y="259" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590242308969" />
-    <state width="2539" height="332" key="GridCell.Tab.0.bottom" timestamp="1590845390855">
+    <state width="2539" height="332" key="GridCell.Tab.0.bottom" timestamp="1590938160015">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590845390855" />
+    <state width="2539" height="332" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590938160015" />
     <state width="1259" height="258" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.center" timestamp="1590845390854">
+    <state width="2539" height="332" key="GridCell.Tab.0.center" timestamp="1590938160015">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590845390854" />
+    <state width="2539" height="332" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590938160015" />
     <state width="1259" height="258" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.left" timestamp="1590845390854">
+    <state width="2539" height="332" key="GridCell.Tab.0.left" timestamp="1590938160015">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590845390854" />
+    <state width="2539" height="332" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590938160015" />
     <state width="1259" height="258" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.right" timestamp="1590845390854">
+    <state width="2539" height="332" key="GridCell.Tab.0.right" timestamp="1590938160015">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590845390854" />
+    <state width="2539" height="332" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590938160015" />
     <state width="1259" height="258" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="348" key="GridCell.Tab.1.bottom" timestamp="1590834028971">
+    <state width="2539" height="348" key="GridCell.Tab.1.bottom" timestamp="1590925798693">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590834028971" />
-    <state width="2539" height="348" key="GridCell.Tab.1.center" timestamp="1590834028971">
+    <state width="2539" height="348" key="GridCell.Tab.1.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590925798693" />
+    <state width="2539" height="348" key="GridCell.Tab.1.center" timestamp="1590925798693">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590834028971" />
-    <state width="2539" height="348" key="GridCell.Tab.1.left" timestamp="1590834028971">
+    <state width="2539" height="348" key="GridCell.Tab.1.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590925798693" />
+    <state width="2539" height="348" key="GridCell.Tab.1.left" timestamp="1590925798693">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590834028970" />
-    <state width="2539" height="348" key="GridCell.Tab.1.right" timestamp="1590834028971">
+    <state width="2539" height="348" key="GridCell.Tab.1.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590925798693" />
+    <state width="2539" height="348" key="GridCell.Tab.1.right" timestamp="1590925798693">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590834028971" />
+    <state width="2539" height="348" key="GridCell.Tab.1.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590925798693" />
     <state x="992" y="236" key="MultipleFileMergeDialog" timestamp="1590259311698">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
@@ -232,6 +241,10 @@
     </state>
     <state x="1729" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590259298855" />
     <state x="3425" y="416" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590242678260" />
+    <state x="976" y="118" width="607" height="804" key="find.popup" timestamp="1590930181787">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="976" y="118" width="607" height="804" key="find.popup/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590930181787" />
     <state x="943" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590426076864">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>

@@ -3,18 +3,25 @@ import pickle
 import socket
 import time
 
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+
 from controller.comm_definitions import *
-
-# PSEUDO CODEs
-
+import scipy as sp
+import decimal
 
 # MAIN
 from preprocessing.wallsCV import doHoughTransform, translate_walls
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
+
+
+def drange(x, y, jump):
+    while x < y:
+        yield float(x)
+        x += decimal.Decimal(jump)
 
 
 def get_socket(TCP_IP, TCP_PORT):
@@ -37,7 +44,9 @@ def wait_for_msg(s, buff):
 
 
 def request_scan(s):
-    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 3000, "MAX_RANGE": 12000}).replace('\'', '\"') + END_STR
+    request = START_STR + str(
+        {"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 5000, "MAX_RANGE": 5000}).replace('\'',
+                                                                                                    '\"') + END_STR
     s.send(request.encode('utf-8'))
 
 
@@ -90,55 +99,183 @@ def print_walls(walls, max_distance, x, y):
     plt.show()
 
 
-if __name__ == "__main__":
+def crush(x, y, resolution_div):
+    offset_x = np.min(x)
+    offset_y = np.min(y)
 
-    # Establishing a connection to drone's TCP server
-    s = get_socket(TCP_IP, TCP_PORT)
-    buff = ''
+    x_shape = int((np.max(x) - np.min(x)) // resolution_div)
+    y_shape = int((np.max(y) - np.min(y)) // resolution_div)
 
-    while 1:
-        # Scan request / Scan process
-        request_scan(s)
-        x, y = receive_scan(s, buff)
+    im = np.zeros((x_shape + 1, y_shape + 1), dtype='int')
+    for p in range(len(x)):
+        pixel_x = int((x[p] - offset_x) // resolution_div)
+        pixel_y = int((y[p] - offset_y) // resolution_div)
+        im[pixel_x, pixel_y] = 255
 
-        # Find walls
-        res_div = 20
-        initial_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
-        initial_walls = translate_walls(initial_walls, offset_x, offset_y, res_div)
-        print_walls(initial_walls, 2000, x, y)
+    return im, offset_x, offset_y
 
-        print('\n')
-        if True:
 
-            rotation_message = START_STR + str(
-                {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": 340}).replace('\'', '\"') + END_STR
-            s.send(rotation_message.encode('utf-8'))
+def rotate_image(mat, angle):
+    """
+    Rotates an image (angle in degrees) and expands image to avoid cropping
+    """
 
-            old_theta, new_theta = receive_rotation_report(s, buff)
-            delta_theta = new_theta - old_theta
-            print("Delta theta: ", delta_theta)
-            time.sleep(1)
+    height, width = mat.shape[:2]  # image shape has 3 dimensions
+    image_center = (
+        width / 2,
+        height / 2)  # getRotationMatrix2D needs coordinates in reverse order (width, height) compared to shape
 
-        print("\n")
+    rotation_mat = cv2.getRotationMatrix2D(image_center, angle, 1.)
 
+    # rotation calculates the cos and sin, taking absolutes of those.
+    abs_cos = abs(rotation_mat[0, 0])
+    abs_sin = abs(rotation_mat[0, 1])
+
+    # find the new width and height bounds
+    bound_w = int(height * abs_sin + width * abs_cos)
+    bound_h = int(height * abs_cos + width * abs_sin)
+
+    # subtract old image center (bringing image back to origo) and adding the new image center coordinates
+    rotation_mat[0, 2] += bound_w / 2 - image_center[0]
+    rotation_mat[1, 2] += bound_h / 2 - image_center[1]
+
+    # rotate image with the new bounds and translated rotation matrix
+    rotated_mat = cv2.warpAffine(mat, rotation_mat, (bound_w, bound_h))
+    return rotated_mat
+
+
+def clean_rotated_image(input_image):
+    zero_rows = np.where(input_image.any(axis=1))[0]
+    top = np.min(zero_rows)
+    bot = np.max(zero_rows)
+    zero_cols = np.where(input_image.any(axis=0))[0]
+    left = np.min(zero_cols)
+    right = np.max(zero_cols)
+
+    output_image = input_image[top:bot, left:right]
+    return output_image
+
+
+def find_rotation(reference_image, actual_image, do_gaussian=True):
+    if do_gaussian:
+        sigma_y = 0.5
+        sigma_x = 0.5
+        sigma = [sigma_y, sigma_x]
+
+        reference_image = sp.ndimage.filters.gaussian_filter(reference_image, sigma, mode='constant')
+        actual_image = sp.ndimage.filters.gaussian_filter(actual_image, sigma, mode='constant')
+
+    best_image = None
+    best_angle = None
+    best_diff = float('Inf')
+    for angle in list(drange(0, 45, 0.2)):
+        testing_image_1 = clean_rotated_image(rotate_image(actual_image.astype('float32'), angle))
+        testing_image_1 = np.array(cv2.resize(testing_image_1, (reference_image.shape[1], reference_image.shape[0])))
+
+        diff = np.sum(np.absolute(testing_image_1 - reference_image))
+
+        if diff < best_diff:
+            best_angle = angle
+            best_image = testing_image_1
+            best_diff = diff
+
+        testing_image_2 = clean_rotated_image(rotate_image(actual_image.astype('float32'), -angle))
+        testing_image_2 = np.array(cv2.resize(testing_image_2, (reference_image.shape[1], reference_image.shape[0])))
+
+        diff = np.sum(np.absolute(testing_image_2 - reference_image))
+
+        if diff < best_diff:
+            best_angle = -angle
+            best_image = testing_image_2
+            best_diff = diff
+
+    return best_angle, best_image
+
+
+calib = 212.0
+res_div = 40
+
+
+def do_correction(s, angle, expected_output):
+    t = time.time()
+    rot = math.radians(angle) * calib
+    print(rot)
+    rotation_message = START_STR + str(
+        {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
+         "value": rot}).replace('\'', '\"') + END_STR
+    s.send(rotation_message.encode('utf-8'))
+
+    old_theta, new_theta = receive_rotation_report(s, buff)
+    delta_theta = new_theta - old_theta
+    time.sleep(0.5)
 
     # New scan!
     request_scan(s)
     x, y = receive_scan(s, buff)
+    actual_output, _, _ = crush(x, y, res_div)
 
-    # Find walls
-    new_walls, offset_x, offset_y = doHoughTransform(x, y, res_div)
-    new_walls = translate_walls(new_walls, offset_x, offset_y, res_div)
-    print_walls(new_walls, 5000, x, y)
+    best_angle, match = find_rotation(expected_output.astype('float32'), actual_output)
+
+    rotation_message = START_STR + str(
+        {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
+         "value": math.radians(-best_angle * 0.75) * calib}).replace('\'', '\"') + END_STR
+    s.send(rotation_message.encode('utf-8'))
+
+
+def precise_rotation_maneuver(s, angle):
+    errors = []
+    error = float('Inf')
+
+    print("Doing the initial scan")
+    # Get the expected final output
+    # Scan request / Scan process
+    request_scan(s)
+    x, y = receive_scan(s, buff)
+    im, _, _ = crush(x, y, res_div)
+
+    expected_output = rotate_image(im.astype('float32'), -angle)
+    expected_output[expected_output >= 127] = 255
+    expected_output[expected_output < 127] = 0
+    expected_output = clean_rotated_image(expected_output)
+
+    print("Reference generated")
+    print("Will attempt to turn by: ", angle)
+    # Try_to_rotate_by_angle(expected_output, angle)
+    do_correction(s, angle, expected_output)
+    time.sleep(0.5)
+    print("Turn complete, now evaluating")
+
+    # Get_the_new_angle()
+    request_scan(s)
+    x, y = receive_scan(s, buff)
+    im, _, _ = crush(x, y, res_div)
+    error, _ = find_rotation(expected_output.astype('float32'), im.astype('float32'))
+
+    while abs(error) > 3:
+        print("Error now seems: ", error)
+        print("Will attempt to turn by: ", error)
+        # Try_to_rotate_by_angle(expected_output, angle)
+        do_correction(s, -error * 0.9, expected_output)
+        time.sleep(0.5)
+
+        request_scan(s)
+        x, y = receive_scan(s, buff)
+        im, _, _ = crush(x, y, res_div)
+        error, _ = find_rotation(expected_output.astype('float32'), im.astype('float32'))
+
+    # Try_to_rotate_by_angle()...
+    # ...
+
+
+if __name__ == "__main__":
+    # Establishing a connection to drone's TCP server
+    s = get_socket(TCP_IP, TCP_PORT)
+    buff = ''
+
+    precise_rotation_maneuver(s, 90)
+    precise_rotation_maneuver(s, 90)
+    precise_rotation_maneuver(s, 90)
+    precise_rotation_maneuver(s, 90)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
-# FIND THE WALLS IN THIS NEW SCAN
-
-# COMPARE TO EXPECTED POSITION OF WALLS
-
-# FIND IF WALLS SEEM TO MATCH (COMPARE ANGULAR DISTANCES OF WALLS SIMILARLY FAR??)
-
-# EXECUTE ANOTHER CONTROLLED MOVE ORDER TO ATTEMPT TO CORRECT THIS
-
-# JUMP TO LOOP

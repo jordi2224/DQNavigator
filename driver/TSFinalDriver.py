@@ -3,6 +3,7 @@ import serial
 import sys
 import time
 from driver.driver_tools import *
+from threading import Thread
 
 
 def _b2i(byte):
@@ -10,8 +11,15 @@ def _b2i(byte):
     return byte if int(sys.version[0]) == 3 else ord(byte)
 
 
-class Driver:
+def cleanup(driver, data_size):
+    while True:
+        while driver.connection.in_waiting > data_size * 2000:
+            driver.connection.read(10 * data_size)
 
+        time.sleep(5)
+
+
+class Driver:
     current_mode = "OFF"
     data_size = 0
 
@@ -125,6 +133,11 @@ class Driver:
 
         self.current_mode = "EXPRESS"
         self.data_size = dsize
+
+        # Start a cleanup thread
+        self.cleanup_thread = Thread(target=cleanup, args=(self, self.data_size,))
+        self.cleanup_thread.start()
+
         return dsize
 
     def start_scan(self):
@@ -167,7 +180,7 @@ class Driver:
             while self.connection.in_waiting > self.data_size:
                 self.connection.read(self.data_size)
         else:
-            while self.connection.in_waiting > data_size*1000:
+            while self.connection.in_waiting > data_size * 1000:
                 self.connection.read(data_size)
         while self.connection.in_waiting < data_size:
             pass
