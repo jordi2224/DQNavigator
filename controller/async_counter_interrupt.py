@@ -38,7 +38,6 @@ def event_left(sig):
                 halt_target_secondary_flag_L.value = 0
                 halt_target_secondary_flag_R.value = 0
 
-    print('.', end='')
 
 def event_right(sig):
     global counter_R

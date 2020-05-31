@@ -1,6 +1,4 @@
 import socket
-
-from controller.async_counter_interrupt import setup
 from controller.server_tools import *
 from controller.GPIOdefinitions import *
 import time
@@ -80,7 +78,6 @@ if __name__ == "__main__":
 
     # Setup GPIO pins
     auto_setup()
-    setup()
 
     # Start the TCP server and wait for first connection
     TCP_IP = '192.168.1.177'
