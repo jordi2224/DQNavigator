@@ -66,7 +66,7 @@ def get_track_pos():
     return counter_L.value, counter_R.value
 
 
-def setup(tst):
+def setup():
     halt_target_flag.value = 0
     halt_target_secondary_flag_L.value = 0
     halt_target_secondary_flag_R.value = 0
