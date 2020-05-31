@@ -83,5 +83,3 @@ def set_halt_target(target_L, target_R):
     halt_target_R.value = int(target_R)
 
 
-track_position_process = Process(target=setup, )
-track_position_process.start()

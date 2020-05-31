@@ -13,6 +13,7 @@ current_X = 0
 current_Y = 0
 current_theta = 0
 
+pos.setup()
 
 def self_destruct():
     return self_destruct_flag
