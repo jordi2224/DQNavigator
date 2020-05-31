@@ -1,10 +1,11 @@
-import pickle
 import os
+import pickle
 import subprocess
+
 import controller.async_movement
-from driver.TSFinalDriver import Driver
-from controller.comm_definitions import *
 from controller.GPIOdefinitions import *
+from controller.comm_definitions import *
+from driver.TSFinalDriver import Driver
 
 # Default status configuration
 start_USB_off = False
@@ -17,17 +18,19 @@ default_max_distance = 5000
 
 # Main execution function
 def execute(msg, driver, dsize, conn):
-    # Decision making and execution function
-    # May be ran asynchronously in its own thread
-    # Multithreading execution is imposed by some orders since they would fatally block the control loop's execution
-    #
-    # Input parameters:
-    # msg: message, dict containing order type and parameters for execution
-    # driver: LIDAR driver object. May be None if the sensor was not plugged in when initialized
-    # dsize: LIDAR data size
-    # conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
+    """
+    Decision making and execution function
+    May be ran asynchronously in its own thread
+    Multithreading execution is imposed by some orders since they would fatally block the control loop's execution
 
-    global motor_enable, sample_size, max_distance
+    Input parameters:
+    msg: message, dict containing order type and parameters for execution
+    driver: LIDAR driver object. May be None if the sensor was not plugged in when initialized
+    dsize: LIDAR data size
+    conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
+    """
+    global motor_enable, sample_size
+
     if msg["type"] == "HALT_OVERRIDE":
         controller.async_movement.override_halt()
         halt()
@@ -118,7 +121,8 @@ def execute(msg, driver, dsize, conn):
 
 
 def start_driver():
-    # Attempts to create a driver object for A1 LIDAR
+    """Attempts to create a driver object for A1 LIDAR"""
+
     # Get kernel message buffer (there might be a more elegant way but this is very *very* fast)
     s = subprocess.check_output(['dmesg'])
     s = s.split(b'\n')

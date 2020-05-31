@@ -1,10 +1,12 @@
 import pickle
 import socket
-import keyboard
 import time
-from controller.comm_definitions import *
+
+import keyboard
 import matplotlib.pyplot as plt
 import numpy as np
+
+from controller.comm_definitions import *
 
 fig = plt.figure()
 ax = fig.gca()
@@ -13,7 +15,6 @@ plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
-
 
 if __name__ == "__main__":
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

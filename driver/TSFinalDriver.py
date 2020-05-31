@@ -12,8 +12,11 @@ def _b2i(byte):
 
 
 def cleanup(driver, data_size):
+    print("Buffer cleanup thread started")
     while True:
-        while driver.connection.in_waiting > data_size * 2000:
+        if driver.connection.in_waiting > data_size * 1000:
+            print("cleaning")
+        while driver.connection.in_waiting > data_size * 1000:
             driver.connection.read(10 * data_size)
 
         time.sleep(5)

@@ -1,18 +1,17 @@
+import decimal
 import math
 import pickle
 import socket
 import time
 
 import cv2
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import scipy as sp
 
 from controller.comm_definitions import *
-import scipy as sp
-import decimal
 
 # MAIN
-from preprocessing.wallsCV import doHoughTransform, translate_walls
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420

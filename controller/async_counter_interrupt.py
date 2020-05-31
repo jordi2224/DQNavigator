@@ -1,6 +1,8 @@
+from multiprocessing import Value
+
 import RPi.GPIO as GPIO
+
 from controller.GPIOdefinitions import *
-from multiprocessing import Process, Value
 
 """
 Interrupt base track position tracking
@@ -60,7 +62,6 @@ def event_left(sig):
 
             # Check if the other target was also reached
             if halt_target_secondary_flag_R.value:
-
                 # Halt both tracks and clear flags; we are done
                 halt()
                 halt_target_flag.value = 0
@@ -97,7 +98,6 @@ def event_right(sig):
 
             # Check if the other target was also reached
             if halt_target_secondary_flag_L.value:
-
                 # Halt both tracks and clear flags; we are done
                 halt()
                 halt_target_flag.value = 0

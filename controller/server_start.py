@@ -1,21 +1,23 @@
 import socket
-from controller.server_tools import *
-from controller.GPIOdefinitions import *
 import time
 from multiprocessing import Process, Queue
 
+from controller.server_tools import *
+
 
 def control_loop(queue, driver_object, lidar_data_size, connection_object):
-    # Control loop
-    # This loop is meant to be executed in a different process from the TCP server
-    # Receives, validates and executes messages coming from the queue object
-    #
-    # Input parameters:
-    # queue: multiprocessing.Queue object. Only expected to read, not write
-    # driver_object: LIDAR driver object. Can be None if LIDAR is not plugged in or somehow unavailable
-    # lidar_data_size: size of data that the driver expects from sensor, to be removes in future versions TODO
-    # connection_object: connection object with controller. Needed to send replies.
-    # DO NOT READ FROM IT OTHERWISE INPUT BUFFER MIGHT GET CORRUPTED!!!
+    """
+    Control loop
+    This loop is meant to be executed in a different process from the TCP server
+    Receives, validates and executes messages coming from the queue object
+
+    Input parameters:
+    queue: multiprocessing.Queue object. Only expected to read, not write
+    driver_object: LIDAR driver object. Can be None if LIDAR is not plugged in or somehow unavailable
+    lidar_data_size: size of data that the driver expects from sensor, to be removes in future versions TODO
+    connection_object: connection object with controller. Needed to send replies.
+    DO NOT READ FROM IT OTHERWISE INPUT BUFFER MIGHT GET CORRUPTED!!!
+    """
 
     print('Control loop started')
     message = None
@@ -58,9 +60,11 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
 
 
 if __name__ == "__main__":
-    # Main server loop
-    # Maintains a TCP server on 192.168.1.177:420
-    # Feed incoming messages to control loop
+    """
+    Main server loop
+    Maintains a TCP server on 192.168.1.177:420
+    Feed incoming messages to control loop
+    """
 
     # Check configuration to determine initial USB power status
     if start_USB_off:
