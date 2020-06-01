@@ -10,7 +10,7 @@ from controller.comm_definitions import *
 
 fig = plt.figure()
 ax = fig.gca()
-max_distance = 2000
+max_distance = 5000
 plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 
 TCP_IP = '192.168.1.177'
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))
     buff = ''
-    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN"}).replace('\'', '\"') + END_STR
+    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 5000, "MAX_RANGE": 5000}).replace('\'', '\"') + END_STR
     s.send(request.encode('utf-8'))
     s.settimeout(0.1)
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if counter == 10:
+        if counter == 5:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")

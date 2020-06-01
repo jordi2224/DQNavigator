@@ -102,11 +102,85 @@ def __execute_rotation(value, connection, quiet=True):
     report = {"type": "MOVEMENT_ORDER_REPORT", "initial_theta": initial_theta, "current_theta": current_theta,
               "x": current_X, "y": current_Y}
     report_message = START_STR + str(report).replace('\'', '\"') + END_STR
-    connection.send(report_message.encode('utf-8'))
+    try:
+        connection.send(report_message.encode('utf-8'))
+    except BrokenPipeError:
+        if not quiet:
+            print("Pipe was broken when attempting to send a report")
 
 
-def __execute_linear(value, connection):
-    pass
+def __execute_linear(value, connection, quiet=True):
+    """
+    PRIVATE
+    Execute a linear maneuver
+    This function is meant to be ran asynchronously by 'execute_move()'
+    :param value:       step count for maneuver
+    :param connection:  connection object to send report back to controller
+    """
+    if not quiet:
+        print("Starting a rotation maneuver")
+        print("Starting theta is: ", current_theta, math.degrees(current_theta))
+    starting_pos_L, starting_pos_R = pos.get_track_pos()
+    end_pos_L = starting_pos_L + value
+    end_pos_R = starting_pos_R + value
+
+    # Set a halt target for interrupt based halting
+    pos.set_halt_target(end_pos_L, end_pos_R)
+
+    # Set individual track flags down
+    L_done = False
+    R_done = False
+    if not quiet:
+        print("Executing loop now")
+    current_pos_L, current_pos_R = pos.get_track_pos()
+    # Set displacement counter to 0
+    total_lin = 0
+    total_rot = 0
+    # Loop can also be halted by self destruct flag (manual emergency halt)
+    while not L_done or not R_done and not self_destruct():
+        # Get the most up to date position
+        new_pos_L, new_pos_R = pos.get_track_pos()
+
+        # Calculating displacement
+        sub_deltas = (new_pos_L - current_pos_L, new_pos_R - current_pos_R)
+        linear_delta = (sub_deltas[0] + sub_deltas[1]) / 2
+        rot_delta = (sub_deltas[0] - sub_deltas[1]) / 2
+        current_theta += rot_delta / pos.rotational_calibration
+        # TODO: calculate linear movement in this case. Should be a simple sin cos with theta
+
+        # Update displacement counters
+        total_lin += linear_delta
+        total_rot += rot_delta
+
+        # Check if tracks have reached the final position
+        current_pos_L = new_pos_L
+        current_pos_R = new_pos_R
+        if value > 0:
+            if current_pos_L < end_pos_L:
+                forward_left()
+            else:
+                halt_left()
+                L_done = True
+            if current_pos_R > end_pos_R:
+                reverse_right()
+            else:
+                halt_right()
+                R_done = True
+        else:
+            if current_pos_L > end_pos_L:
+                reverse_left()
+            else:
+                halt_left()
+                L_done = True
+            if current_pos_R < end_pos_R:
+                forward_right()
+            else:
+                halt_right()
+                R_done = True
+
+    if not quiet:
+        print("Movement loop is done")
+        print((current_pos_L - starting_pos_L, current_pos_R - starting_pos_R))
 
 
 def __movement_execution_target(value, movement_type, connection):

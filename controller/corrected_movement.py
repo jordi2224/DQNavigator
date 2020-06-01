@@ -158,8 +158,8 @@ def clean_rotated_image(input_image):
 
 def find_rotation(reference_image, actual_image, do_gaussian=True):
     if do_gaussian:
-        sigma_y = 1
-        sigma_x = 1
+        sigma_y = 2
+        sigma_x = 2
         sigma = [sigma_y, sigma_x]
 
         reference_image = sp.ndimage.filters.gaussian_filter(reference_image, sigma, mode='constant')
@@ -188,18 +188,29 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
             best_angle = -angle
             best_image = testing_image_2
             best_diff = diff
+    if abs(best_angle) > 15:
+        print("Angle: ", best_angle)
+        fig = plt.figure("Reference Image")
+        plt.ion()
+        plt.imshow(reference_image)
+        plt.show()
+
+        fig = plt.figure("Closest match")
+        plt.ioff()
+        plt.imshow(best_image)
+        plt.show()
 
     return best_angle, best_image
 
 
-calib = 212.0
-res_div = 60
+calib_rot = 190.0
+calib_lin = 1
+res_div = 30
 
 
 def do_correction(s, angle, expected_output):
     t = time.time()
-    rot = math.radians(angle) * calib
-    print(rot)
+    rot = math.radians(angle) * calib_rot
     rotation_message = START_STR + str(
         {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
          "value": rot}).replace('\'', '\"') + END_STR
@@ -218,7 +229,7 @@ def do_correction(s, angle, expected_output):
 
     rotation_message = START_STR + str(
         {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
-         "value": math.radians(-best_angle * 0.5) * calib}).replace('\'', '\"') + END_STR
+         "value": math.radians(-best_angle * 0.5) * calib_rot}).replace('\'', '\"') + END_STR
     s.send(rotation_message.encode('utf-8'))
 
 
@@ -226,7 +237,7 @@ def precise_rotation_maneuver(s, angle):
     errors = []
     error = float('Inf')
 
-    print("Doing the initial scan")
+    print("Starting auto-correcting turn maneuver")
     # Get the expected final output
     # Scan request / Scan process
     request_scan(s)
@@ -238,12 +249,9 @@ def precise_rotation_maneuver(s, angle):
     expected_output[expected_output < 127] = 0
     expected_output = clean_rotated_image(expected_output)
 
-    print("Reference generated")
-    print("Will attempt to turn by: ", angle)
     # Try_to_rotate_by_angle(expected_output, angle)
     do_correction(s, angle, expected_output)
     time.sleep(0.5)
-    print("Turn complete, now evaluating")
 
     # Get_the_new_angle()
     request_scan(s)
@@ -251,11 +259,10 @@ def precise_rotation_maneuver(s, angle):
     im, _, _ = crush(x, y, res_div)
     error, _ = find_rotation(expected_output.astype('float32'), im.astype('float32'))
 
-    while abs(error) > 3:
-        print("Error now seems: ", error)
-        print("Will attempt to turn by: ", error)
+    while abs(error) > 5:
+        print(error)
         # Try_to_rotate_by_angle(expected_output, angle)
-        do_correction(s, -error * 0.9, expected_output)
+        do_correction(s, -error * 0.8, expected_output)
         time.sleep(0.5)
 
         request_scan(s)
@@ -263,19 +270,31 @@ def precise_rotation_maneuver(s, angle):
         im, _, _ = crush(x, y, res_div)
         error, _ = find_rotation(expected_output.astype('float32'), im.astype('float32'))
 
-    # Try_to_rotate_by_angle()...
-    # ...
+    print("Error is bellow acceptable threshold, turn done. Error: ", error)
 
+
+def precise_linear_maneuver(s, lin):
+    print("Starting auto-correcting linear maneuver")
+    # Get the expected final output
+    # Scan request / Scan process
+    request_scan(s)
+    x, y = receive_scan(s, buff)
+    im, _, _ = crush(x, y, res_div)
+
+    # TODO: get the expected output
+
+    # Send a move order
+    rotation_message = START_STR + str(
+        {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR",
+         "value": lin*calib_lin}).replace('\'', '\"') + END_STR
+    s.send(rotation_message.encode('utf-8'))
 
 if __name__ == "__main__":
     # Establishing a connection to drone's TCP server
     s = get_socket(TCP_IP, TCP_PORT)
     buff = ''
 
-    precise_rotation_maneuver(s, 90)
-    precise_rotation_maneuver(s, 90)
-    precise_rotation_maneuver(s, 90)
-    precise_rotation_maneuver(s, 90)
+    precise_linear_maneuver(s, 1000)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
