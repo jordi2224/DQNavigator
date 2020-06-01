@@ -29,6 +29,7 @@ STOP_BYTE = b'\x25'
 
 angle_offset = 10
 
+
 def prepare_payload(cmd_type, payload):
     checksum = 0
     checksum = checksum ^ ord(SYNC_BYTE)
@@ -59,14 +60,14 @@ def parse_cabins(cabins, start_angle, delta_angle, do_compensation=0):
             else:
                 dt2 = (dt2 & 31)
 
-            angle += delta_angle / 32.0 + angle_offset
+            angle += delta_angle / 32.0
             points.append((math.radians((angle + dt1 / 32.0) % 360.0), distance1))
-            angle += delta_angle / 32.0 + angle_offset
+            angle += delta_angle / 32.0
             points.append((math.radians((angle + dt2 / 32.0) % 360.0), distance2))
         else:
-            angle += delta_angle / 32.0 + angle_offset
+            angle += delta_angle / 32.0
             points.append((math.radians(angle % 360.0), distance1))
-            angle += delta_angle / 32.0 + angle_offset
+            angle += delta_angle / 32.0
             points.append((math.radians(angle % 360.0), distance2))
 
     return points
@@ -77,8 +78,8 @@ def get_points(max_distance, samples):
     for i in range(len(samples)):
         sample = samples[i]
         if sample[1] < max_distance and sample[1] != 0.0:
-            y = (math.cos(sample[0]) * sample[1])
-            x = (math.sin(sample[0]) * sample[1])
+            y = (math.cos(sample[0] + angle_offset) * sample[1])
+            x = (math.sin(sample[0] + angle_offset) * sample[1])
 
             points.append((x, y))
     return points
