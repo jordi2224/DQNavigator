@@ -121,7 +121,7 @@ def __execute_linear(value, connection, quiet=True):
 
     # Get the initial position of drone and tracks
     initial_theta = current_theta
-    
+
     if not quiet:
         print("Starting a linear maneuver")
         print("Starting theta is: ", current_theta, math.degrees(current_theta))
@@ -166,8 +166,8 @@ def __execute_linear(value, connection, quiet=True):
             else:
                 halt_left()
                 L_done = True
-            if current_pos_R > end_pos_R:
-                reverse_right()
+            if current_pos_R < end_pos_R:
+                forward_right()
             else:
                 halt_right()
                 R_done = True
@@ -177,8 +177,8 @@ def __execute_linear(value, connection, quiet=True):
             else:
                 halt_left()
                 L_done = True
-            if current_pos_R < end_pos_R:
-                forward_right()
+            if current_pos_R > end_pos_R:
+                reverse_right()
             else:
                 halt_right()
                 R_done = True
