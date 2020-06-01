@@ -45,7 +45,7 @@ def control_loop(queue, disconnect_flag, driver_object, lidar_data_size, connect
 
         # Only execute messages if no other messages are available in queue
         else:  # Command execution
-            if message is not None and disconnect_flag.value:
+            if message is not None and not disconnect_flag.value:
                 print(message)
                 # Send to execution function
                 try:
@@ -134,6 +134,7 @@ if __name__ == "__main__":
             print('Connection address:', address)
             q.put("CONN_UPDATE")
             q.put(conn)
+            broken_pipe_flag.value = False
 
         # Check whether a complete message is available for execution
         # This is done by checking if a header and footer are both available in the buffer
