@@ -117,6 +117,11 @@ def __execute_linear(value, connection, quiet=True):
     :param value:       step count for maneuver
     :param connection:  connection object to send report back to controller
     """
+    global current_X, current_Y, current_theta
+
+    # Get the initial position of drone and tracks
+    initial_theta = current_theta
+    
     if not quiet:
         print("Starting a linear maneuver")
         print("Starting theta is: ", current_theta, math.degrees(current_theta))
