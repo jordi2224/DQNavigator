@@ -118,7 +118,7 @@ def __execute_linear(value, connection, quiet=True):
     :param connection:  connection object to send report back to controller
     """
     if not quiet:
-        print("Starting a rotation maneuver")
+        print("Starting a linear maneuver")
         print("Starting theta is: ", current_theta, math.degrees(current_theta))
     starting_pos_L, starting_pos_R = pos.get_track_pos()
     end_pos_L = starting_pos_L + value
@@ -191,7 +191,7 @@ def __movement_execution_target(value, movement_type, connection):
     """
     if movement_type == "ROTATION":
         __execute_rotation(value, connection)
-    elif movement_type == "LINAR":
+    elif movement_type == "LINEAR":
         __execute_linear(value, connection)
 
 
