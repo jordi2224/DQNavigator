@@ -204,7 +204,7 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
 
 
 calib_rot = 190.0
-calib_lin = 1
+calib_lin = 0.65
 res_div = 30
 
 
@@ -294,7 +294,11 @@ if __name__ == "__main__":
     s = get_socket(TCP_IP, TCP_PORT)
     buff = ''
 
-    precise_linear_maneuver(s, 1000)
+    while True:
+        precise_linear_maneuver(s, 1000)
+        time.sleep(1)
+        precise_linear_maneuver(s, -1000)
+        time.sleep(1)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
