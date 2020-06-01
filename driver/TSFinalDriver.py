@@ -170,7 +170,7 @@ class Driver:
         while (self.connection.in_waiting > 5) and (i < MAX_SAMPLES_PER_SCAN):
             bytes_in = self.connection.read(5)
             quality = bytes_in[0] >> 2
-            angle = (((bytes_in[1] >> 1) + (bytes_in[2] << 7)) / 64.0) + angle_offset
+            angle = (((bytes_in[1] >> 1) + (bytes_in[2] << 7)) / 64.0)
             distance = (bytes_in[3] + (bytes_in[4] << 8)) / 4.0
             samples.append((math.radians(angle), distance))
             i += 1
