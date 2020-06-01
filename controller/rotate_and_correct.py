@@ -8,6 +8,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy as sp
+import scipy.ndimage
 
 from controller.comm_definitions import *
 
@@ -157,8 +158,8 @@ def clean_rotated_image(input_image):
 
 def find_rotation(reference_image, actual_image, do_gaussian=True):
     if do_gaussian:
-        sigma_y = 0.5
-        sigma_x = 0.5
+        sigma_y = 1
+        sigma_x = 1
         sigma = [sigma_y, sigma_x]
 
         reference_image = sp.ndimage.filters.gaussian_filter(reference_image, sigma, mode='constant')
@@ -192,7 +193,7 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
 
 
 calib = 212.0
-res_div = 40
+res_div = 60
 
 
 def do_correction(s, angle, expected_output):
@@ -217,7 +218,7 @@ def do_correction(s, angle, expected_output):
 
     rotation_message = START_STR + str(
         {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
-         "value": math.radians(-best_angle * 0.75) * calib}).replace('\'', '\"') + END_STR
+         "value": math.radians(-best_angle * 0.5) * calib}).replace('\'', '\"') + END_STR
     s.send(rotation_message.encode('utf-8'))
 
 

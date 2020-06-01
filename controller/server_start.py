@@ -1,11 +1,11 @@
 import socket
 import time
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Value
 
 from controller.server_tools import *
 
 
-def control_loop(queue, driver_object, lidar_data_size, connection_object):
+def control_loop(queue, disconnect_flag, driver_object, lidar_data_size, connection_object):
     """
     Control loop
     This loop is meant to be executed in a different process from the TCP server
@@ -45,14 +45,18 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
 
         # Only execute messages if no other messages are available in queue
         else:  # Command execution
-            if message is not None:
+            if message is not None and disconnect_flag.value:
                 print(message)
                 # Send to execution function
-                execute(message, driver_object, lidar_data_size, connection_object)
-                if message["type"] == "MANUAL_MOVE_ORDER":
-                    current_manual_order_t = time.time()
-                    enable_auto_halting = True
-                message = None
+                try:
+                    execute(message, driver_object, lidar_data_size, connection_object)
+                    if message["type"] == "MANUAL_MOVE_ORDER":
+                        current_manual_order_t = time.time()
+                        enable_auto_halting = True
+                    message = None
+                except BrokenPipeError:
+                    print("Lost connection on send, requesting server to establish a new one")
+                    disconnect_flag.value = True
 
         if time.time() - current_manual_order_t > max_time_delay and enable_auto_halting:
             halt()
@@ -101,11 +105,22 @@ if __name__ == "__main__":
     # Queue q is used to send messages to control loop
     # Messages are validated by server loop for headers and footers but not for format
     q = Queue()
-    p = Process(target=control_loop, args=(q, driver, dsize, conn,))
+    broken_pipe_flag = Value('b')
+    broken_pipe_flag.value = False
+    p = Process(target=control_loop, args=(q, broken_pipe_flag, driver, dsize, conn,))
     p.start()
 
     print('Connection address:', address)
     while True:
+        if broken_pipe_flag.value:
+            print('Connection to: ', address, ' was lost, listening at TCP: ', TCP_IP, ':', TCP_PORT)
+            s.listen(1)
+            conn, address = s.accept()
+            print('Connection address:', address)
+            q.put("CONN_UPDATE")
+            q.put(conn)
+            broken_pipe_flag.value = False
+
         # If the connection becomes unavailable we try to accept a new one
         try:
             buff += conn.recv(BUFFER_SIZE).decode('utf-8')
