@@ -187,6 +187,15 @@ def __execute_linear(value, connection, quiet=True):
         print("Movement loop is done")
         print((current_pos_L - starting_pos_L, current_pos_R - starting_pos_R))
 
+    report = {"type": "MOVEMENT_ORDER_REPORT", "initial_theta": initial_theta, "current_theta": current_theta,
+              "x": current_X, "y": current_Y}
+    report_message = START_STR + str(report).replace('\'', '\"') + END_STR
+    try:
+        connection.send(report_message.encode('utf-8'))
+    except BrokenPipeError:
+        if not quiet:
+            print("Pipe was broken when attempting to send a report")
+
 
 def __movement_execution_target(value, movement_type, connection):
     """

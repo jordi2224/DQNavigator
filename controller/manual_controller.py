@@ -32,7 +32,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if counter == 5:
+        if counter == 15:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")
@@ -98,5 +98,6 @@ if __name__ == "__main__":
         if msg["type"] != "None":
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
             s.send(msg.encode('utf-8'))
+            print('.', end='')
 
-        time.sleep(0.1)
+        time.sleep(0.05)

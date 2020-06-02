@@ -86,6 +86,21 @@ def receive_rotation_report(s, buff):
     return None, None
 
 
+def receive_linear_report(s, buff):
+    msg = None
+    while msg is None:
+        _, buff = wait_for_msg(s, buff)
+        msg, buff = receive_msg(buff)
+        msg = parse(msg)
+        if msg["type"] == "MOVEMENT_ORDER_REPORT":
+            old_theta = msg["initial_theta"]
+            new_theta = msg["current_theta"]
+            return old_theta, new_theta
+        else:
+            msg = None
+    return None, None
+
+
 def print_walls(walls, max_distance, x, y):
     fig = plt.figure()
     ax = fig.gca()
@@ -115,6 +130,16 @@ def crush(x, y, resolution_div):
     return im, offset_x, offset_y
 
 
+def chop(mat, d):
+    if d > 0:
+        mat[0:d, :] = 0
+    if d < 0:
+        height = mat.shape[0]
+        mat[height + d:height, :] = 0
+
+    return mat
+
+
 def rotate_image(mat, angle):
     """
     Rotates an image (angle in degrees) and expands image to avoid cropping
@@ -142,6 +167,27 @@ def rotate_image(mat, angle):
     # rotate image with the new bounds and translated rotation matrix
     rotated_mat = cv2.warpAffine(mat, rotation_mat, (bound_w, bound_h))
     return rotated_mat
+
+
+def translate_image(mat, distance):
+    """
+    Translate an image in the y axis, distance in pixels
+    """
+    height = mat.shape[0]
+    if distance > 0:
+        zeros = np.zeros([distance, mat.shape[1]], dtype='float32')
+        mat = mat[distance:height, :].astype('float32')
+
+        return np.concatenate((mat, zeros), axis=0)
+
+    elif distance < 0:
+        zeros = np.zeros([-distance, mat.shape[1]], dtype='float32')
+        mat = mat[0:height + distance, :].astype('float32')
+
+        return np.concatenate((zeros, mat), axis=0)
+
+    else:
+        return mat
 
 
 def clean_rotated_image(input_image):
@@ -203,13 +249,50 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
     return best_angle, best_image
 
 
+def find_translation(reference_image, actual_image, do_gaussian=True):
+    if do_gaussian:
+        sigma_y = 2
+        sigma_x = 2
+        sigma = [sigma_y, sigma_x]
+
+        reference_image = sp.ndimage.filters.gaussian_filter(reference_image, sigma, mode='constant')
+        actual_image = sp.ndimage.filters.gaussian_filter(actual_image, sigma, mode='constant')
+
+    best_image = None
+    best_distance = None
+    best_diff = float('Inf')
+    for distance in range(50):
+        testing_image_1 = translate_image(actual_image, distance)
+        testing_image_1 = np.array(
+            cv2.resize(testing_image_1.astype('float32'), (reference_image.shape[1], reference_image.shape[0])))
+
+        diff = np.sum(np.absolute(testing_image_1 - reference_image))
+
+        if diff < best_diff:
+            best_distance = distance
+            best_image = testing_image_1
+            best_diff = diff
+
+        testing_image_2 = translate_image(actual_image, -distance)
+        testing_image_2 = np.array(
+            cv2.resize(testing_image_2.astype('float32'), (reference_image.shape[1], reference_image.shape[0])))
+
+        diff = np.sum(np.absolute(testing_image_2 - reference_image))
+
+        if diff < best_diff:
+            best_distance = -distance
+            best_image = testing_image_2
+            best_diff = diff
+
+    return best_distance, best_image
+
+
 calib_rot = 190.0
 calib_lin = 0.65
-res_div = 30
+res_div = 15
 
 
-def do_correction(s, angle, expected_output):
-    t = time.time()
+def do_angle_correction(s, angle, expected_output):
     rot = math.radians(angle) * calib_rot
     rotation_message = START_STR + str(
         {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION",
@@ -233,6 +316,49 @@ def do_correction(s, angle, expected_output):
     s.send(rotation_message.encode('utf-8'))
 
 
+def do_linear_correction(s, distance, expected_output):
+    # NOTE: we need to use smaller resolution division for linear
+    # NOTE: thankfully it is much much faster to translate than rotate
+    lin = distance * calib_lin
+    linear_message = START_STR + str(
+        {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR",
+         "value": lin}).replace('\'', '\"') + END_STR
+    s.send(linear_message.encode('utf-8'))
+
+    receive_linear_report(s, buff)
+    time.sleep(0.5)
+
+    # New scan!
+    request_scan(s)
+    x, y = receive_scan(s, buff)
+    actual_output, _, _ = crush(x, y, res_div)
+    actual_output = np.rot90(actual_output)
+
+    best_distance, match = find_translation(expected_output.astype('float32'), actual_output)
+    print("I think im off by: ", best_distance)
+
+    plt.figure("Target Output")
+    plt.ion()
+    plt.imshow(expected_output)
+    plt.show()
+
+    plt.figure("Actual Output")
+    plt.ion()
+    plt.imshow(actual_output)
+    plt.show()
+
+    plt.figure("Best match")
+    plt.ioff()
+    plt.imshow(match)
+    plt.show()
+
+
+    linear_message = START_STR + str(
+        {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR",
+         "value": -best_distance*res_div*calib_lin*0.5}).replace('\'', '\"') + END_STR
+    s.send(linear_message.encode('utf-8'))
+
+
 def precise_rotation_maneuver(s, angle):
     errors = []
     error = float('Inf')
@@ -250,7 +376,7 @@ def precise_rotation_maneuver(s, angle):
     expected_output = clean_rotated_image(expected_output)
 
     # Try_to_rotate_by_angle(expected_output, angle)
-    do_correction(s, angle, expected_output)
+    do_angle_correction(s, angle, expected_output)
     time.sleep(0.5)
 
     # Get_the_new_angle()
@@ -262,7 +388,7 @@ def precise_rotation_maneuver(s, angle):
     while abs(error) > 5:
         print(error)
         # Try_to_rotate_by_angle(expected_output, angle)
-        do_correction(s, -error * 0.8, expected_output)
+        do_angle_correction(s, -error * 0.8, expected_output)
         time.sleep(0.5)
 
         request_scan(s)
@@ -273,32 +399,30 @@ def precise_rotation_maneuver(s, angle):
     print("Error is bellow acceptable threshold, turn done. Error: ", error)
 
 
-def precise_linear_maneuver(s, lin):
+def precise_linear_maneuver(s, distance):
     print("Starting auto-correcting linear maneuver")
     # Get the expected final output
     # Scan request / Scan process
     request_scan(s)
     x, y = receive_scan(s, buff)
     im, _, _ = crush(x, y, res_div)
+    im = np.rot90(im)
+    expected_output = translate_image(im.astype('float32'), -distance // res_div)
 
-    # TODO: get the expected output
+    do_linear_correction(s, distance, expected_output)
 
-    # Send a move order
-    rotation_message = START_STR + str(
-        {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR",
-         "value": lin*calib_lin}).replace('\'', '\"') + END_STR
-    s.send(rotation_message.encode('utf-8'))
 
 if __name__ == "__main__":
     # Establishing a connection to drone's TCP server
     s = get_socket(TCP_IP, TCP_PORT)
     buff = ''
 
-    while True:
-        precise_linear_maneuver(s, 1000)
-        time.sleep(1)
-        precise_linear_maneuver(s, -1000)
-        time.sleep(1)
+    request_scan(s)
+    x, y = receive_scan(s, buff)
+    original_image, _, _ = crush(x, y, res_div)
+    original_image = np.rot90(original_image)
+
+    precise_linear_maneuver(s, 1000)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
