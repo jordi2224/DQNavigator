@@ -154,7 +154,26 @@ class Driver:
         bytes_in = self.connection.read(dsize)
         received_sync = (bytes_in[0] & 240) + (bytes_in[1] >> 4)
         if received_sync != ord(SYNC_BYTE):
-            raise BufferError("Mismatching Sync bytes")
+            print("Mismatching Sync bytes: Attempting resync")
+            received_sync = b'\x00'
+            byte_0 = b'\x00'
+            byte_1 = b'\x00'
+            while received_sync != ord(SYNC_BYTE):
+                while self.connection.in_waiting < 1:
+                    pass
+                byte_0 = byte_1
+                byte_1 = self.connection.read(dsize)
+                received_sync = (byte_0 & 240) + (byte_1 >> 4)
+
+            while self.connection.in_waiting < self.data_size - 2:
+                pass
+
+            bytes_in = byte_0 + byte_1 + self.connection.read(self.data_size - 2)
+            print("Synchronized!")
+            ultra_cabins = []
+            start_angle = (bytes_in[2] + ((bytes_in[3] & 127) << 8)) / 64.0
+            for i in range(len(bytes_in[4:]) // 5):
+                ultra_cabins.append(bytes_in[4 + i * 5: 4 + (i + 1) * 5])
         else:
             ultra_cabins = []
             start_angle = (bytes_in[2] + ((bytes_in[3] & 127) << 8)) / 64.0

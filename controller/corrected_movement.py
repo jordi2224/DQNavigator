@@ -130,6 +130,23 @@ def crush(x, y, resolution_div):
     return im, offset_x, offset_y
 
 
+def p_crush(x, y, resolution_div, max_range=0):
+    if not max_range:
+        max_range = max(np.max(np.abs(x)), np.max(np.abs(y)))
+
+    offset = max_range // 2
+
+    im = np.zeros((int(2*offset/resolution_div), int(2*offset/resolution_div)), dtype='int')
+    for p in range(len(x)):
+        pixel_x = int((x[p] + offset) // resolution_div)
+        pixel_y = int((y[p] + offset) // resolution_div)
+
+        if 0 < pixel_x < (offset * 2)//resolution_div and 0 < pixel_y < (offset * 2)//resolution_div:
+            im[pixel_x, pixel_y] = 255
+
+    return np.rot90(im.astype('float32')), None, None
+
+
 def chop(mat, d):
     if d > 0:
         mat[0:d, :] = 0
@@ -261,10 +278,9 @@ def find_translation(reference_image, actual_image, do_gaussian=True):
     best_image = None
     best_distance = None
     best_diff = float('Inf')
-    for distance in range(50):
+    for distance in range(100):
         testing_image_1 = translate_image(actual_image, distance)
-        testing_image_1 = np.array(
-            cv2.resize(testing_image_1.astype('float32'), (reference_image.shape[1], reference_image.shape[0])))
+        testing_image_1 = np.array(cv2.resize(testing_image_1.astype('float32'), (reference_image.shape[1], reference_image.shape[0])))
 
         diff = np.sum(np.absolute(testing_image_1 - reference_image))
 
@@ -289,7 +305,8 @@ def find_translation(reference_image, actual_image, do_gaussian=True):
 
 calib_rot = 190.0
 calib_lin = 0.65
-res_div = 15
+res_div = 30
+max_range = 10000
 
 
 def do_angle_correction(s, angle, expected_output):
@@ -330,32 +347,16 @@ def do_linear_correction(s, distance, expected_output):
 
     # New scan!
     request_scan(s)
-    x, y = receive_scan(s, buff)
-    actual_output, _, _ = crush(x, y, res_div)
-    actual_output = np.rot90(actual_output)
+    scan_x, scan_y = receive_scan(s, buff)
+    actual_output, _, _ = p_crush(scan_x, scan_y, res_div, max_range=max_range)
 
     best_distance, match = find_translation(expected_output.astype('float32'), actual_output)
     print("I think im off by: ", best_distance)
 
-    plt.figure("Target Output")
-    plt.ion()
-    plt.imshow(expected_output)
-    plt.show()
-
-    plt.figure("Actual Output")
-    plt.ion()
-    plt.imshow(actual_output)
-    plt.show()
-
-    plt.figure("Best match")
-    plt.ioff()
-    plt.imshow(match)
-    plt.show()
-
 
     linear_message = START_STR + str(
         {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR",
-         "value": -best_distance*res_div*calib_lin*0.5}).replace('\'', '\"') + END_STR
+         "value": -best_distance*res_div*calib_lin*0.6}).replace('\'', '\"') + END_STR
     s.send(linear_message.encode('utf-8'))
 
 
@@ -405,8 +406,13 @@ def precise_linear_maneuver(s, distance):
     # Scan request / Scan process
     request_scan(s)
     x, y = receive_scan(s, buff)
-    im, _, _ = crush(x, y, res_div)
-    im = np.rot90(im)
+    im, _, _ = p_crush(x, y, res_div, max_range=max_range)
+
+    plt.figure("Original Sample")
+    plt.ion()
+    plt.imshow(im)
+    plt.show()
+
     expected_output = translate_image(im.astype('float32'), -distance // res_div)
 
     do_linear_correction(s, distance, expected_output)
@@ -419,10 +425,9 @@ if __name__ == "__main__":
 
     request_scan(s)
     x, y = receive_scan(s, buff)
-    original_image, _, _ = crush(x, y, res_div)
-    original_image = np.rot90(original_image)
+    original_image, _, _ = p_crush(x, y, res_div, max_range=max_range)
 
-    precise_linear_maneuver(s, 1000)
+    precise_linear_maneuver(s, 2000)
 
     disconnect_message = START_STR + str({"type": "FORCE_DISCONNECT"}).replace('\'', '\"') + END_STR
     s.send(disconnect_message.encode('utf-8'))
