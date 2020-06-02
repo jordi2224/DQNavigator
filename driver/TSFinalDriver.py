@@ -155,9 +155,9 @@ class Driver:
         received_sync = (bytes_in[0] & 240) + (bytes_in[1] >> 4)
         if received_sync != ord(SYNC_BYTE):
             print("Mismatching Sync bytes: Attempting resync")
-            received_sync = b'\x00'
-            byte_0 = b'\x00'
-            byte_1 = b'\x00'
+            received_sync = 0
+            byte_0 = 0
+            byte_1 = 0
             while received_sync != ord(SYNC_BYTE):
                 while self.connection.in_waiting < 1:
                     pass
