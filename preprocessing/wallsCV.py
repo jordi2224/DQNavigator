@@ -1,9 +1,31 @@
 import numpy as np
 import cv2
 from sklearn.cluster import DBSCAN
-from preprocessing.world import Wall
 import math
-import matplotlib.pyplot as plt
+
+
+class Entity:
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+
+class Actor(Entity):
+    def __init__(self, x, y, theta):
+        super(Actor, self).__init__(x=x, y=y)
+        self.theta = theta
+
+
+class Wall(Entity):
+    def __init__(self, start, end, rho=None, theta=None):
+        self.start_x = start[0]
+        self.start_y = start[1]
+        self.end_x = end[0]
+        self.end_y = end[1]
+        self.rho = rho
+        self.theta = theta
+
+        super(Wall, self).__init__(x=self.start_x, y=self.start_y)
 
 
 def fix_line(x1, y1, x2, y2, x_shape, y_shape):

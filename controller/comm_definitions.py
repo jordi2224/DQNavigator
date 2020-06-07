@@ -61,7 +61,9 @@ def fetch_data(buff, data_length):
     # Check the size of this packet
     recv = end_index - (start_index + len(DATA_START_STR))
     if recv != data_length:
-        raise ConnectionError("DATA LENGTH MISMATCH!\nFound: ", recv, "\nWas expecting: ", data_length)
+        print(end_index, start_index)
+        print("\nFound: ", recv, "\nWas expecting: ", data_length)
+        raise ConnectionError("DATA LENGTH MISMATCH!")
     else:
         return buff[(start_index + len(DATA_START_STR)): end_index], buff[(end_index + len(DATA_END_STR)):len(buff)]
 

@@ -1,34 +1,8 @@
 import preprocessing.world_config as cfg
-import preprocessing.wallsCV as wallsCV
 from driver.TSFinalDriver import Driver
-import matplotlib.pyplot as plt
-import numpy as np
 from preprocessing.wallsCV import *
+import matplotlib.pyplot as plt
 import time
-
-
-class Entity:
-    def __init__(self, x=0, y=0):
-        self.x = x
-        self.y = y
-
-
-class Actor(Entity):
-    def __init__(self, x, y, theta):
-        super(Actor, self).__init__(x=x, y=y)
-        self.theta = theta
-
-
-class Wall(Entity):
-    def __init__(self, start, end, rho=None, theta=None):
-        self.start_x = start[0]
-        self.start_y = start[1]
-        self.end_x = end[0]
-        self.end_y = end[1]
-        self.rho = rho
-        self.theta = theta
-
-        super(Wall, self).__init__(x=self.start_x, y=self.start_y)
 
 
 class GridEntity:
@@ -38,6 +12,8 @@ class GridEntity:
 
 
 class World:
+    grid_size = cfg.grid_size
+    grid_resolution = cfg.grid_resolution
     grid_size_count = cfg.grid_size // cfg.grid_resolution
 
     grid = np.full([grid_size_count, grid_size_count], GridEntity())
@@ -47,6 +23,7 @@ class World:
 
 
 def print_world(world):
+    plt.figure("Current state of world")
     size = world.grid_size_count
     image = np.full([size, size, 3], [255, 255, 255])
     for x in range(size):

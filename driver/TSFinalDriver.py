@@ -162,7 +162,7 @@ class Driver:
                 while self.connection.in_waiting < 1:
                     pass
                 byte_0 = byte_1
-                byte_1 = self.connection.read(dsize)
+                byte_1 = self.connection.read(dsize)[0]
                 received_sync = (byte_0 & 240) + (byte_1 >> 4)
 
             while self.connection.in_waiting < self.data_size - 2:
