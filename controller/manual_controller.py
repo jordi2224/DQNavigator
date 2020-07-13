@@ -1,16 +1,17 @@
 import pickle
 import socket
-import keyboard
 import time
-from controller.comm_definitions import *
+
+import keyboard
 import matplotlib.pyplot as plt
 import numpy as np
+
+from controller.comm_definitions import *
 
 fig = plt.figure()
 ax = fig.gca()
 max_distance = 1000
 plt.axis([-max_distance, max_distance, -max_distance, max_distance])
-
 
 TCP_IP = '192.168.1.177'
 TCP_PORT = 420
@@ -18,10 +19,10 @@ TCP_PORT = 420
 if __name__ == "__main__":
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))
-    request = START_STR + "{\"type\":\"REQUEST\", \"request\": \"GET_SCAN\"}" + END_STR
-    s.send(request.encode('utf-8'))
-    s.settimeout(0.01)
     buff = ''
+    request = START_STR + str({"type": "REQUEST", "request": "GET_SCAN", "SAMPLE_SIZE": 5000, "MAX_RANGE": 5000}).replace('\'', '\"') + END_STR
+    s.send(request.encode('utf-8'))
+    s.settimeout(0.1)
 
     counter = 0
     while 1:
@@ -31,7 +32,7 @@ if __name__ == "__main__":
             pass
         counter += 1
 
-        if not counter % 50:
+        if counter == 15:
             counter = 0
             s.send(request.encode('utf-8'))
             print("Requested data")
@@ -42,37 +43,67 @@ if __name__ == "__main__":
             if msg['type'] == "SCAN_DATA":
                 data_length = msg['data_size']
 
+                while not is_complete(buff):
+                    buff += s.recv(4096).decode('utf-8')
                 data, buff = fetch_data(buff, data_length)
-                points = np.array(pickle.loads(data.encode('utf-8')))
-                x = np.transpose(points)[0]
-                y = np.transpose(points)[1]
-                print(x)
-                ax.scatter(x, y, s=1)
+                if data is not None:
+                    points = np.array(pickle.loads(data.encode('utf-8')))
+                    x = np.transpose(points)[0]
+                    y = np.transpose(points)[1]
+                    plt.clf()
+                    ax = fig.gca()
+                    plt.axis([-max_distance, max_distance, -max_distance, max_distance])
+                    ax.scatter(x, y, s=1)
 
-                ax.set_aspect('equal')
-                plt.ioff()
-                plt.show()
+                    ax.set_aspect('equal')
+                    ax.set_yticklabels([])
+                    ax.set_xticklabels([])
+                    ax.grid(True, which='both')
+                    ax.axhline(y=0, color='k')
+                    ax.axvline(x=0, color='k')
+
+                    plt.ion()
+                    plt.show()
+                    plt.pause(0.01)
+
+        msg = {"type": "None"}
 
         if keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
-            msg = START_STR + "{\"type\":\"MANUAL_MOVE_ORDER\", \"direction\": \"FWD\"}" + END_STR
-            s.send(msg.encode('utf-8'))
+            msg["type"] = "MANUAL_MOVE_ORDER"
+            msg["direction"] = "FWD"
+
         elif not keyboard.is_pressed('w') and keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
-            msg = START_STR + "{\"type\":\"MANUAL_MOVE_ORDER\", \"direction\": \"BWD\"}" + END_STR
-            s.send(msg.encode('utf-8'))
+            msg["type"] = "MANUAL_MOVE_ORDER"
+            msg["direction"] = "BWD"
+
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and keyboard.is_pressed(
                 'a') and not keyboard.is_pressed('d'):
-            msg = START_STR + "{\"type\":\"MANUAL_MOVE_ORDER\", \"direction\": \"RIGHT\"}" + END_STR
-            s.send(msg.encode('utf-8'))
+            msg["type"] = "MANUAL_MOVE_ORDER"
+            msg["direction"] = "LEFT"
+
         elif not keyboard.is_pressed('w') and not keyboard.is_pressed('s') and not keyboard.is_pressed(
                 'a') and keyboard.is_pressed('d'):
-            msg = START_STR + "{\"type\":\"MANUAL_MOVE_ORDER\", \"direction\": \"LEFT\"}" + END_STR
-            s.send(msg.encode('utf-8'))
+            msg["type"] = "MANUAL_MOVE_ORDER"
+            msg["direction"] = "RIGHT"
 
-        if keyboard.is_pressed('f'):
-            msg = {"type": "CONTROLLED_MOVE_ORDER", "direction" : "FWD", "value": 250}
+        x = 350
+        if keyboard.is_pressed('i'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": x}
+        elif keyboard.is_pressed('k'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "LINEAR", "value": -x}
+        elif keyboard.is_pressed('l'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": -x}
+        elif keyboard.is_pressed('j'):
+            msg = {"type": "CONTROLLED_MOVE_ORDER", "movement": "ROTATION", "value": x}
+
+        if keyboard.is_pressed('h'):
+            msg = {"type": "HALT_OVERRIDE"}
+
+        if msg["type"] != "None":
             msg = START_STR + str(msg).replace('\'', '\"') + END_STR
             s.send(msg.encode('utf-8'))
+            print('.', end='')
 
-        time.sleep(0.1)
+        time.sleep(0.05)

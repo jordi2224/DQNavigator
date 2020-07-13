@@ -1,8 +1,7 @@
-import threading
 import sys
 import numpy as np
 from tqdm import tqdm
-from environment import Environment
+from navigation.environment import Environment
 from GUI_new_model_training import DQNAgent
 import config as cfg
 import math

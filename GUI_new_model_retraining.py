@@ -1,5 +1,3 @@
-import math
-
 import pygame
 import random
 import numpy as np
@@ -8,9 +6,8 @@ import matplotlib.pyplot as pyplot
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout
 from keras import optimizers
-from environment import Environment
+from navigation.environment import Environment
 from tqdm import tqdm
-import tensorflow as tf
 from collections import deque
 
 env = Environment(diff='hard')

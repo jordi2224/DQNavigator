@@ -1,29 +1,32 @@
 import socket
-from controller.server_tools import *
-from controller.GPIOdefinitions import *
 import time
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Value
+
+from controller.server_tools import *
 
 
-def control_loop(queue, driver_object, lidar_data_size, connection_object):
-    # Control loop
-    # This loop is meant to be executed in a different process from the TCP server
-    # Receives, validates and executes messages coming from the queue object
-    #
-    # Input parameters:
-    # queue: multiprocessing.Queue object. Only expected to read, not write
-    # driver_object: LIDAR driver object. Can be None if LIDAR is not plugged in or somehow unavailable
-    # lidar_data_size: size of data that the driver expects from sensor
-    # connection_object: connection object with controller. Needed to send replies.
-    # DO NOT READ FROM IT OTHERWISE INPUT BUFFER MIGHT GET CORRUPTED!!!
+def control_loop(queue, disconnect_flag, driver_object, lidar_data_size, connection_object):
+    """
+    Control loop
+    This loop is meant to be executed in a different process from the TCP server
+    Receives, validates and executes messages coming from the queue object
+
+    Input parameters:
+    queue: multiprocessing.Queue object. Only expected to read, not write
+    driver_object: LIDAR driver object. Can be None if LIDAR is not plugged in or somehow unavailable
+    lidar_data_size: size of data that the driver expects from sensor, to be removes in future versions TODO
+    connection_object: connection object with controller. Needed to send replies.
+    DO NOT READ FROM IT OTHERWISE INPUT BUFFER MIGHT GET CORRUPTED!!!
+    """
 
     print('Control loop started')
     message = None
     # Time at which the last order was executed
-    current_order_t = 0
+    current_manual_order_t = 0
     # Maximum delay between orders before the channel is considered inactive, at this time control loop will attempt a
     # safe halt (aka not interrupt long or scheduled executions)
-    max_time_delay = 0.1
+    max_time_delay = 0.2
+    enable_auto_halting = False
 
     last_exec = None
     while True:
@@ -40,27 +43,32 @@ def control_loop(queue, driver_object, lidar_data_size, connection_object):
                 # No order is executed here, just the update
                 message = None
 
-        # Only execute messages if no other messages are vailable in queue
-        else:   # Command execution
-            if message is not None:
+        # Only execute messages if no other messages are available in queue
+        else:  # Command execution
+            if message is not None and not disconnect_flag.value:
                 print(message)
                 # Send to execution function
-                execute(message, driver_object, lidar_data_size, connection_object)
-                last_exec = message
-                current_order_t = time.time()
-                message = None
+                try:
+                    execute(message, driver_object, lidar_data_size, connection_object)
+                    if message["type"] == "MANUAL_MOVE_ORDER":
+                        current_manual_order_t = time.time()
+                        enable_auto_halting = True
+                    message = None
+                except BrokenPipeError:
+                    print("Lost connection on send, requesting server to establish a new one")
+                    disconnect_flag.value = True
 
-        if time.time() - current_order_t > max_time_delay:
-            current_order_t = time.time()
-            if last_exec is not None and last_exec["type"] == "MANUAL_MOVE_ORDER":
-                halt()
-                last_exec = None
+        if time.time() - current_manual_order_t > max_time_delay and enable_auto_halting:
+            halt()
+            enable_auto_halting = False
 
 
 if __name__ == "__main__":
-    # Main server loop
-    # Maintains a TCP server on 192.168.1.177:420
-    # Feed incoming messages to control loop
+    """
+    Main server loop
+    Maintains a TCP server on 192.168.1.177:420
+    Feed incoming messages to control loop
+    """
 
     # Check configuration to determine initial USB power status
     if start_USB_off:
@@ -97,11 +105,22 @@ if __name__ == "__main__":
     # Queue q is used to send messages to control loop
     # Messages are validated by server loop for headers and footers but not for format
     q = Queue()
-    p = Process(target=control_loop, args=(q, driver, dsize, conn,))
+    broken_pipe_flag = Value('b')
+    broken_pipe_flag.value = False
+    p = Process(target=control_loop, args=(q, broken_pipe_flag, driver, dsize, conn,))
     p.start()
 
     print('Connection address:', address)
     while True:
+        if broken_pipe_flag.value:
+            print('Connection to: ', address, ' was lost, listening at TCP: ', TCP_IP, ':', TCP_PORT)
+            s.listen(1)
+            conn, address = s.accept()
+            print('Connection address:', address)
+            q.put("CONN_UPDATE")
+            q.put(conn)
+            broken_pipe_flag.value = False
+
         # If the connection becomes unavailable we try to accept a new one
         try:
             buff += conn.recv(BUFFER_SIZE).decode('utf-8')
@@ -115,6 +134,7 @@ if __name__ == "__main__":
             print('Connection address:', address)
             q.put("CONN_UPDATE")
             q.put(conn)
+            broken_pipe_flag.value = False
 
         # Check whether a complete message is available for execution
         # This is done by checking if a header and footer are both available in the buffer
@@ -122,7 +142,11 @@ if __name__ == "__main__":
             # Parse and send the message to control loop
             msg, buff = receive_msg(buff)
             msg = parse(msg)
-            q.put(msg)
+            if msg["type"] == "FORCE_DISCONNECT":
+                print("Connection closed by controller")
+                conn.close()
+            else:
+                q.put(msg)
 
     # Unreachable except by interrupting the server loop
     conn.close()

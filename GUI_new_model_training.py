@@ -1,14 +1,14 @@
+import keras
 import pygame
 import random
 import numpy as np
 import config as cfg
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from keras import optimizers
-from environment import Environment
+from navigation.environment import Environment
 from tqdm import tqdm
-import tensorflow as tf
 from collections import deque
 
 env = Environment(diff='hard')
@@ -17,10 +17,11 @@ env = Environment(diff='hard')
 def create_model(lr=cfg.lr):
     # MODEL ARCHITECTURE
     model = Sequential()
-    model.add(Dense(6, input_dim=env.STATE_SIZE))
-    #model.add(Dropout(0.1))
-    model.add(Dense(6, activation='sigmoid'))
-    model.add(Dense(env.ACTION_SIZE, activation='relu'))
+    model.add(Dense(8, input_dim=env.STATE_SIZE))
+    model.add(Dense(12))
+    model.add(Dense(10, activation='sigmoid'))
+    model.add(Dense(6))
+    model.add(Dense(env.ACTION_SIZE - 1, activation='relu'))
 
     optimizer = optimizers.Adam(learning_rate=lr, beta_1=0.9, beta_2=0.999, amsgrad=False)
     print("learning rate is: ", lr)
@@ -103,6 +104,7 @@ class DQNAgent:
             self.target_update_counter += 1
 
         if self.target_update_counter >= cfg.CONVERGE_EVERY:
+            print("converged")
             self.target_model.set_weights(self.model.get_weights())
             self.target_update_counter = 0
 
@@ -112,8 +114,11 @@ if __name__ == "__main__":
     agent = DQNAgent()
     episode_reward_history = []
     average_reward_history = []
+    epsilon_array = []
     epsilon = cfg.DEF_EPSILON
+    gac = cfg.DEF_GAC
 
+    keras.utils.vis_utils.plot_model(agent.model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
     for episode in tqdm(range(cfg.EPISODES), unit='sims'):
 
         # Episode initialization
@@ -127,14 +132,24 @@ if __name__ == "__main__":
 
             # Make a decision based on epsilon
             if np.random.random() > epsilon:
-                # Action/Prediction generation
-                tmp_state = np.array(state).reshape(-1, env.STATE_SIZE)
-                prediction = agent.model.predict(tmp_state)
-                action = np.argmax(prediction)
+                if cfg.DO_GAC and np.random.random() < gac:
+                    angle = state[-3]
+                    if abs(angle) < 0.05:
+                        action = 2
+                    else:
+                        if angle > 0:
+                            action = 1
+                        else:
+                            action = 0
+                else:
+                    # Action/Prediction generation
+                    tmp_state = np.array(state).reshape(-1, env.STATE_SIZE)
+                    prediction = agent.model.predict(tmp_state)
+                    action = np.argmax(prediction)
 
             else:
                 # Get random action
-                action = np.random.randint(0, env.ACTION_SIZE-1)
+                action = np.random.randint(0, env.ACTION_SIZE - 1)
 
             # New environment state
             reward, new_state, done = env.step(action)
@@ -150,10 +165,24 @@ if __name__ == "__main__":
 
             # Update memory and training
             agent.update_replay_memory((state, action, reward, new_state, done))
+            state = new_state
+
             if not episode % cfg.TRAIN_EVERY:
                 agent.train(done)
 
-            state = new_state
+        if not episode % cfg.BENCHMARK_EVERY:
+            print("Benchmarking ", end='')
+            score = 0
+            for b in range(cfg.BENCHMARK_LENGTH):
+                reward, state, done = env.reset()
+                while not done:
+                    tmp_state = np.array(state).reshape(-1, env.STATE_SIZE)
+                    prediction = agent.model.predict(tmp_state)
+                    action = np.argmax(prediction)
+                    reward, state, done = env.step(action)
+
+                    score += reward
+            print("Benchmark score = ", score / cfg.BENCHMARK_LENGTH)
 
         episode_reward_history.append(episode_reward)
 
@@ -162,13 +191,24 @@ if __name__ == "__main__":
             epsilon *= cfg.EPSILON_DECAY
             epsilon = max(cfg.MIN_EPSILON, epsilon)
 
+        if gac < cfg.MAX_GAC:
+            gac *= cfg.GAC_DECAY
+            gac = min(cfg.MAX_GAC, gac)
+
         if not episode % cfg.AGGREGATE_EVERY or episode == 1:
             avg = sum(episode_reward_history) / len(episode_reward_history)
-            print("epsilon: ", epsilon, " avg: ", avg)
+            print("epsilon: ", epsilon, " gac: ", gac," avg: ", avg)
             average_reward_history.append(avg)
             episode_reward_history = []
+            epsilon_array.append(epsilon)
 
     agent.model.save('endmodel.model')
-    pyplot.plot(average_reward_history)
-    pyplot.title('Episode reward average')
-    pyplot.show()
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot(111)
+    ax1.plot(average_reward_history)
+    ax1.set_ylabel("Reward")
+    ax2 = ax1.twinx()
+    ax2.plot(epsilon_array, c='r')
+    ax2.set_ylabel("Epsilon")
+    plt.title('50 episodes reward average and epsilon')
+    plt.show()

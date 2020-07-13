@@ -4,7 +4,7 @@ Neural Net Training:
 
 Data Preprocessing
 	Turn driver into object
-	Find walls
+	Find walls; Using houghlinesP?
 	Find hazards
 	
 Hardware
@@ -18,7 +18,7 @@ Hardware
 Async movement tracking -> multi threading
 Positioning system
 Map
-Remove dsize depensency
+Remove dsize dependency
 
 Code Refactor and project cleanup
 

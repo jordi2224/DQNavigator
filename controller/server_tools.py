@@ -1,10 +1,11 @@
-import pickle
 import os
+import pickle
 import subprocess
+
 import controller.async_movement
-from driver.TSFinalDriver import Driver
+from controller.GPIOdefinitions import *
 from controller.comm_definitions import *
-from controller.async_counter_proto import *
+from driver.TSFinalDriver import Driver
 
 # Default status configuration
 start_USB_off = False
@@ -12,39 +13,46 @@ motor_enable = True
 
 # Scan configuration
 sample_size = 600
-max_distance = 5000
+default_max_distance = 5000
 
 
 # Main execution function
 def execute(msg, driver, dsize, conn):
-    # Decision making and execution function
-    # May be ran asynchronously in its own thread
-    # Multithreading execution is imposed by some orders since they would fatally block the control loop's execution
-    #
-    # Input parameters:
-    # msg: message, dict containing order type and parameters for execution
-    # driver: LIDAR driver object. May be None if the sensor was not plugged in when initialized
-    # dsize: LIDAR data size
-    # conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
+    """
+    Decision making and execution function
+    May be ran asynchronously in its own thread
+    Multithreading execution is imposed by some orders since they would fatally block the control loop's execution
 
-    global motor_enable, sample_size, max_distance
-    if msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
+    Input parameters:
+    msg: message, dict containing order type and parameters for execution
+    driver: LIDAR driver object. May be None if the sensor was not plugged in when initialized
+    dsize: LIDAR data size
+    conn: connection object to controller. Used to send replies. DO NOT READ FROM THIS OBJECT
+    """
+    global motor_enable, sample_size
+
+    if msg["type"] == "HALT_OVERRIDE":
+        controller.async_movement.override_halt()
+        halt()
+        print("EMERGENCY HALT EXECUTED!")
+    elif msg["type"] == "MANUAL_MOVE_ORDER" and motor_enable:
         dir = msg["direction"]
         if dir == "FWD":
             forward()
         elif dir == "BWD":
             backwards()
         elif dir == "LEFT":
-            forward_right()
-            reverse_left()
-        elif dir == "RIGHT":
             reverse_right()
             forward_left()
+        elif dir == "RIGHT":
+            forward_right()
+            reverse_left()
         elif dir == "HALT":
             halt()
 
     elif msg["type"] == "CONTROLLED_MOVE_ORDER" and motor_enable:
-        print(controller.async_movement.execute_move(250, 250));
+        print("Received a controlled move order")
+        controller.async_movement.execute_move(msg["value"], msg["movement"], conn)
 
     elif msg["type"] == "CONFIGURATION":
         device = msg["target"]
@@ -73,7 +81,7 @@ def execute(msg, driver, dsize, conn):
 
             elif msg["parameter"] == "MAX_DISTANCE":
                 value = msg["value"]
-                max_distance = max_distance
+                max_distance = value
             else:
                 print('Unexpected value')
 
@@ -85,7 +93,15 @@ def execute(msg, driver, dsize, conn):
 
         if request == "GET_SCAN":
             if driver is not None:
-                points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
+                driver.connection.flush()
+                if "MAX_RANGE" in msg:
+                    max_distance = msg["MAX_RANGE"]
+                else:
+                    max_distance = default_max_distance
+                if "SAMPLE_SIZE" in msg:
+                    points, x, y = driver.get_point_cloud(dsize, msg["SAMPLE_SIZE"], max_distance)
+                else:
+                    points, x, y = driver.get_point_cloud(dsize, sample_size, max_distance)
 
                 print("Sending scan data")
                 serialized_p = pickle.dumps(points, protocol=0)
@@ -94,8 +110,9 @@ def execute(msg, driver, dsize, conn):
                 conn.send(DATA_START_STR.encode('utf-8') + serialized_p + DATA_END_STR.encode('utf-8'))
 
             else:
-                res = START_STR + TYPE_STR + "\"ERROR\", \"severity\": 1, \"message\" : \"No driver is running at the " \
-                                             "moment, is the LIDAR connected?\"}" + END_STR
+                res = {"type": "ERROR", "severity": 1,
+                       "message": "No driver is running at the moment, is the LIDAR connected?"}
+                res = START_STR + str(res).replace('\'', '\"') + END_STR
                 conn.send(res.encode('utf-8'))
                 print("Controller attempted to retrieve LIDAR data but to driver is running")
 
@@ -104,19 +121,27 @@ def execute(msg, driver, dsize, conn):
 
 
 def start_driver():
+    """Attempts to create a driver object for A1 LIDAR"""
+
+    # Get kernel message buffer (there might be a more elegant way but this is very *very* fast)
     s = subprocess.check_output(['dmesg'])
     s = s.split(b'\n')
     port = None
 
+    # Look for Unix-like message regarding device attachment
+    # We are looking for the last assignment hence the reverse search
     for line in reversed(s):
         if b'cp210x converter now attached to' in line:
             port = line[line.find(b'ttyUSB'):len(line)]
             break
 
+    # Returns None object if no port could be found
     if not port:
         print("LIDAR is not connected")
         return None, None
 
+    # Otherwise start the driver on that port
+    # We return the data size, this is likely to be removed in future versions TODO
     driver = Driver('/dev/' + port.decode('utf-8'))
     dsize = driver.start_scan_express()
 
