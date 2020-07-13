@@ -27,7 +27,7 @@ HEALTH_STATUSES = {
 
 STOP_BYTE = b'\x25'
 
-angle_offset = 10
+angle_offset = -0.1
 
 
 def prepare_payload(cmd_type, payload):
@@ -61,9 +61,9 @@ def parse_cabins(cabins, start_angle, delta_angle, do_compensation=0):
                 dt2 = (dt2 & 31)
 
             angle += delta_angle / 32.0
-            points.append((math.radians((angle + dt1 / 32.0) % 360.0), distance1))
+            points.append((math.radians((angle + dt1 / 8.0) % 360.0), distance1))
             angle += delta_angle / 32.0
-            points.append((math.radians((angle + dt2 / 32.0) % 360.0), distance2))
+            points.append((math.radians((angle + dt2 / 8.0) % 360.0), distance2))
         else:
             angle += delta_angle / 32.0
             points.append((math.radians(angle % 360.0), distance1))

@@ -2,14 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32475768-a82a-42b4-ba3f-81eb64a33d3d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/controller/playground.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/driver/driver_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/easy_comms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/astart_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/grid.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/showcase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/navigation/showcase2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/showcase.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/showcase2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/preprocessing/showcase3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dev.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dev.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/comm_definitions.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/comm_definitions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI_new_model_retraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI_new_model_retraining.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI_new_model_training.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI_new_model_training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/YATA.py" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/YATA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/collision.py" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/collision.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controller/corrected_movement.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/corrected_movement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/manual_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/manual_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/playground.py" beforeDir="false" afterPath="$PROJECT_DIR$/controller/playground.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver/TSFinalDriver.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver/TSFinalDriver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/fp-info-cache" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/fp-info-cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/driver_tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver/driver_tools.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endmodel.model" beforeDir="false" afterPath="$PROJECT_DIR$/endmodel.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment-deprecated.py" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/environment-deprecated.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/environment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/ControlLogic.sch" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/ControlLogic.sch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/ControlLogic.sch-bak" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/ControlLogic.sch-bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/MotorControl.sch" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/MotorControl.sch" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.pro" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/TFG_PCB.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/_autosave-ControlLogic.sch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/PCB/TFG_PCB/_autosave-TFG_PCB.kicad_pcb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/ROVER/OldVersions/PCB_deck.0002.ipt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/ROVER/OldVersions/Tplug.0002.ipt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/ROVER/PCB_deck.ipt" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/ROVER/PCB_deck.ipt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/ROVER/Tplug.ipt" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/ROVER/Tplug.ipt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardware/ROVER/lockfile.lck" beforeDir="false" afterPath="$PROJECT_DIR$/hardware/ROVER/lockfile.lck" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/multithreading_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/multithreading_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newenv_test" beforeDir="false" afterPath="$PROJECT_DIR$/newenv_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/preprocessing/wallsCV.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/wallsCV.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/preprocessing/world.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/world.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/preprocessing/world_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/preprocessing/world_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,16 +73,20 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Application Data" />
+    <property name="last_opened_file_path" value="G:/anaconda3/Scripts/conda.exe" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\TFG\dev\navigation" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\TFG\dev\navigation" />
       <recent name="D:\TFG\dev\preprocessing" />
     </key>
   </component>
   <component name="RunManager" selected="Python.playground">
-    <configuration name="corrected_movement (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="GUI_new_model_training" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dev" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -54,11 +94,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controller" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/corrected_movement.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI_new_model_training.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -67,7 +107,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="corrected_movement" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="easy_showcase" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dev" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -75,11 +115,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controller" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/showcase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\TFG\dev\controller\corrected_movement.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/showcase/easy_showcase.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -88,7 +128,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="manual_controller" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="easy_showcase2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dev" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -96,11 +136,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controller" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/showcase" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controller/manual_controller.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/showcase/easy_showcase2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -130,7 +170,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="world" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="pydot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dev" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -138,11 +178,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/preprocessing" />
+      <option name="WORKING_DIRECTORY" value="G:/anaconda3/envs/dev/Lib/site-packages" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/preprocessing/world.py" />
+      <option name="SCRIPT_NAME" value="G:/anaconda3/envs/dev/Lib/site-packages/pydot.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -154,10 +194,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.playground" />
-        <item itemvalue="Python.manual_controller" />
-        <item itemvalue="Python.corrected_movement (1)" />
-        <item itemvalue="Python.corrected_movement" />
-        <item itemvalue="Python.world" />
+        <item itemvalue="Python.GUI_new_model_training" />
+        <item itemvalue="Python.pydot" />
+        <item itemvalue="Python.easy_showcase2" />
+        <item itemvalue="Python.easy_showcase" />
       </list>
     </recent_temporary>
   </component>
@@ -175,80 +215,87 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1055" y="323" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590276413954">
+    <state x="1055" y="323" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1593946805543">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="1055" y="323" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590276413954" />
-    <state x="356" y="118" key="CommitChangelistDialog2" timestamp="1585235479707">
+    <state x="1055" y="323" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1593946805543" />
+    <state x="848" y="261" key="FileChooserDialogImpl" timestamp="1593945985497">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="356" y="118" key="CommitChangelistDialog2/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1585235479707" />
-    <state x="3090" y="259" key="FileChooserDialogImpl" timestamp="1590242308969">
-      <screen x="2560" y="0" width="1280" height="984" />
-    </state>
-    <state x="1059" y="274" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584349176502" />
+    <state x="848" y="261" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1593945985497" />
     <state x="3090" y="259" key="FileChooserDialogImpl/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590242308969" />
-    <state width="2539" height="332" key="GridCell.Tab.0.bottom" timestamp="1591291364032">
+    <state width="2539" height="334" key="GridCell.Tab.0.bottom" timestamp="1594627082834">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291364032" />
-    <state width="1259" height="258" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.center" timestamp="1591291364031">
+    <state width="2539" height="334" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1594627082834" />
+    <state width="702" height="317" key="GridCell.Tab.0.bottom/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1593869187158" />
+    <state width="2539" height="334" key="GridCell.Tab.0.center" timestamp="1594627082834">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291364031" />
-    <state width="1259" height="258" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.left" timestamp="1591291364031">
+    <state width="2539" height="334" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1594627082834" />
+    <state width="702" height="317" key="GridCell.Tab.0.center/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1593869187158" />
+    <state width="2539" height="334" key="GridCell.Tab.0.left" timestamp="1594627082833">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291364031" />
-    <state width="1259" height="258" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="332" key="GridCell.Tab.0.right" timestamp="1591291364032">
+    <state width="2539" height="334" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1594627082833" />
+    <state width="702" height="317" key="GridCell.Tab.0.left/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1593869187158" />
+    <state width="2539" height="334" key="GridCell.Tab.0.right" timestamp="1594627082834">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="332" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291364032" />
-    <state width="1259" height="258" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590341816173" />
-    <state width="2539" height="348" key="GridCell.Tab.1.bottom" timestamp="1591291362107">
+    <state width="2539" height="334" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1594627082834" />
+    <state width="702" height="317" key="GridCell.Tab.0.right/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1593869187158" />
+    <state width="2539" height="348" key="GridCell.Tab.1.bottom" timestamp="1592316454851">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291362107" />
-    <state width="2539" height="348" key="GridCell.Tab.1.center" timestamp="1591291362107">
+    <state width="2539" height="348" key="GridCell.Tab.1.bottom/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1592316454851" />
+    <state width="2539" height="348" key="GridCell.Tab.1.center" timestamp="1592316454851">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291362107" />
-    <state width="2539" height="348" key="GridCell.Tab.1.left" timestamp="1591291362107">
+    <state width="2539" height="348" key="GridCell.Tab.1.center/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1592316454851" />
+    <state width="2539" height="348" key="GridCell.Tab.1.left" timestamp="1592316454851">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291362107" />
-    <state width="2539" height="348" key="GridCell.Tab.1.right" timestamp="1591291362107">
+    <state width="2539" height="348" key="GridCell.Tab.1.left/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1592316454851" />
+    <state width="2539" height="348" key="GridCell.Tab.1.right" timestamp="1592316454851">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2539" height="348" key="GridCell.Tab.1.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591291362107" />
+    <state width="2539" height="348" key="GridCell.Tab.1.right/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1592316454851" />
     <state x="992" y="236" key="MultipleFileMergeDialog" timestamp="1590259311698">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="992" y="236" key="MultipleFileMergeDialog/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590259311698" />
-    <state x="1284" y="151" key="SettingsEditor" timestamp="1590242317041">
+    <state x="781" y="162" key="SettingsEditor" timestamp="1593014226575">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="781" y="162" key="SettingsEditor/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584349188353" />
+    <state x="781" y="162" key="SettingsEditor/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1593014226575" />
     <state x="1284" y="151" key="SettingsEditor/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590242317041" />
-    <state x="981" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1584351677847">
-      <screen x="0" y="0" width="2560" height="1040" />
-    </state>
-    <state x="981" y="344" key="com.intellij.ide.util.TipDialog/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1584351677847" />
     <state x="1729" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1590259298855">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1729" y="440" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590259298855" />
     <state x="3425" y="416" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1040/2560.0.1280.984@2560.0.1280.984" timestamp="1590242678260" />
-    <state x="976" y="118" width="607" height="804" key="find.popup" timestamp="1591027996368">
+    <state x="976" y="118" width="737" height="804" key="find.popup" timestamp="1593961116834">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state x="976" y="118" width="607" height="804" key="find.popup/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1591027996368" />
+    <state x="976" y="118" width="737" height="804" key="find.popup/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1593961116834" />
     <state x="943" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1590947272383">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="943" y="225" width="672" height="678" key="search.everywhere.popup/0.0.2560.1040/2560.0.1280.984@0.0.2560.1040" timestamp="1590947272383" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/controller/async_counter_interrupt.py</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://G:/anaconda3/envs/dev/Lib/site-packages/keras/utils/vis_utils.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

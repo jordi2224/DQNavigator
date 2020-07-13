@@ -10,7 +10,7 @@ from controller.comm_definitions import *
 
 fig = plt.figure()
 ax = fig.gca()
-max_distance = 5000
+max_distance = 1000
 plt.axis([-max_distance, max_distance, -max_distance, max_distance])
 
 TCP_IP = '192.168.1.177'
@@ -56,6 +56,12 @@ if __name__ == "__main__":
                     ax.scatter(x, y, s=1)
 
                     ax.set_aspect('equal')
+                    ax.set_yticklabels([])
+                    ax.set_xticklabels([])
+                    ax.grid(True, which='both')
+                    ax.axhline(y=0, color='k')
+                    ax.axvline(x=0, color='k')
+
                     plt.ion()
                     plt.show()
                     plt.pause(0.01)

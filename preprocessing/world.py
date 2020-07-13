@@ -21,6 +21,14 @@ class World:
         for y in range(grid_size_count):
             grid[x, y] = GridEntity()
 
+    def get_grid(self):
+        grid_output = np.zeros([self.grid_size_count, self.grid_size_count])
+        for x in range(self.grid_size_count):
+            for y in range(self.grid_size_count):
+                if self.grid[x][y].type != 'empty':
+                    grid_output[x][y] = 255
+
+        return grid_output
 
 def print_world(world):
     plt.figure("Current state of world")
@@ -34,6 +42,29 @@ def print_world(world):
     plt.imshow(np.rot90(image))
     plt.show()
 
+
+def input_wall(world, wall, offset_x, offset_y):
+    start_coordinates = ((wall.start_x + offset_x) // world.grid_resolution + world.grid_size_count // 2,
+                         (wall.start_y + offset_y) // world.grid_resolution + world.grid_size_count // 2)
+    end_coordinates = ((wall.end_x + offset_x) // world.grid_resolution + world.grid_size_count // 2,
+                       (wall.end_y + offset_y) // world.grid_resolution + world.grid_size_count // 2)
+
+    indices = makeline(start_coordinates, end_coordinates)
+
+    for i_x, i_y in indices:
+        world.grid[i_x][i_y].type = "wall"
+
+
+def get_grid(world):
+    size = world.grid_size_count
+    out = np.zeros([size, size], dtype='int')
+    for x in range(size):
+        for y in range(size):
+            block_type = world.grid[x, y].type
+            if block_type != 'empty':
+                out[x, y] = 255
+
+    return out.astype('int')
 
 if __name__ == "__main__":
     world = World()

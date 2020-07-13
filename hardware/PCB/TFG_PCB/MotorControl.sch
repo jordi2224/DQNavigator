@@ -4,13 +4,13 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 3 4
-Title ""
+Title "Motor Control and Feedback"
 Date ""
-Rev ""
-Comp ""
-Comment1 ""
-Comment2 ""
-Comment3 ""
+Rev "1"
+Comp "Jorge Huete"
+Comment1 "MOSFET H-Bridges for bidirectional motor power"
+Comment2 "Includes resistor divider for Hall effect sensors"
+Comment3 "Hall effect sensors are used for rotation encoding"
 Comment4 ""
 $EndDescr
 Text HLabel 3600 750  0    50   Input ~ 0

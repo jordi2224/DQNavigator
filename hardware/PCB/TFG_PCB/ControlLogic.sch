@@ -4,12 +4,12 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 4 4
-Title ""
+Title "Analog Monitoring and Logic"
 Date ""
-Rev ""
-Comp ""
-Comment1 ""
-Comment2 ""
+Rev "1"
+Comp "Jorge Huete"
+Comment1 "Analog multiplexer and ADC for monitoring buses"
+Comment2 "Also includes a 20x2 connector for standard Rapsberry Pi"
 Comment3 ""
 Comment4 ""
 $EndDescr

@@ -150,8 +150,8 @@ class Driver:
         dsize, none, none = self.read_descriptor(debug=1)
         return dsize
 
-    def get_express(self, dsize):
-        bytes_in = self.connection.read(dsize)
+    def get_express(self):
+        bytes_in = self.connection.read(self.data_size)
         received_sync = (bytes_in[0] & 240) + (bytes_in[1] >> 4)
         if received_sync != ord(SYNC_BYTE):
             print("Mismatching Sync bytes: Attempting resync")
@@ -162,7 +162,7 @@ class Driver:
                 while self.connection.in_waiting < 1:
                     pass
                 byte_0 = byte_1
-                byte_1 = self.connection.read(dsize)[0]
+                byte_1 = self.connection.read(self.data_size)[0]
                 received_sync = (byte_0 & 240) + (byte_1 >> 4)
 
             while self.connection.in_waiting < self.data_size - 2:
@@ -173,6 +173,7 @@ class Driver:
             ultra_cabins = []
             start_angle = (bytes_in[2] + ((bytes_in[3] & 127) << 8)) / 64.0
             for i in range(len(bytes_in[4:]) // 5):
+                print(i)
                 ultra_cabins.append(bytes_in[4 + i * 5: 4 + (i + 1) * 5])
         else:
             ultra_cabins = []
@@ -196,24 +197,28 @@ class Driver:
 
         return samples
 
-    def get_point_cloud(self, data_size, n_points, max_distance, force_flush=True):
+    def get_point_cloud(self, n_points, max_distance, force_flush=True):
+        if self.current_mode == "OFF":
+            print("Attempted to get points without starting scan")
+            return None, None, None
         points = []
 
         if force_flush:
             while self.connection.in_waiting > self.data_size:
                 self.connection.read(self.data_size)
         else:
-            while self.connection.in_waiting > data_size * 1000:
-                self.connection.read(data_size)
-        while self.connection.in_waiting < data_size:
+            while self.connection.in_waiting > self.data_size * 1000:
+                self.connection.read(self.data_size)
+        while self.connection.in_waiting < self.data_size:
             pass
-        old_cabins, old_start_angle = self.get_express(data_size)
+        print(self.connection.in_waiting)
+        old_cabins, old_start_angle = self.get_express()
 
         while len(points) < n_points:
-            while self.connection.in_waiting < data_size:
+            while self.connection.in_waiting < self.data_size:
                 pass
 
-            new_cabins, new_start_angle = self.get_express(data_size)
+            new_cabins, new_start_angle = self.get_express()
             if new_start_angle >= old_start_angle:
                 delta_angle = new_start_angle - old_start_angle
             else:

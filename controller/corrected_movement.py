@@ -219,15 +219,16 @@ def rotate_image(mat, angle):
     abs_sin = abs(rotation_mat[0, 1])
 
     # find the new width and height bounds
-    bound_w = int(height * abs_sin + width * abs_cos)
-    bound_h = int(height * abs_cos + width * abs_sin)
+    #bound_w = int(height * abs_sin + width * abs_cos)
+    #bound_h = int(height * abs_cos + width * abs_sin)
 
     # subtract old image center (bringing image back to origo) and adding the new image center coordinates
-    rotation_mat[0, 2] += bound_w / 2 - image_center[0]
-    rotation_mat[1, 2] += bound_h / 2 - image_center[1]
+    #rotation_mat[0, 2] += bound_w / 2 - image_center[0]
+    #rotation_mat[1, 2] += bound_h / 2 - image_center[1]
 
     # rotate image with the new bounds and translated rotation matrix
-    rotated_mat = cv2.warpAffine(mat, rotation_mat, (bound_w, bound_h))
+    #""", (bound_w, bound_h)"""
+    rotated_mat = cv2.warpAffine(mat, rotation_mat, mat.shape)
     return rotated_mat
 
 
@@ -236,6 +237,8 @@ def translate_image(mat, distance):
     Translate an image in the y axis, distance in pixels
     """
     height = mat.shape[0]
+    distance = int(distance)
+
     if distance > 0:
         zeros = np.zeros([distance, mat.shape[1]], dtype='float32')
         mat = mat[distance:height, :].astype('float32')
@@ -269,8 +272,8 @@ def clean_rotated_image(input_image):
 
 def find_rotation(reference_image, actual_image, do_gaussian=True):
     if do_gaussian:
-        sigma_y = 10
-        sigma_x = 10
+        sigma_y = 2
+        sigma_x = 2
         sigma = [sigma_y, sigma_x]
 
         reference_image = sp.ndimage.filters.gaussian_filter(reference_image, sigma, mode='constant')
@@ -280,8 +283,7 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
     best_angle = None
     best_diff = float('Inf')
     for angle in list(drange(0, 45, 0.2)):
-        testing_image_1 = clean_rotated_image(rotate_image(actual_image.astype('float32'), angle))
-        testing_image_1 = np.array(cv2.resize(testing_image_1, (reference_image.shape[1], reference_image.shape[0])))
+        testing_image_1 = rotate_image(actual_image.astype('float32'), angle)
 
         diff = np.sum(np.absolute(testing_image_1 - reference_image))
 
@@ -290,8 +292,7 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
             best_image = testing_image_1
             best_diff = diff
 
-        testing_image_2 = clean_rotated_image(rotate_image(actual_image.astype('float32'), -angle))
-        testing_image_2 = np.array(cv2.resize(testing_image_2, (reference_image.shape[1], reference_image.shape[0])))
+        testing_image_2 = rotate_image(actual_image.astype('float32'), -angle)
 
         diff = np.sum(np.absolute(testing_image_2 - reference_image))
 
@@ -299,25 +300,6 @@ def find_rotation(reference_image, actual_image, do_gaussian=True):
             best_angle = -angle
             best_image = testing_image_2
             best_diff = diff
-
-    if abs(best_angle) > 15:
-        print("Angle: ", best_angle)
-        print("This error: ", best_diff)
-        print("Unturned error: ", np.sum(np.absolute(actual_image - reference_image)))
-        fig = plt.figure("Reference Image")
-        plt.ion()
-        plt.imshow(reference_image)
-        plt.show()
-
-        fig = plt.figure("Actual Scan")
-        plt.ion()
-        plt.imshow(actual_image)
-        plt.show()
-
-        fig = plt.figure("Closest match")
-        plt.ioff()
-        plt.imshow(best_image)
-        plt.show()
 
     return best_angle, best_image
 
@@ -334,7 +316,7 @@ def find_translation(reference_image, actual_image, do_gaussian=True):
     best_image = None
     best_distance = None
     best_diff = float('Inf')
-    for distance in range(100):
+    for distance in range(50):
         testing_image_1 = translate_image(actual_image, distance)
         testing_image_1 = np.array(
             cv2.resize(testing_image_1.astype('float32'), (reference_image.shape[1], reference_image.shape[0])))
