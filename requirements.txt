@@ -6,5 +6,5 @@ keras==2.3.1
 numpy==1.18.1
 pygame==1.9.6
 setuptools==41.0.0
-tensorflow==2.1.0
+tensorflow==2.1.2
 tqdm==4.42.0
